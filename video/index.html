@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Seomastertech – pub motion design</title>
+<link rel="stylesheet" href="fonts/poppins.css">
+<style>
+:root{
+  --navy:#0E1A4F; --muted:#66709A; --blue:#4F7FE8; --royal:#1D4EDF; --violet:#A05BDC; --cyan:#6EE7FF;
+  --grad:linear-gradient(120deg,#4F7FE8 0%,#6F6FE8 45%,#A05BDC 100%);
+  --hot:linear-gradient(100deg,#FF4D6D,#FF8A4C);
+  --shadow:0 24px 60px rgba(28,38,110,.13),0 4px 14px rgba(28,38,110,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F4F6FD}
+body{font-family:Poppins,sans-serif;color:var(--navy);-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F4F6FD}
+.abs{position:absolute}
+.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;visibility:hidden;transform-origin:540px 960px}
+.layer{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.blob{position:absolute;left:0;top:0;border-radius:50%}
+
+/* kinetic type */
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:.08em .04em .16em;margin:-.08em -.04em -.16em}
+.wi{display:inline-block}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hot{background:var(--hot);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kicker{left:0;right:0;text-align:center;font-weight:700;font-size:30px;letter-spacing:7px}
+.title{left:60px;right:60px;text-align:center;text-wrap:balance;font-weight:700;font-size:84px;line-height:1.1;letter-spacing:-1.5px}
+.sub{left:110px;right:110px;text-align:center;text-wrap:balance;font-weight:500;font-size:38px;line-height:1.38;color:var(--muted)}
+
+/* ui kit */
+.card{background:#fff;border-radius:40px;box-shadow:var(--shadow)}
+.bar{border-radius:99px}
+.ico{display:inline-grid;place-items:center;line-height:0}
+svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.chip{position:absolute;display:flex;align-items:center;gap:18px;padding:14px 32px 14px 14px;background:#fff;border-radius:999px;box-shadow:var(--shadow);font-weight:600;font-size:34px;white-space:nowrap}
+.tile{display:grid;place-items:center;color:#fff;background:var(--grad);flex:none}
+.sbar{display:flex;align-items:center;gap:22px;padding:0 16px 0 34px;border-radius:60px;background:#F6F7FC;border:2px solid #E3E7F3}
+.sbar .q{font-weight:500;font-size:38px;color:var(--navy);white-space:nowrap}
+.sbar .go{margin-left:auto;width:76px;height:76px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff}
+.caret{display:inline-block;width:4px;height:48px;border-radius:2px;background:var(--blue);margin-left:-14px}
+.res{left:40px;width:820px;height:140px}
+.fav{position:absolute;left:0;top:4px;width:56px;height:56px;border-radius:50%}
+.dom{position:absolute;left:76px;top:10px;font-weight:500;font-size:27px;color:#7A84A8}
+.ghost{left:40px;width:820px;height:120px;border:4px dashed #F0506E;border-radius:26px;background:rgba(240,80,110,.05);display:flex;align-items:center;gap:22px;padding:0 26px 0 30px;color:#F0506E;font-weight:600;font-size:36px}
+.tag{margin-left:auto;background:#F0506E;color:#fff;font-size:27px;padding:8px 22px;border-radius:30px}
+.row{left:40px;top:0;width:820px;height:105px;border-radius:24px;background:#fff}
+.row.comp{border:2px solid #EEF1F8}
+.row.ours{border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box}
+.who{position:absolute;width:435px;height:190px;border-radius:36px;background:#fff;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-weight:600;font-size:36px}
+.svc{position:absolute;left:110px;width:860px;height:126px;border-radius:30px;background:#fff;box-shadow:var(--shadow)}
+.svc .lbl{position:absolute;left:130px;top:0;height:126px;display:flex;align-items:center;font-weight:600;font-size:38px}
+.cta3{left:0;right:0;text-align:center;font-weight:800;font-size:86px;line-height:1.1;letter-spacing:-1.5px;color:#fff}
+.cursor{position:absolute;left:0;top:0;width:64px;height:64px;filter:drop-shadow(0 8px 10px rgba(14,26,79,.28))}
+.ripple{position:absolute;left:0;top:0;width:100px;height:100px;border-radius:50%;border:5px solid var(--blue)}
+.spark{position:absolute;left:0;top:0;width:40px;height:40px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gV" x1="0" y1="0.2" x2="1" y2="0.6"><stop offset="0" stop-color="#3A44F0"/><stop offset="1" stop-color="#7E5CFF"/></linearGradient>
+    <linearGradient id="gB" x1="0.3" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#38A6FF"/><stop offset="1" stop-color="#1E5CF2"/></linearGradient>
+    <linearGradient id="gC" x1="0" y1="0.2" x2="1" y2="0.8"><stop offset="0" stop-color="#8AF1FF"/><stop offset="1" stop-color="#47B2FF"/></linearGradient>
+    <linearGradient id="gBrand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F7FE8"/><stop offset="1" stop-color="#A05BDC"/></linearGradient>
+    <linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6F6FE8" stop-opacity=".35"/><stop offset="1" stop-color="#6F6FE8" stop-opacity="0"/></linearGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2.2" dy="0" stdDeviation="2" flood-color="#0B1F7A" flood-opacity=".28"/></filter>
+    <clipPath id="logoClip"><rect x="57" y="19" width="69" height="67" rx="33"/><rect x="30" y="7" width="65" height="79" rx="32"/><rect x="6" y="32" width="58" height="54" rx="27"/></clipPath>
+  </defs>
+</svg>
+
+<div id="stage">
+  <!-- animated background -->
+  <div id="bg" class="layer">
+    <div class="blob" id="b1" style="width:1100px;height:1100px;background:radial-gradient(circle,rgba(110,231,255,.42) 0%,rgba(110,231,255,0) 65%)"></div>
+    <div class="blob" id="b2" style="width:1200px;height:1200px;background:radial-gradient(circle,rgba(79,127,232,.26) 0%,rgba(79,127,232,0) 65%)"></div>
+    <div class="blob" id="b3" style="width:1100px;height:1100px;background:radial-gradient(circle,rgba(160,91,220,.24) 0%,rgba(160,91,220,0) 65%)"></div>
+    <div class="layer" id="dots" style="background-image:radial-gradient(rgba(14,26,79,.10) 2px,transparent 2.6px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0%,transparent 100%)"></div>
+  </div>
+
+  <!-- ============ S1 : le problème ============ -->
+  <section class="scene" id="s1">
+    <div class="title abs" id="s1a" style="top:330px;font-size:78px">Vos clients vous cherchent sur Google…</div>
+    <div class="title abs" id="s1b" style="top:330px;font-size:78px">…mais votre site reste <span class="hot">invisible.</span></div>
+    <div class="card abs" id="s1card" style="left:90px;top:640px;width:900px;height:830px">
+      <div class="sbar abs" id="s1bar" style="left:40px;top:40px;width:820px;height:110px">
+        <i class="ico" data-i="search" data-s="42" data-c="#4F7FE8" data-w="2.6"></i>
+        <span class="q" id="s1q"></span><span class="caret" id="s1caret"></span>
+        <span class="go" id="s1go"><i class="ico" data-i="search" data-s="36" data-c="#fff" data-w="2.8"></i></span>
+      </div>
+      <div class="res abs s1r" style="top:190px"><div class="fav" style="background:#FFD9C9"></div><div class="dom">concurrent-a.fr</div>
+        <div class="abs bar" style="left:0;top:76px;width:470px;height:24px;background:#5B74E0;opacity:.75"></div>
+        <div class="abs bar" style="left:0;top:114px;width:680px;height:14px;background:#E4E8F3"></div></div>
+      <div class="res abs s1r" style="top:350px"><div class="fav" style="background:#CDEFD9"></div><div class="dom">concurrent-b.fr</div>
+        <div class="abs bar" style="left:0;top:76px;width:400px;height:24px;background:#5B74E0;opacity:.75"></div>
+        <div class="abs bar" style="left:0;top:114px;width:610px;height:14px;background:#E4E8F3"></div></div>
+      <div class="res abs s1r" style="top:510px"><div class="fav" style="background:#FFEAB0"></div><div class="dom">concurrent-c.fr</div>
+        <div class="abs bar" style="left:0;top:76px;width:520px;height:24px;background:#5B74E0;opacity:.75"></div>
+        <div class="abs bar" style="left:0;top:114px;width:560px;height:14px;background:#E4E8F3"></div></div>
+      <div class="ghost abs" id="s1ghost" style="top:672px">
+        <i class="ico" data-i="eyeoff" data-s="44" data-c="#F0506E" data-w="2.4"></i><span>votre-site.fr</span><span class="tag">Page 5</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S2 : révélation de la marque ============ -->
+  <section class="scene" id="s2">
+    <div class="abs" id="s2fx" style="left:540px;top:800px;width:0;height:0"></div>
+    <div class="sub abs" id="s2tag" style="top:1092px;font-size:46px;color:#3A4573">Création de sites web <span class="grad">&amp;</span> SEO</div>
+  </section>
+
+  <!-- ============ S3 : étape 1, création ============ -->
+  <section class="scene" id="s3">
+    <div class="layer" id="s3txt">
+      <div class="kicker abs" id="s3k" style="top:292px"><span class="grad">ÉTAPE 01 · CRÉATION</span></div>
+      <div class="title abs" id="s3t" style="top:344px">On crée votre site <span class="grad">sur-mesure</span></div>
+      <div class="sub abs" id="s3s" style="top:560px">Un design qui vous ressemble, un site ultra-rapide.</div>
+    </div>
+    <div class="layer" id="s3vis">
+      <div class="card abs" id="browser" style="left:110px;top:740px;width:860px;height:700px;border-radius:34px;overflow:hidden">
+        <div class="abs" style="left:0;top:0;width:860px;height:70px;background:#F1F3FA"></div>
+        <div class="abs" style="left:30px;top:26px;width:18px;height:18px;border-radius:50%;background:#FF7A7A"></div>
+        <div class="abs" style="left:58px;top:26px;width:18px;height:18px;border-radius:50%;background:#FFCB57"></div>
+        <div class="abs" style="left:86px;top:26px;width:18px;height:18px;border-radius:50%;background:#4FD48B"></div>
+        <div class="abs" style="left:140px;top:14px;width:580px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;gap:10px;padding-left:18px;font-weight:500;font-size:22px;color:#66709A">
+          <i class="ico" data-i="lock" data-s="20" data-c="#22C38E" data-w="2.6"></i><span id="urlText"></span></div>
+        <div class="abs nv" style="left:32px;top:96px;width:40px;height:40px;border-radius:50%;background:var(--grad)"></div>
+        <div class="abs nv bar" style="left:84px;top:108px;width:120px;height:16px;background:#C9D2EC"></div>
+        <div class="abs nv bar" style="left:450px;top:111px;width:70px;height:12px;background:#D8DEF0"></div>
+        <div class="abs nv bar" style="left:540px;top:111px;width:70px;height:12px;background:#D8DEF0"></div>
+        <div class="abs nv bar" style="left:630px;top:111px;width:70px;height:12px;background:#D8DEF0"></div>
+        <div class="abs nv" style="left:722px;top:96px;width:106px;height:40px;border-radius:20px;background:var(--grad)"></div>
+        <div class="abs" id="hero" style="left:32px;top:160px;width:796px;height:290px;border-radius:26px;background:var(--grad);overflow:hidden">
+          <div class="abs hb bar" style="left:40px;top:58px;width:400px;height:34px;background:#fff"></div>
+          <div class="abs hb bar" style="left:40px;top:106px;width:300px;height:34px;background:#fff"></div>
+          <div class="abs hb bar" style="left:40px;top:166px;width:340px;height:16px;background:rgba(255,255,255,.65)"></div>
+          <div class="abs hb bar" style="left:40px;top:192px;width:250px;height:16px;background:rgba(255,255,255,.65)"></div>
+          <div class="abs" id="heroBtn" style="left:40px;top:226px;width:170px;height:44px;border-radius:22px;background:#fff"></div>
+          <svg class="abs" id="heroIll" style="left:536px;top:40px" width="220" height="210" viewBox="0 0 220 210">
+            <rect width="220" height="210" rx="26" fill="#fff" fill-opacity=".18"/>
+            <circle cx="160" cy="62" r="26" fill="#fff" fill-opacity=".75"/>
+            <path d="M0 210 L72 108 L122 168 L152 132 L220 210 Z" fill="#fff" fill-opacity=".5"/>
+          </svg>
+        </div>
+        <div class="abs fc" style="left:32px;top:478px;width:252px;height:186px;border-radius:22px;background:#F3F5FC">
+          <div class="abs tile" style="left:24px;top:24px;width:58px;height:58px;border-radius:16px"><i class="ico" data-i="zap" data-s="30" data-c="#fff" data-w="2.4"></i></div>
+          <div class="abs bar" style="left:24px;top:108px;width:170px;height:16px;background:#CDD5EE"></div>
+          <div class="abs bar" style="left:24px;top:138px;width:120px;height:14px;background:#E0E5F4"></div></div>
+        <div class="abs fc" style="left:304px;top:478px;width:252px;height:186px;border-radius:22px;background:#F3F5FC">
+          <div class="abs tile" style="left:24px;top:24px;width:58px;height:58px;border-radius:16px"><i class="ico" data-i="search" data-s="30" data-c="#fff" data-w="2.6"></i></div>
+          <div class="abs bar" style="left:24px;top:108px;width:150px;height:16px;background:#CDD5EE"></div>
+          <div class="abs bar" style="left:24px;top:138px;width:130px;height:14px;background:#E0E5F4"></div></div>
+        <div class="abs fc" style="left:576px;top:478px;width:252px;height:186px;border-radius:22px;background:#F3F5FC">
+          <div class="abs tile" style="left:24px;top:24px;width:58px;height:58px;border-radius:16px"><i class="ico" data-i="phone" data-s="30" data-c="#fff" data-w="2.4"></i></div>
+          <div class="abs bar" style="left:24px;top:108px;width:180px;height:16px;background:#CDD5EE"></div>
+          <div class="abs bar" style="left:24px;top:138px;width:100px;height:14px;background:#E0E5F4"></div></div>
+      </div>
+      <div class="chip" id="chWP" style="left:36px;top:688px"><span class="ico tile" style="width:64px;height:64px;border-radius:50%;background:#21759B"><i class="ico" data-i="layout" data-s="32" data-c="#fff" data-w="2.4"></i></span>WordPress</div>
+      <div class="chip" id="chWoo" style="left:590px;top:688px"><span class="ico tile" style="width:64px;height:64px;border-radius:50%;background:#7F54B3"><i class="ico" data-i="cart" data-s="32" data-c="#fff" data-w="2.4"></i></span>WooCommerce</div>
+      <div class="chip" id="chResp" style="left:46px;top:1392px"><span class="ico tile" style="width:64px;height:64px;border-radius:50%"><i class="ico" data-i="phone" data-s="32" data-c="#fff" data-w="2.4"></i></span>100&nbsp;% responsive</div>
+      <div class="abs" id="gauge" style="left:680px;top:1310px;width:250px;height:250px;border-radius:50%;background:#fff;box-shadow:var(--shadow)">
+        <svg class="abs" style="left:0;top:0" width="250" height="250" viewBox="0 0 250 250">
+          <circle cx="125" cy="125" r="100" fill="none" stroke="#E8ECF7" stroke-width="16"/>
+          <circle id="gRing" cx="125" cy="125" r="100" fill="none" stroke="url(#gBrand)" stroke-width="16" stroke-linecap="round" transform="rotate(-90 125 125)"/>
+        </svg>
+        <div class="abs" style="left:0;top:58px;width:250px;text-align:center"><i class="ico" data-i="zap" data-s="30" data-c="#6F6FE8" data-w="2.4"></i></div>
+        <div class="abs" id="gNum" style="left:0;top:86px;width:250px;text-align:center;font-weight:800;font-size:64px;line-height:1">0</div>
+        <div class="abs" style="left:0;top:160px;width:250px;text-align:center;font-weight:600;font-size:21px;color:var(--muted)">Performance</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S4 : étape 2, SEO ============ -->
+  <section class="scene" id="s4">
+    <div class="layer" id="s4txt">
+      <div class="kicker abs" id="s4k" style="top:292px"><span class="grad">ÉTAPE 02 · RÉFÉRENCEMENT</span></div>
+      <div class="title abs" id="s4t" style="top:344px">On booste votre <span class="grad">visibilité</span></div>
+      <div class="sub abs" id="s4s" style="top:560px">SEO &amp; SEO local&#8239;: grimpez sur Google.</div>
+    </div>
+    <div class="layer" id="s4vis">
+      <div class="card abs" id="s4card" style="left:90px;top:715px;width:900px;height:650px">
+        <div class="sbar abs" style="left:40px;top:36px;width:820px;height:100px">
+          <i class="ico" data-i="search" data-s="40" data-c="#4F7FE8" data-w="2.6"></i><span class="q" style="font-size:36px">plombier près de chez moi</span>
+        </div>
+        <div class="row abs comp" id="c0"><div class="fav" style="left:18px;top:24px;background:#FFD9C9"></div><div class="dom" style="left:92px;top:12px">concurrent-a.fr</div><div class="abs bar" style="left:92px;top:58px;width:400px;height:22px;background:#5B74E0;opacity:.7"></div></div>
+        <div class="row abs comp" id="c1"><div class="fav" style="left:18px;top:24px;background:#CDEFD9"></div><div class="dom" style="left:92px;top:12px">concurrent-b.fr</div><div class="abs bar" style="left:92px;top:58px;width:340px;height:22px;background:#5B74E0;opacity:.7"></div></div>
+        <div class="row abs comp" id="c2"><div class="fav" style="left:18px;top:24px;background:#FFEAB0"></div><div class="dom" style="left:92px;top:12px">concurrent-c.fr</div><div class="abs bar" style="left:92px;top:58px;width:440px;height:22px;background:#5B74E0;opacity:.7"></div></div>
+        <div class="row abs ours" id="ours">
+          <div class="abs tile" id="rankBadge" style="left:16px;top:17px;width:66px;height:66px;border-radius:50%;font-weight:800;font-size:26px;letter-spacing:-1px"><span id="rankNum">#27</span></div>
+          <div class="abs" style="left:100px;top:12px;font-weight:500;font-size:24px;color:#7A84A8">votre-site.fr</div>
+          <div class="abs" style="left:100px;top:40px;font-weight:700;font-size:34px">Votre entreprise</div>
+          <div class="abs" id="stars" style="right:24px;top:36px;display:flex;gap:4px"></div>
+        </div>
+        <div class="abs" id="s4spark" style="left:0;top:0;width:0;height:0"></div>
+      </div>
+      <div class="card abs" id="mapCard" style="left:90px;top:1395px;width:430px;height:200px;overflow:hidden;border-radius:34px">
+        <svg class="abs" style="left:0;top:0" width="430" height="200" viewBox="0 0 430 200">
+          <rect width="430" height="200" fill="#EAF0FB"/>
+          <rect x="20" y="20" width="110" height="60" rx="10" fill="#DDE5F7"/><rect x="160" y="20" width="90" height="60" rx="10" fill="#DDE5F7"/>
+          <rect x="290" y="110" width="120" height="70" rx="10" fill="#DDE5F7"/><circle cx="340" cy="45" r="38" fill="#D7F2E2"/>
+          <path d="M0 100 H430 M145 0 V200 M270 0 V200" stroke="#fff" stroke-width="16"/>
+          <path d="M0 175 L430 60" stroke="#fff" stroke-width="10"/>
+        </svg>
+        <div class="abs" id="pinRipple" style="left:215px;top:118px;width:0;height:0"></div>
+        <svg class="abs" id="pin" style="left:181px;top:44px" width="68" height="80" viewBox="0 0 24 28">
+          <path d="M12 27s9-7.2 9-15A9 9 0 0 0 3 12c0 7.8 9 15 9 15z" fill="url(#gBrand)"/><circle cx="12" cy="12" r="3.6" fill="#fff"/>
+        </svg>
+        <div class="abs" style="left:16px;top:142px;display:flex;align-items:center;gap:8px;background:#fff;border-radius:22px;padding:6px 16px 6px 10px;font-weight:600;font-size:22px;box-shadow:0 6px 16px rgba(28,38,110,.12)">
+          <i class="ico" data-i="pin" data-s="22" data-c="#6F6FE8" data-w="2.6"></i>SEO local</div>
+      </div>
+      <div class="card abs" id="chartCard" style="left:560px;top:1395px;width:430px;height:200px;border-radius:34px">
+        <div class="abs" style="left:26px;top:20px;font-weight:600;font-size:26px">Visites</div>
+        <div class="abs" style="right:20px;top:16px;display:flex;align-items:center;gap:6px;background:#E3F8EE;color:#14A06F;border-radius:20px;padding:4px 14px;font-weight:600;font-size:21px">
+          <i class="ico" data-i="trend" data-s="22" data-c="#14A06F" data-w="2.6"></i>Croissance</div>
+        <svg class="abs" style="left:20px;top:70px" width="390" height="118" viewBox="0 0 390 118">
+          <path id="chArea" d="M0 104 L60 96 L120 100 L180 74 L240 78 L300 44 L360 20 L384 10 L384 118 L0 118 Z" fill="url(#gArea)"/>
+          <path id="chLine" d="M0 104 L60 96 L120 100 L180 74 L240 78 L300 44 L360 20 L384 10" fill="none" stroke="url(#gBrand)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle id="chDot" cx="384" cy="10" r="9" fill="#fff" stroke="#A05BDC" stroke-width="5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S5 : étape 3, autonomie ============ -->
+  <section class="scene" id="s5">
+    <div class="layer" id="s5txt">
+      <div class="kicker abs" id="s5k" style="top:292px"><span class="grad">ÉTAPE 03 · AUTONOMIE</span></div>
+      <div class="title abs" id="s5t" style="top:344px">Vous gardez <span class="grad">la main</span></div>
+      <div class="sub abs" id="s5s" style="top:470px">Interface No-Code&#8239;: modifiez votre site sans toucher au code.</div>
+    </div>
+    <div class="layer" id="s5vis">
+      <div class="card abs" id="editor" style="left:90px;top:640px;width:900px;height:720px;overflow:hidden;border-radius:34px">
+        <div class="abs" style="left:0;top:0;width:900px;height:84px;border-bottom:2px solid #EEF1F8;display:flex;align-items:center;gap:16px;padding-left:22px;font-weight:600;font-size:28px">
+          <span class="tile" style="width:50px;height:50px;border-radius:14px"><i class="ico" data-i="edit" data-s="26" data-c="#fff" data-w="2.4"></i></span>Éditeur
+          <span style="background:#EEF0FF;color:#5B5FE0;font-size:20px;padding:4px 14px;border-radius:14px">No-Code</span></div>
+        <div class="abs" id="pubBtn" style="left:696px;top:14px;width:182px;height:56px;border-radius:28px;background:var(--grad);color:#fff;font-weight:600;font-size:25px;display:grid;place-items:center">Publier</div>
+        <div class="abs" id="pubDone" style="left:696px;top:14px;width:182px;height:56px;border-radius:28px;background:#22C38E;color:#fff;font-weight:600;font-size:25px;display:flex;align-items:center;justify-content:center;gap:8px;opacity:0">
+          <i class="ico" data-i="check" data-s="24" data-c="#fff" data-w="3.2"></i>Publié</div>
+        <div class="abs" style="left:0;top:84px;width:100px;height:636px;background:#F7F8FC;border-right:2px solid #EEF1F8"></div>
+        <div class="abs tool" id="tool0" style="left:22px;top:110px;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#8A93B5"><i class="ico" data-i="type" data-s="28" data-c="currentColor" data-w="2.4"></i></div>
+        <div class="abs tool" style="left:22px;top:196px;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#8A93B5"><i class="ico" data-i="image" data-s="28" data-c="currentColor" data-w="2.4"></i></div>
+        <div class="abs tool" id="tool2" style="left:22px;top:282px;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#8A93B5"><i class="ico" data-i="droplet" data-s="28" data-c="currentColor" data-w="2.4"></i></div>
+        <div class="abs tool" style="left:22px;top:368px;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#8A93B5"><i class="ico" data-i="layout" data-s="28" data-c="currentColor" data-w="2.4"></i></div>
+        <div class="abs" id="ehero" style="left:130px;top:114px;width:740px;height:310px;border-radius:24px;overflow:hidden">
+          <div class="abs" style="left:0;top:0;width:740px;height:310px;background:var(--grad)"></div>
+          <div class="abs" id="eheroB" style="left:0;top:0;width:740px;height:310px;background:linear-gradient(120deg,#FF7A59,#FF4F8B);opacity:0"></div>
+          <div class="abs" id="eSel" style="left:30px;top:54px;height:74px;border-radius:10px;background:rgba(255,255,255,.32)"></div>
+          <div class="abs" style="left:36px;top:58px;height:70px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:52px;white-space:nowrap;letter-spacing:-1px">
+            <span id="eText">Bienvenue chez vous</span><span id="eCaret" style="display:inline-block;width:4px;height:54px;background:#fff;margin-left:4px;border-radius:2px"></span></div>
+          <div class="abs bar" style="left:36px;top:156px;width:360px;height:16px;background:rgba(255,255,255,.65)"></div>
+          <div class="abs bar" style="left:36px;top:184px;width:270px;height:16px;background:rgba(255,255,255,.65)"></div>
+          <div class="abs" style="left:36px;top:228px;width:180px;height:50px;border-radius:25px;background:#fff"></div>
+          <svg class="abs" style="left:520px;top:50px" width="190" height="210" viewBox="0 0 220 210">
+            <rect width="220" height="210" rx="26" fill="#fff" fill-opacity=".18"/><circle cx="160" cy="62" r="26" fill="#fff" fill-opacity=".75"/>
+            <path d="M0 210 L72 108 L122 168 L152 132 L220 210 Z" fill="#fff" fill-opacity=".5"/></svg>
+        </div>
+        <div class="abs" id="selBox" style="left:150px;top:160px;width:560px;height:94px;border:3px dashed #fff;border-radius:12px">
+          <div class="abs" style="left:-9px;top:-9px;width:14px;height:14px;background:#fff;border:3px solid #4F7FE8;border-radius:3px"></div>
+          <div class="abs" style="right:-9px;top:-9px;width:14px;height:14px;background:#fff;border:3px solid #4F7FE8;border-radius:3px"></div>
+          <div class="abs" style="left:-9px;bottom:-9px;width:14px;height:14px;background:#fff;border:3px solid #4F7FE8;border-radius:3px"></div>
+          <div class="abs" style="right:-9px;bottom:-9px;width:14px;height:14px;background:#fff;border:3px solid #4F7FE8;border-radius:3px"></div>
+          <div class="abs" style="left:0;top:-46px;background:#4F7FE8;color:#fff;font-weight:600;font-size:20px;padding:3px 12px;border-radius:10px">Texte</div>
+        </div>
+        <div class="abs fc" style="left:130px;top:454px;width:360px;height:236px;border-radius:22px;background:#F3F5FC">
+          <div class="abs tile" style="left:24px;top:24px;width:58px;height:58px;border-radius:16px"><i class="ico" data-i="image" data-s="30" data-c="#fff" data-w="2.4"></i></div>
+          <div class="abs bar" style="left:24px;top:116px;width:250px;height:18px;background:#CDD5EE"></div>
+          <div class="abs bar" style="left:24px;top:150px;width:180px;height:14px;background:#E0E5F4"></div>
+          <div class="abs bar" style="left:24px;top:176px;width:210px;height:14px;background:#E0E5F4"></div></div>
+        <div class="abs fc" style="left:510px;top:454px;width:360px;height:236px;border-radius:22px;background:#F3F5FC">
+          <div class="abs tile" style="left:24px;top:24px;width:58px;height:58px;border-radius:16px"><i class="ico" data-i="pin" data-s="30" data-c="#fff" data-w="2.4"></i></div>
+          <div class="abs bar" style="left:24px;top:116px;width:230px;height:18px;background:#CDD5EE"></div>
+          <div class="abs bar" style="left:24px;top:150px;width:200px;height:14px;background:#E0E5F4"></div>
+          <div class="abs bar" style="left:24px;top:176px;width:150px;height:14px;background:#E0E5F4"></div></div>
+      </div>
+      <div class="card abs" id="palette" style="left:676px;top:1286px;width:300px;height:136px;border-radius:30px">
+        <div class="abs" style="left:26px;top:16px;font-weight:600;font-size:22px;color:var(--muted)">Couleurs</div>
+        <div class="abs" style="left:24px;top:60px;width:52px;height:52px;border-radius:50%;background:#4F7FE8"></div>
+        <div class="abs" style="left:90px;top:60px;width:52px;height:52px;border-radius:50%;background:#A05BDC"></div>
+        <div class="abs" id="dotHot" style="left:156px;top:60px;width:52px;height:52px;border-radius:50%;background:linear-gradient(120deg,#FF7A59,#FF4F8B)"></div>
+        <div class="abs" style="left:222px;top:60px;width:52px;height:52px;border-radius:50%;background:#22C38E"></div>
+        <div class="abs" id="dotRing" style="left:150px;top:54px;width:64px;height:64px;border-radius:50%;border:4px solid #0E1A4F"></div>
+      </div>
+      <div class="abs" id="toast" style="left:290px;top:1460px;width:500px;height:84px;border-radius:42px;background:#0E1A4F;color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;font-weight:600;font-size:30px;box-shadow:0 20px 40px rgba(14,26,79,.3)">
+        <span style="width:44px;height:44px;border-radius:50%;background:#22C38E;display:grid;place-items:center"><i class="ico" data-i="check" data-s="26" data-c="#fff" data-w="3.4"></i></span>Modifications en ligne</div>
+      <div class="ripple" id="rip5"></div>
+      <svg class="cursor" id="cur5" viewBox="0 0 32 32"><path d="M4 2 L4 26 L10 20.5 L14 29.5 L18.2 27.7 L14.3 18.9 L22 18.9 Z" fill="#fff" stroke="#0E1A4F" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- ============ S6 : pour qui ============ -->
+  <section class="scene" id="s6">
+    <div class="title abs" id="s6t" style="top:300px;font-size:124px;font-weight:800;letter-spacing:-3px">Pour <span class="grad">qui&nbsp;?</span></div>
+    <div class="sub abs" id="s6s" style="top:470px">Tous ceux qui veulent être trouvés en ligne&#8239;:</div>
+    <div class="who" style="left:90px;top:650px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="tool" data-s="42" data-c="#fff" data-w="2.2"></i></span>Artisans</div>
+    <div class="who" style="left:555px;top:650px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="bag" data-s="42" data-c="#fff" data-w="2.2"></i></span>Commerçants</div>
+    <div class="who" style="left:90px;top:870px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="utensils" data-s="42" data-c="#fff" data-w="2.2"></i></span>Restaurants</div>
+    <div class="who" style="left:555px;top:870px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="briefcase" data-s="42" data-c="#fff" data-w="2.2"></i></span>Indépendants</div>
+    <div class="who" style="left:90px;top:1090px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="building" data-s="42" data-c="#fff" data-w="2.2"></i></span>TPE &amp; PME</div>
+    <div class="who" style="left:555px;top:1090px"><span class="tile" style="width:84px;height:84px;border-radius:26px"><i class="ico" data-i="cart" data-s="42" data-c="#fff" data-w="2.2"></i></span>E-commerce</div>
+  </section>
+
+  <!-- ============ S7 : tout-en-un ============ -->
+  <section class="scene" id="s7">
+    <div class="title abs" id="s7t" style="top:300px;font-size:124px;font-weight:800;letter-spacing:-3px"><span class="grad">Tout-en-un</span></div>
+    <div class="sub abs" id="s7s" style="top:470px">Un seul partenaire pour toute votre présence en ligne.</div>
+  </section>
+
+  <!-- ============ S8 : appel à l'action ============ -->
+  <section class="scene" id="s8">
+    <div class="layer" style="background:var(--grad)"></div>
+    <div class="blob" id="s8b1" style="width:1000px;height:1000px;background:radial-gradient(circle,rgba(110,231,255,.45) 0%,rgba(110,231,255,0) 65%)"></div>
+    <div class="blob" id="s8b2" style="width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 65%)"></div>
+    <div class="layer" style="background-image:radial-gradient(rgba(255,255,255,.16) 2px,transparent 2.6px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0%,transparent 100%)"></div>
+    <div class="layer" id="s8in">
+      <div class="abs" id="tile8" style="left:420px;top:360px;width:240px;height:240px;border-radius:66px;background:#fff;box-shadow:0 30px 80px rgba(30,10,90,.28)"></div>
+      <div class="abs" id="word8" style="left:0;right:0;top:640px;text-align:center;color:#fff;font-weight:600;font-size:84px;letter-spacing:-2px;line-height:1.2">Seomastertech</div>
+      <div class="cta3 abs" id="l1" style="top:820px">Votre site.</div>
+      <div class="cta3 abs" id="l2" style="top:925px">Votre SEO.</div>
+      <div class="abs" id="l3box" style="top:1030px;height:118px;border-radius:30px;background:#fff;box-shadow:0 20px 50px rgba(30,10,90,.22)"></div>
+      <div class="cta3 abs" id="l3" style="top:1034px"><span class="grad">Vos clients.</span></div>
+      <div class="abs" id="url8" style="left:0;right:0;top:1214px;display:flex;justify-content:center">
+        <div style="display:flex;align-items:center;gap:16px;padding:0 40px;height:100px;border-radius:50px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.55);color:#fff;font-weight:700;font-size:50px;letter-spacing:-.5px">
+          <i class="ico" data-i="globe" data-s="44" data-c="#fff" data-w="2.2"></i>seomastertech.fr</div>
+      </div>
+      <div class="abs" id="btn8" style="left:0;right:0;top:1356px;display:flex;justify-content:center">
+        <div id="btn8in" style="display:flex;align-items:center;gap:18px;padding:0 50px;height:124px;border-radius:62px;background:#0E1A4F;color:#fff;font-weight:600;font-size:48px;box-shadow:0 24px 50px rgba(14,26,79,.35)">
+          Contactez-nous <i class="ico" data-i="arrow" data-s="46" data-c="#6EE7FF" data-w="2.8"></i></div>
+      </div>
+      <div class="abs" id="s8spark" style="left:540px;top:1418px;width:0;height:0"></div>
+      <div class="ripple" id="rip8" style="border-color:#fff"></div>
+      <svg class="cursor" id="cur8" viewBox="0 0 32 32"><path d="M4 2 L4 26 L10 20.5 L14 29.5 L18.2 27.7 L14.3 18.9 L22 18.9 Z" fill="#fff" stroke="#0E1A4F" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- persistent brand lockup (S2 hero -> header) -->
+  <div id="brand" class="abs" style="left:0;top:0;width:0;height:0">
+    <div id="logoBox" class="abs" style="left:0;top:0;width:330px;height:234px;transform-origin:50% 50%"></div>
+    <div id="wordmark" class="abs" style="left:0;top:0;transform-origin:50% 50%;font-weight:600;font-size:112px;letter-spacing:-2.5px;color:#1D4EDF;white-space:nowrap;line-height:1.25">Seomastertech</div>
+  </div>
+  <div id="steps" class="abs" style="left:100px;top:236px;width:880px;height:10px"></div>
+
+  <!-- transitions -->
+  <div id="wipe1" class="layer" style="background:var(--grad);visibility:hidden"></div>
+  <div id="sweep" class="abs" style="left:0;top:0;width:2600px;height:3400px;visibility:hidden;background:linear-gradient(90deg,#6EE7FF 0,#6EE7FF 5%,#4F7FE8 5%,#6F6FE8 50%,#A05BDC 95%,#6EE7FF 95%)"></div>
+  <div id="wipe2" class="layer" style="background:var(--grad);visibility:hidden"></div>
+</div>
+
+<script>
+// ------------------------------------------------------------------ utils
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const E = {
+  lin: x => x,
+  out: x => 1 - Math.pow(1 - x, 3),
+  out5: x => 1 - Math.pow(1 - x, 5),
+  in: x => x * x * x,
+  inOut: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  back: x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  back2: x => { const c1 = 2.6, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  elastic: x => x <= 0 ? 0 : x >= 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI) / 3) + 1,
+  bounce: x => { const n = 7.5625, d = 2.75;
+    if (x < 1 / d) return n * x * x;
+    if (x < 2 / d) return n * (x -= 1.5 / d) * x + .75;
+    if (x < 2.5 / d) return n * (x -= 2.25 / d) * x + .9375;
+    return n * (x -= 2.625 / d) * x + .984375; },
+};
+// progress of an animation that starts at s and lasts d seconds
+const P = (t, s, d, e = E.out) => e(clamp((t - s) / d));
+function tf(el, { x = 0, y = 0, s = 1, sx, sy, r = 0, o } = {}) {
+  el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${sx ?? s},${sy ?? s})`;
+  if (o !== undefined) el.style.opacity = clamp(o);
+}
+const vis = (el, on) => { el.style.visibility = on ? 'visible' : 'hidden'; };
+
+// ------------------------------------------------------------------ icons (feather-style, 24px grid)
+const ICONS = {
+  search: '<circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>',
+  eyeoff: '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  layout: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>',
+  cart: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
+  phone: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+  zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  trend: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  edit: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  type: '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>',
+  image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+  droplet: '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  bag: '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  building: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/>',
+  monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>',
+  pen: '<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  arrow: '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+};
+const icon = (n, s, c = 'currentColor', w = 2.2) =>
+  `<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" style="color:${c}" stroke-width="${w}">${ICONS[n]}</svg>`;
+const STAR = '<svg viewBox="0 0 24 24" width="26" height="26"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg>';
+const SPARK = c => `<svg viewBox="0 0 24 24" width="40" height="40"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
+const LOGO = w => `<svg viewBox="0 0 130 92" width="${w}" height="${w * 92 / 130}" style="overflow:visible">
+  <g class="lg"><rect x="57" y="19" width="69" height="67" rx="33" fill="url(#gV)"/></g>
+  <g class="lg"><rect x="30" y="7" width="65" height="79" rx="32" fill="url(#gB)" filter="url(#sh)"/></g>
+  <g class="lg"><rect x="6" y="32" width="58" height="54" rx="27" fill="url(#gC)" filter="url(#sh)"/></g>
+  <g clip-path="url(#logoClip)"><rect class="shine" x="-40" y="-10" width="16" height="120" fill="#fff" opacity=".55"/></g></svg>`;
+
+// ------------------------------------------------------------------ text splitting
+function splitWords(el) {
+  const walk = (node, cls) => {
+    for (const n of [...node.childNodes]) {
+      if (n.nodeType === 3) {
+        const f = document.createDocumentFragment();
+        for (const p of n.textContent.split(/([ \t\n\r]+)/)) {
+          if (!p) continue;
+          if (/^[ \t\n\r]+$/.test(p)) { f.appendChild(document.createTextNode(' ')); continue; }
+          const m = document.createElement('span'); m.className = 'wm';
+          const i = document.createElement('span'); i.className = 'wi' + (cls ? ' ' + cls : ''); i.textContent = p;
+          m.appendChild(i); f.appendChild(m);
+        }
+        n.replaceWith(f);
+      } else if (n.nodeType === 1) {
+        walk(n, n.className || cls);
+        n.replaceWith(...n.childNodes);
+      }
+    }
+  };
+  walk(el, '');
+  return $$('.wi', el);
+}
+function splitLetters(el) {
+  const txt = el.textContent; el.textContent = '';
+  for (const ch of txt) {
+    const m = document.createElement('span'); m.className = 'wm';
+    const i = document.createElement('span'); i.className = 'wi'; i.textContent = ch;
+    m.appendChild(i); el.appendChild(m);
+  }
+  return $$('.wi', el);
+}
+// masked slide-up reveal (in) and slide-up exit (out)
+function words(ws, t, tin, tout = 1e9, { st = .055, d = .55, sto = .025, dout = .32 } = {}) {
+  ws.forEach((w, i) => {
+    const a = P(t, tin + i * st, d, E.out5), b = P(t, tout + i * sto, dout, E.in);
+    w.style.visibility = a <= 0 || b >= 1 ? 'hidden' : '';
+    w.style.transform = `translateY(${(1 - a) * 115 - b * 115}%) rotate(${(1 - a) * 6}deg)`;
+  });
+}
+
+// ------------------------------------------------------------------ sound cues (exported for the audio script)
+const CUES = [];
+const cue = (t, type, o = {}) => CUES.push({ t: +t.toFixed(3), type, ...o });
+
+// ------------------------------------------------------------------ timeline constants
+const DURATION = 28;
+const Q1 = 'plombier près de chez moi', Q1_T = 0.95, Q1_CPS = 25;
+const URL3 = 'votre-site.fr', URL3_T = 6.5, URL3_CPS = 32;
+const ETXT = "Promo d'été : -20 %", ETXT_T = 15.05, ETXT_CPS = 31;
+const CUR5 = [[14.25, 960, 1700], [14.8, 520, 852], [15.7, 520, 852], [16.05, 858, 1372], [16.45, 858, 1372], [16.8, 882, 682], [99, 882, 682]];
+const CLK5 = [14.85, 16.1, 16.85];
+const MOVES4 = [10.95, 11.3, 11.65];
+const NOTES = ['C5', 'D5', 'E5', 'G5', 'A5', 'C6', 'D6', 'E6', 'G6', 'A6'];
+
+let W = {}; // split words cache
+let BR = {}; // brand geometry
+
+function init() {
+  // icons
+  $$('[data-i]').forEach(e => { e.innerHTML = icon(e.dataset.i, +e.dataset.s, e.dataset.c, +(e.dataset.w || 2.2)); });
+  $('#stars').innerHTML = STAR.repeat(5);
+  $('#logoBox').innerHTML = LOGO(330);
+  $('#tile8').innerHTML = `<div class="abs" style="left:30px;top:52px">${LOGO(180)}</div>`;
+
+  // services rows (S7)
+  const svc = [['monitor', 'Site internet sur-mesure'], ['search', 'Référencement SEO'], ['pin', 'SEO local'],
+               ['shield', 'Maintenance du site'], ['pen', 'Identité visuelle']];
+  svc.forEach(([ic, label], i) => {
+    const d = document.createElement('div'); d.className = 'svc'; d.style.top = (650 + i * 146) + 'px';
+    d.innerHTML = `<div class="abs tile" style="left:22px;top:21px;width:84px;height:84px;border-radius:24px">${icon(ic, 42, '#fff', 2.2)}</div>
+      <div class="lbl">${label}</div>
+      <div class="abs" style="right:26px;top:31px;width:64px;height:64px">
+        <div class="abs" style="inset:0;border-radius:50%;border:3px solid #DCE2F2"></div>
+        <div class="abs ckf" style="inset:0;border-radius:50%;background:var(--grad)"></div>
+        <svg class="abs" style="left:14px;top:14px" width="36" height="36" viewBox="0 0 24 24"><polyline class="ckp" points="20 6 9 17 4 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    $('#s7').appendChild(d);
+  });
+
+  // step segments
+  for (let i = 0; i < 3; i++) $('#steps').insertAdjacentHTML('beforeend',
+    `<div class="abs" style="left:${i * 300}px;top:0;width:280px;height:10px;border-radius:5px;background:#E1E6F5;overflow:hidden"><div class="abs sf" style="left:0;top:0;width:280px;height:10px;border-radius:5px;background:var(--grad);transform-origin:0 50%"></div></div>`);
+
+  // S2 burst particles + rings
+  const cols = ['#6EE7FF', '#38A6FF', '#4F7FE8', '#7E5CFF', '#A05BDC'];
+  for (let i = 0; i < 16; i++) {
+    const s = 14 + (i * 7) % 16;
+    $('#s2fx').insertAdjacentHTML('beforeend', `<div class="abs pt" style="left:${-s / 2}px;top:${-s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:${cols[i % 5]}"></div>`);
+  }
+  for (let i = 0; i < 2; i++) $('#s2fx').insertAdjacentHTML('beforeend', `<div class="abs rg" style="left:-200px;top:-200px;width:400px;height:400px;border-radius:50%;border:${i ? 4 : 8}px solid ${i ? '#A05BDC' : '#6EE7FF'}"></div>`);
+
+  // sparkles
+  const spk = (host, n) => { for (let i = 0; i < n; i++) $(host).insertAdjacentHTML('beforeend', `<div class="spark">${SPARK(['#FFB938', '#6EE7FF', '#A05BDC', '#4F7FE8'][i % 4])}</div>`); };
+  spk('#s4spark', 8); spk('#s8spark', 10);
+  for (let i = 0; i < 3; i++) $('#pinRipple').insertAdjacentHTML('beforeend', `<div class="abs pr" style="left:-60px;top:-24px;width:120px;height:48px;border-radius:50%;border:4px solid #6F6FE8"></div>`);
+
+  // split text
+  for (const id of ['s1a', 's1b', 's2tag', 's3t', 's3s', 's4t', 's4s', 's5t', 's5s', 's6t', 's6s', 's7t', 's7s', 'l1', 'l2', 'l3', 'word8'])
+    W[id] = splitWords($('#' + id));
+  W.wordmark = splitLetters($('#wordmark'));
+
+  // measurements
+  const wm = $('#wordmark'), lb = $('#logoBox');
+  BR.ww = wm.offsetWidth; BR.wh = wm.offsetHeight;
+  const total = 330 * .3 + 18 + BR.ww * .4, x0 = 540 - total / 2;
+  BR.lx = x0 + 330 * .3 / 2; BR.wx = x0 + 330 * .3 + 18 + BR.ww * .4 / 2;
+  const l3w = $$('#l3 .wm'), l3 = l3w[l3w.length - 1].getBoundingClientRect().right - l3w[0].getBoundingClientRect().left;
+  $('#l3box').style.width = (l3 + 80) + 'px'; $('#l3box').style.left = (540 - (l3 + 80) / 2) + 'px';
+  BR.chartLen = $('#chLine').getTotalLength();
+  BR.ring = 2 * Math.PI * 100;
+  $('#gRing').style.strokeDasharray = BR.ring;
+  $('#chLine').style.strokeDasharray = BR.chartLen;
+
+  // ---------------- sound cues
+  cue(0.35, 'pop', { n: 'A4', g: .5 });
+  for (let i = 0; i < Q1.length; i++) cue(Q1_T + i / Q1_CPS, 'key', { g: .8 });
+  cue(2.0, 'enter');
+  [0, 1, 2].forEach(i => cue(2.02 + i * .12, 'pop', { n: ['A5', 'C6', 'E6'][i], g: .55 }));
+  cue(2.3, 'whoosh', { d: .45, g: .35 });
+  cue(2.6, 'error');
+  cue(3.5, 'whoosh', { d: .5, g: .8, big: 1 });
+  [0, 1, 2].forEach(i => cue(4.05 + i * .07, 'pop', { n: ['C5', 'E5', 'G5'][i], g: .7 }));
+  cue(4.45, 'shimmer', { g: .5 });
+  cue(5.5, 'whoosh', { d: .5, g: .45 });
+  cue(6.15, 'pop', { n: 'C5', g: .6 });
+  for (let i = 0; i < URL3.length; i++) cue(URL3_T + i / URL3_CPS, 'key', { g: .45 });
+  cue(6.8, 'swish', { g: .5 });
+  [0, 1, 2].forEach(i => cue(7.3 + i * .1, 'pop', { n: ['E5', 'G5', 'C6'][i], g: .45 }));
+  [0, 1, 2].forEach(i => cue(7.6 + i * .15, 'pop', { n: ['G5', 'C6', 'E6'][i], g: .6 }));
+  cue(8.05, 'pop', { n: 'C5', g: .6 });
+  cue(8.15, 'charge', { d: 1.0, g: .35 });
+  cue(9.15, 'ding', { n: 'G6', g: .45 });
+  cue(9.5, 'whoosh', { d: .5, g: .7 });
+  cue(10.55, 'pop', { n: 'G5', g: .6 });
+  MOVES4.forEach((m, i) => cue(m, 'zip', { n: ['C5', 'E5', 'G5'][i], g: .6 }));
+  cue(11.95, 'levelup', { g: .7 });
+  cue(12.15, 'drop', { g: .5 });
+  cue(12.42, 'pop', { n: 'C5', g: .7 });
+  cue(12.2, 'pop', { n: 'E5', g: .4 });
+  cue(12.35, 'charge', { d: .8, g: .25 });
+  cue(13.5, 'whoosh', { d: .5, g: .7 });
+  cue(14.1, 'pop', { n: 'C5', g: .6 });
+  CLK5.forEach(c => cue(c, 'click'));
+  for (let i = 0; i < ETXT.length; i++) cue(ETXT_T + i / ETXT_CPS, 'key', { g: .7 });
+  cue(15.55, 'pop', { n: 'E6', g: .45 });
+  cue(16.12, 'magic', { g: .55 });
+  cue(16.9, 'success', { g: .6 });
+  cue(17.45, 'whoosh', { d: .7, g: .9, big: 1 });
+  for (let i = 0; i < 6; i++) cue(18.3 + i * .1, 'pop', { n: NOTES[i + 2], g: .5 });
+  cue(20.45, 'whoosh', { d: .5, g: .55 });
+  for (let i = 0; i < 5; i++) { cue(21.25 + i * .14, 'swish', { g: .22 }); cue(21.62 + i * .14, 'check', { n: NOTES[i + 3], g: .55 }); }
+  cue(23.45, 'whoosh', { d: .55, g: .85, big: 1 });
+  cue(24.05, 'pop', { n: 'C5', g: .7 });
+  cue(24.35, 'shimmer', { g: .45 });
+  cue(25.68, 'pop', { n: 'G5', g: .55 });
+  cue(25.85, 'pop', { n: 'C6', g: .55 });
+  cue(26.0, 'click');
+  cue(26.02, 'sparkle', { g: .6 });
+
+  window.CUES = CUES; window.DURATION = DURATION;
+  window.READY = true;
+}
+
+// ------------------------------------------------------------------ scenes
+function bg(t) {
+  tf($('#b1'), { x: -550 + 160 + 140 * Math.sin(t * .45), y: -550 + 260 + 120 * Math.cos(t * .35) });
+  tf($('#b2'), { x: -600 + 960 + 120 * Math.cos(t * .4), y: -600 + 1050 + 160 * Math.sin(t * .3) });
+  tf($('#b3'), { x: -550 + 260 + 150 * Math.sin(t * .3 + 2), y: -550 + 1720 + 120 * Math.cos(t * .5) });
+  $('#dots').style.backgroundPosition = `${t * 6}px ${t * 10}px`;
+}
+
+function s1(t) {
+  tf($('#s1'), { s: 1 + t * .012 });
+  words(W.s1a, t, -.25, 2.16, { st: .05, dout: .28 });   // already moving on frame 0
+  words(W.s1b, t, 2.46, 1e9, { st: .07 });
+  const pc = P(t, .35, .65, E.out5);
+  tf($('#s1card'), { y: (1 - pc) * 140, s: lerp(.94, 1, pc), o: pc });
+  const n = t < Q1_T ? 0 : clamp(Math.floor((t - Q1_T) * Q1_CPS) + 1, 0, Q1.length);
+  $('#s1q').textContent = Q1.slice(0, n);
+  const typing = t >= Q1_T && t < Q1_T + Q1.length / Q1_CPS + .05;
+  $('#s1caret').style.opacity = t > .7 && t < 2.05 && (typing || Math.floor(t * 3.4) % 2 === 0) ? 1 : 0;
+  const pe = P(t, 2.0, .3, E.out);
+  tf($('#s1go'), { s: 1 - .18 * Math.sin(pe * Math.PI) });
+  $('#s1bar').style.borderColor = pe > 0 && pe < 1 ? '#9DB4F2' : '#E3E7F3';
+  $$('.s1r').forEach((r, i) => { const p = P(t, 2.02 + i * .12, .5, E.back); tf(r, { y: (1 - p) * 50, o: clamp((t - 2.02 - i * .12) / .2) }); });
+  const pg = P(t, 2.6, .45, E.back2);
+  const k = Math.max(0, t - 2.75), shake = t > 2.75 ? Math.sin(k * 42) * 16 * Math.exp(-k * 5) : 0;
+  tf($('#s1ghost'), { x: shake, s: lerp(.85, 1, pg), o: clamp((t - 2.6) / .15) });
+}
+
+function s2(t) {
+  $$('.pt', $('#s2fx')).forEach((p, i) => {
+    const a = i / 16 * Math.PI * 2 + .3 * Math.sin(i * 7), dist = 250 + (i * 53) % 160;
+    const q = P(t, 4.02, .8, E.out5), f = 1 - P(t, 4.35, .5, E.lin);
+    tf(p, { x: Math.cos(a) * dist * q, y: Math.sin(a) * dist * q * .85, s: f, o: q > 0 ? f : 0 });
+  });
+  $$('.rg', $('#s2fx')).forEach((r, i) => {
+    const q = P(t, 4.0 + i * .1, .7, E.out);
+    tf(r, { s: lerp(.15, 1.6 + i * .3, q), o: q > 0 ? 1 - q : 0 });
+  });
+  words(W.s2tag, t, 4.8, 5.42, { st: .05 });
+}
+
+function brand(t) {
+  const on = t >= 3.95 && t < 23.95; vis($('#brand'), on); if (!on) return;
+  const m = P(t, 5.5, .55, E.inOut);
+  const lg = $$('.lg', $('#logoBox'));
+  const off = [[0, -110], [130, -10], [-120, 40]], rot = [0, 25, -25];
+  lg.forEach((g, i) => {
+    const p = P(t, 4.03 + i * .07, .6, E.back2);
+    g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 100%';
+    g.style.transform = `translate(${(1 - p) * off[i][0] / 2.54}px,${(1 - p) * off[i][1] / 2.54}px) rotate(${(1 - p) * rot[i]}deg) scale(${p})`;
+  });
+  const sh = $('.shine', $('#logoBox')), ps = P(t, 5.0, .5, E.inOut);
+  sh.setAttribute('x', lerp(-40, 170, ps)); sh.setAttribute('transform', 'skewX(-20)');
+  const float = (1 - m) * Math.sin(t * 2.2) * 6;
+  const lx = lerp(540, BR.lx, m), ly = lerp(790, 172, m) + float, ls = lerp(1, .3, m);
+  tf($('#logoBox'), { x: lx - 165, y: ly - 117, s: ls });
+  const wx = lerp(540, BR.wx, m), wy = lerp(1000, 176, m), ws = lerp(1, .4, m);
+  tf($('#wordmark'), { x: wx - BR.ww / 2, y: wy - BR.wh / 2, s: ws });
+  W.wordmark.forEach((w, i) => { const a = P(t, 4.42 + i * .028, .5, E.out5); w.style.transform = `translateY(${(1 - a) * 110}%)`; });
+}
+
+function steps(t) {
+  const on = t >= 5.9 && t < 17.85; vis($('#steps'), on); if (!on) return;
+  const a = P(t, 5.95, .5, E.out5);
+  tf($('#steps'), { y: (1 - a) * -20, o: a });
+  $$('.sf', $('#steps')).forEach((f, i) => {
+    const s = 6.0 + i * 4;
+    f.style.transform = `scaleX(${P(t, s, 3.7, E.inOut)})`;
+  });
+}
+
+function textBlock(id, t, tin, tout) {
+  const a = P(t, tin, .45, E.out5), b = P(t, tout, .42, E.in);
+  tf($(`#${id}txt`), { x: (1 - a) * 260 - b * 300, o: Math.min(a, 1 - b) });
+}
+
+function s3(t) {
+  textBlock('s3', t, 5.85, 9.55);
+  tf($('#s3k'), { o: P(t, 6.0, .4) });
+  words(W.s3t, t, 6.0, 1e9, { st: .07 });
+  words(W.s3s, t, 6.4, 1e9, { st: .03 });
+  const b = P(t, 9.55, .42, E.in);
+  tf($('#s3vis'), { x: -b * 300, o: 1 - b });
+  const pb = P(t, 6.12, .65, E.out5);
+  tf($('#browser'), { y: (1 - pb) * 160, s: lerp(.9, 1, pb), o: pb });
+  $('#urlText').textContent = t < URL3_T ? '' : URL3.slice(0, clamp(Math.floor((t - URL3_T) * URL3_CPS) + 1, 0, URL3.length));
+  $$('.nv', $('#browser')).forEach((e, i) => { const p = P(t, 6.55 + i * .05, .4, E.back); tf(e, { s: p, o: p > 0 ? 1 : 0 }); });
+  const ph = P(t, 6.8, .55, E.inOut);
+  $('#hero').style.clipPath = `inset(0 ${(1 - ph) * 100}% 0 0 round 26px)`;
+  $$('.hb', $('#hero')).forEach((e, i) => { const p = P(t, 7.0 + i * .06, .45, E.out5); e.style.transform = `scaleX(${p})`; e.style.transformOrigin = '0 50%'; });
+  const pbt = P(t, 7.22, .4, E.back2); tf($('#heroBtn'), { s: pbt });
+  const pil = P(t, 7.05, .5, E.back); tf($('#heroIll'), { y: (1 - pil) * 40, s: lerp(.8, 1, pil), o: pil });
+  $$('.fc', $('#browser')).forEach((e, i) => { const p = P(t, 7.3 + i * .1, .5, E.back); tf(e, { y: (1 - p) * 60, o: clamp((t - 7.3 - i * .1) / .2) }); });
+  [['#chWP', -5, 7.6], ['#chWoo', 4, 7.75], ['#chResp', -3, 7.9]].forEach(([id, r, s], i) => {
+    const p = P(t, s, .55, E.back2);
+    tf($(id), { x: (1 - p) * (i === 1 ? 120 : -120), y: Math.sin(t * 2.4 + i * 2) * 7, r: r * p, s: lerp(.6, 1, p), o: clamp((t - s) / .15) });
+  });
+  const pg = P(t, 8.05, .55, E.back2);
+  tf($('#gauge'), { s: pg, y: Math.sin(t * 2 + 1) * 6, o: pg > 0 ? 1 : 0 });
+  const v = P(t, 8.15, 1.0, E.out) * .98;
+  $('#gRing').style.strokeDashoffset = BR.ring * (1 - v);
+  $('#gNum').textContent = Math.round(v * 100);
+}
+
+function s4(t) {
+  textBlock('s4', t, 9.85, 13.55);
+  tf($('#s4k'), { o: P(t, 9.95, .4) });
+  words(W.s4t, t, 9.95, 1e9, { st: .07 });
+  words(W.s4s, t, 10.3, 1e9, { st: .03 });
+  const a = P(t, 9.9, .55, E.out5), b = P(t, 13.55, .42, E.in);
+  tf($('#s4vis'), { x: (1 - a) * 300 - b * 300, o: Math.min(a, 1 - b) });
+  const slotY = i => 166 + i * 117;
+  const m = MOVES4.map(s => P(t, s, .32, E.inOut));
+  const pos = { c0: m[2], c1: 1 + m[1], c2: 2 + m[0] };
+  for (const id in pos) tf($('#' + id), { y: slotY(pos[id]) });
+  const op = 3 - m[0] - m[1] - m[2];
+  const moving = m.find(v => v > 0 && v < 1);
+  const lift = moving ? Math.sin(moving * Math.PI) : 0;
+  const pin = P(t, 10.55, .45, E.back);
+  const cel = P(t, 11.97, .6, E.elastic);
+  tf($('#ours'), { y: slotY(op) + (1 - pin) * 60, s: (1 + .04 * lift) * lerp(.9, 1, pin), o: clamp((t - 10.55) / .15) });
+  $('#ours').style.zIndex = 5;
+  $('#ours').style.boxShadow = `0 ${10 + 20 * Math.max(lift, cel > 0 ? 1 : 0)}px ${30 + 30 * lift}px rgba(79,100,232,${.15 + .2 * Math.max(lift, P(t, 11.97, .3))})`;
+  let rank = 27;
+  if (t >= MOVES4[0]) rank = lerp(27, 9, m[0]);
+  if (t >= MOVES4[1]) rank = lerp(9, 3, m[1]);
+  if (t >= MOVES4[2]) rank = lerp(3, 1, m[2]);
+  $('#rankNum').textContent = '#' + Math.round(rank);
+  tf($('#rankBadge'), { s: 1 + .35 * Math.sin(clamp((t - 11.97) / .5) * Math.PI) * (t > 11.97 ? 1 : 0) });
+  $$('.spark', $('#s4spark')).forEach((s, i) => {
+    const ang = i / 8 * Math.PI * 2, q = P(t, 11.98, .7, E.out5), f = 1 - P(t, 12.3, .45, E.lin);
+    const cx = 40 + 49, cy = slotY(0) + 52;
+    tf(s, { x: cx - 20 + Math.cos(ang) * 110 * q, y: cy - 20 + Math.sin(ang) * 80 * q, s: q * f * (i % 2 ? .7 : 1.1), r: q * 90, o: q > 0 ? f : 0 });
+  });
+  const mc = P(t, 12.05, .5, E.back);
+  tf($('#mapCard'), { y: (1 - mc) * 80, o: clamp((t - 12.05) / .2) });
+  const pd = P(t, 12.15, .5, E.bounce);
+  tf($('#pin'), { y: (1 - pd) * -150, o: t > 12.15 ? 1 : 0 });
+  $$('.pr', $('#pinRipple')).forEach((r, i) => {
+    const q = ((t - 12.4 - i * .3) % 0.9) / .9;
+    const on = t > 12.4 + i * .3;
+    tf(r, { s: on ? lerp(.3, 1.8, q) : 0, o: on ? (1 - q) * .8 : 0 });
+  });
+  const cc = P(t, 12.2, .5, E.back);
+  tf($('#chartCard'), { y: (1 - cc) * 80, o: clamp((t - 12.2) / .2) });
+  const ld = P(t, 12.35, .8, E.inOut);
+  $('#chLine').style.strokeDashoffset = BR.chartLen * (1 - ld);
+  $('#chArea').style.opacity = ld;
+  tf($('#chDot'), { s: P(t, 13.1, .4, E.back2) });
+  $('#chDot').style.transformBox = 'fill-box'; $('#chDot').style.transformOrigin = '50% 50%';
+}
+
+function curAt(K, t) {
+  for (let i = 0; i < K.length - 1; i++) {
+    const [t0, x0, y0] = K[i], [t1, x1, y1] = K[i + 1];
+    if (t <= t1) { const p = E.inOut(clamp((t - t0) / (t1 - t0))); return [lerp(x0, x1, p), lerp(y0, y1, p)]; }
+  }
+  return K[K.length - 1].slice(1);
+}
+
+function s5(t) {
+  textBlock('s5', t, 13.85, 99);
+  tf($('#s5k'), { o: P(t, 13.95, .4) });
+  words(W.s5t, t, 13.95, 1e9, { st: .07 });
+  words(W.s5s, t, 14.3, 1e9, { st: .03 });
+  const a = P(t, 13.9, .55, E.out5);
+  tf($('#s5vis'), { x: (1 - a) * 300, o: a });
+  // headline editing
+  const selOn = t >= 14.88;
+  tf($('#selBox'), { s: selOn ? lerp(1.06, 1, P(t, 14.88, .25)) : 1, o: selOn ? P(t, 14.88, .15) : 0 });
+  $('#tool0').style.background = t >= 14.88 && t < 16.1 ? 'var(--grad)' : 'transparent';
+  $('#tool0').style.color = t >= 14.88 && t < 16.1 ? '#fff' : '#8A93B5';
+  $('#tool2').style.background = t >= 16.1 ? 'var(--grad)' : 'transparent';
+  $('#tool2').style.color = t >= 16.1 ? '#fff' : '#8A93B5';
+  const selAll = t >= 14.92 && t < ETXT_T;
+  const et = $('#eText');
+  if (t < ETXT_T) et.textContent = 'Bienvenue chez vous';
+  else et.textContent = ETXT.slice(0, clamp(Math.floor((t - ETXT_T) * ETXT_CPS) + 1, 0, ETXT.length));
+  $('#eSel').style.width = (et.offsetWidth + 12) + 'px';
+  $('#eSel').style.opacity = selAll ? 1 : 0;
+  const typing = t >= ETXT_T && t < ETXT_T + ETXT.length / ETXT_CPS + .05;
+  $('#eCaret').style.opacity = t >= 14.9 && t < 16.0 && (typing || Math.floor(t * 3.4) % 2 === 0) ? 1 : 0;
+  // colour + publish
+  $('#eheroB').style.opacity = t >= 16.12 ? 1 : 0;
+  $('#eheroB').style.clipPath = `circle(${P(t, 16.12, .4, E.inOut) * 820}px at 100% 60%)`;
+  const pp = P(t, 15.5, .5, E.back2);
+  tf($('#palette'), { s: lerp(.6, 1, pp), y: (1 - pp) * 60, o: clamp((t - 15.5) / .15) });
+  $('#dotRing').style.opacity = t >= 16.1 ? 1 : 0;
+  tf($('#dotRing'), { s: t >= 16.1 ? lerp(1.4, 1, P(t, 16.1, .3, E.back)) : 1 });
+  const done = P(t, 16.88, .2);
+  $('#pubDone').style.opacity = done;
+  tf($('#pubBtn'), { s: 1 - .08 * Math.sin(clamp((t - 16.85) / .2) * Math.PI) });
+  const pt = P(t, 16.92, .5, E.back2);
+  tf($('#toast'), { y: (1 - pt) * 80, s: lerp(.7, 1, pt), o: clamp((t - 16.92) / .15) });
+  // cursor + click ripples
+  const [cx, cy] = curAt(CUR5, t);
+  const press = CLK5.reduce((m, c) => Math.max(m, t >= c && t < c + .16 ? Math.sin((t - c) / .16 * Math.PI) : 0), 0);
+  tf($('#cur5'), { x: cx - 8, y: cy - 4, s: 1 - .15 * press, o: P(t, 14.25, .15) });
+  const lc = CLK5.filter(c => t >= c).pop();
+  if (lc !== undefined && t - lc < .45) { const q = (t - lc) / .45; tf($('#rip5'), { x: cx - 50, y: cy - 50, s: lerp(.2, 1.1, E.out(q)), o: 1 - q }); }
+  else $('#rip5').style.opacity = 0;
+}
+
+function s6(t) {
+  words(W.s6t, t, 17.92, 20.5, { st: .08 });
+  words(W.s6s, t, 18.15, 20.5, { st: .03 });
+  $$('.who', $('#s6')).forEach((w, i) => {
+    const p = P(t, 18.3 + i * .1, .6, E.back2), q = P(t, 20.45 + i * .04, .35, E.in);
+    tf(w, { y: (1 - p) * 90 - q * 120 + Math.sin(t * 2.2 + i) * 6, s: lerp(.6, 1, p) * (1 - .15 * q), r: (1 - p) * (i % 2 ? 8 : -8), o: clamp((t - 18.3 - i * .1) / .12) * (1 - q) });
+  });
+}
+
+function s7(t) {
+  tf($('#s7'), { s: 1 + Math.max(0, t - 21) * .01 });
+  words(W.s7t, t, 20.95, 1e9, { st: .08 });
+  words(W.s7s, t, 21.15, 1e9, { st: .03 });
+  $$('.svc', $('#s7')).forEach((r, i) => {
+    const p = P(t, 21.25 + i * .14, .55, E.out5);
+    tf(r, { x: (1 - p) * 260, o: p });
+    const c = P(t, 21.62 + i * .14, .35, E.back2);
+    tf($('.ckf', r), { s: c });
+    const ck = $('.ckp', r); ck.style.strokeDasharray = 24; ck.style.strokeDashoffset = 24 * (1 - P(t, 21.66 + i * .14, .3, E.out));
+  });
+}
+
+function s8(t) {
+  tf($('#s8b1'), { x: -500 + 200 + 120 * Math.sin(t * .6), y: -500 + 380 + 100 * Math.cos(t * .5) });
+  tf($('#s8b2'), { x: -500 + 900 + 100 * Math.cos(t * .5), y: -500 + 1500 + 120 * Math.sin(t * .4) });
+  tf($('#s8in'), { s: 1 + Math.max(0, t - 24) * .008 });
+  const pt = P(t, 24.05, .7, E.back2);
+  tf($('#tile8'), { s: pt, r: (1 - pt) * -14, y: Math.sin(t * 2) * 5, o: pt > 0 ? 1 : 0 });
+  $$('.lg', $('#tile8')).forEach((g, i) => {
+    const p = P(t, 24.18 + i * .06, .5, E.back2);
+    g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 100%'; g.style.transform = `scale(${p})`;
+  });
+  const sh = $('.shine', $('#tile8')); sh.setAttribute('x', lerp(-40, 170, P(t, 26.1, .6, E.inOut))); sh.setAttribute('transform', 'skewX(-20)');
+  words(W.word8, t, 24.35, 1e9, { st: .04 });
+  words(W.l1, t, 24.5, 1e9, { st: .08 });
+  words(W.l2, t, 24.98, 1e9, { st: .08 });
+  const bx = P(t, 25.42, .45, E.out5);
+  tf($('#l3box'), { sx: bx, sy: 1, o: bx > 0 ? 1 : 0 }); $('#l3box').style.transformOrigin = '0 50%';
+  words(W.l3, t, 25.5, 1e9, { st: .08 });
+  const pu = P(t, 25.68, .55, E.back2);
+  tf($('#url8'), { s: lerp(.6, 1, pu), y: (1 - pu) * 40, o: clamp((t - 25.68) / .15) });
+  const pbn = P(t, 25.85, .55, E.back2);
+  const press = t >= 26.0 && t < 26.18 ? Math.sin((t - 26) / .18 * Math.PI) : 0;
+  const pulse = t > 26.4 ? .025 * Math.sin((t - 26.4) * 6) : 0;
+  tf($('#btn8'), { s: lerp(.6, 1, pbn) * (1 - .06 * press + pulse), y: (1 - pbn) * 40, o: clamp((t - 25.85) / .15) });
+  const [cx, cy] = curAt([[25.6, 980, 1760], [25.97, 690, 1440], [99, 690, 1440]], t);
+  tf($('#cur8'), { x: cx - 8, y: cy - 4, s: 1 - .15 * press, o: P(t, 25.6, .15) * (1 - P(t, 26.9, .3)) });
+  if (t >= 26 && t < 26.5) { const q = (t - 26) / .5; tf($('#rip8'), { x: cx - 50, y: cy - 50, s: lerp(.2, 1.6, E.out(q)), o: 1 - q }); }
+  else $('#rip8').style.opacity = 0;
+  $$('.spark', $('#s8spark')).forEach((s, i) => {
+    const ang = i / 10 * Math.PI * 2 + .3, q = P(t, 26.02, .8, E.out5), f = 1 - P(t, 26.4, .5, E.lin);
+    tf(s, { x: -20 + Math.cos(ang) * 300 * q, y: -20 + Math.sin(ang) * 120 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 ? f : 0 });
+  });
+}
+
+function wipes(t) {
+  // S1 -> S2 : brand circle grows from the "invisible" site, then opens on the logo
+  const w1 = $('#wipe1'); const on1 = t >= 3.5 && t < 4.42; vis(w1, on1);
+  if (on1) {
+    const r = P(t, 3.5, .42, E.in) * 1500;
+    w1.style.clipPath = `circle(${r}px at 540px 1372px)`;
+    const h = P(t, 3.98, .42, E.inOut) * 1300;
+    w1.style.webkitMaskImage = t >= 3.98 ? `radial-gradient(circle at 540px 800px, transparent ${h}px, #000 ${h + 1}px)` : 'none';
+  }
+  // S5 -> S6 : diagonal gradient band
+  const sw = $('#sweep'); const on2 = t >= 17.45 && t < 18.25; vis(sw, on2);
+  if (on2) { const cx = lerp(-1900, 2980, P(t, 17.45, .8, E.inOut)); sw.style.transform = `translate(${cx - 1300}px,${960 - 1700}px) rotate(15deg)`; }
+  // S7 -> S8 : circle into the CTA gradient
+  const w2 = $('#wipe2'); const on3 = t >= 23.45 && t < 24.0; vis(w2, on3);
+  if (on3) w2.style.clipPath = `circle(${P(t, 23.45, .5, E.in) * 1500}px at 540px 1010px)`;
+}
+
+const SCENES = [['s1', 0, 3.95, s1], ['s2', 3.95, 6.1, s2], ['s3', 5.8, 10.0, s3], ['s4', 9.8, 14.0, s4],
+                ['s5', 13.8, 17.85, s5], ['s6', 17.85, 21.0, s6], ['s7', 20.85, 23.95, s7], ['s8', 23.95, 99, s8]];
+
+window.render = t => {
+  bg(t);
+  for (const [id, a, b, fn] of SCENES) { const on = t >= a && t < b; vis($('#' + id), on); if (on) fn(t); }
+  brand(t); steps(t); wipes(t);
+};
+
+document.fonts.ready.then(() => Promise.all(['400', '500', '600', '700', '800'].map(w => document.fonts.load(`${w} 40px Poppins`)))).then(() => { init(); window.render(0); });
+</script>
+</body>
+</html>
