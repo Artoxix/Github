@@ -7,6 +7,7 @@ Vidéo publicitaire explicative de 28 s au format vertical 9:16 (1080×1920, 30 
 | Fichier | Contenu |
 |---|---|
 | `seomastertech_pub_9x16.mp4` | La pub finale avec musique et bruitages (−14 LUFS, le niveau attendu par les réseaux sociaux) |
+| `Seomastertech_pub.mp4` | La même pub en version légère (5 Mo, qualité identique à l'œil), à envoyer par WhatsApp, Messenger, e-mail ou Discord |
 | `seomastertech_pub_9x16_sans_musique.mp4` | Même vidéo avec les bruitages seuls, pour poser un son tendance TikTok ou Instagram par-dessus |
 | `seomastertech_cover.png` | Image de couverture (écran final) |
 | `storyboard.png` | Planche des 14 moments clés |

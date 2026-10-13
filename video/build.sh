@@ -16,6 +16,11 @@ mux() {
 mux build/audio.wav output/seomastertech_pub_9x16.mp4
 mux build/audio_sfx.wav output/seomastertech_pub_9x16_sans_musique.mp4
 
+# light copy for sharing (WhatsApp, Messenger, e-mail, Discord): ~5 MB, visually identical
+ffmpeg -hide_banner -loglevel error -y -i build/video_silent.mp4 -i build/audio.wav -map 0:v -map 1:a \
+  -c:v libx264 -preset slower -tune animation -crf 21 -maxrate 2.6M -bufsize 5M -profile:v high -level 4.0 -pix_fmt yuv420p \
+  -c:a aac -b:a 128k -ar 48000 -movflags +faststart -metadata title="Seomastertech – publicité" output/Seomastertech_pub.mp4
+
 node render.js --stills=26.6
 cp build/still_26.60.png output/seomastertech_cover.png
 ffmpeg -hide_banner -loglevel error -y -i output/seomastertech_pub_9x16.mp4 \
