@@ -32,6 +32,7 @@ Les garages Léon et Marcel sont fictifs ; les chiffres (3 fois plus de clients,
 
 ## Comment c'est fabriqué
 
+1. `iso.js` : la rue, les deux garages et les voitures en 3D isométrique (diorama low-poly).
 1. `voice.py` : voix off de synthèse française (Piper « Tom », via sherpa-onnx), phrase par phrase, avec le minutage de chaque mot (`build/timeline.json`). La colonne `say` contient l'orthographe phonétique lue par la voix (« Gougle », « S.E.O. », « Séo Master Tek ») ; la colonne `show` contient le sous-titre affiché.
 2. `index.html` + `render.js` : l'animation se cale automatiquement sur le minutage de la voix, puis Chromium la rend image par image.
 3. `audio.py` : musique 120 BPM et bruitages synthétisés (libres de droits), musique atténuée sous la voix, mixage à −14 LUFS.

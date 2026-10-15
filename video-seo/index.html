@@ -86,7 +86,6 @@ svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
       <span class="tile" style="width:64px;height:64px;border-radius:50%"><i class="ico" data-i="users" data-s="34" data-c="#fff" data-w="2.4"></i></span><span id="cntLn">0</span>&nbsp;clients</div>
     <div class="abs pill" id="cntR" style="left:640px;top:250px;height:96px;padding:0 30px 0 18px;background:#fff;box-shadow:var(--shadow);font-size:36px;color:#8A93B5">
       <span class="tile" style="width:64px;height:64px;border-radius:50%;background:#C3C9DC"><i class="ico" data-i="users" data-s="34" data-c="#fff" data-w="2.4"></i></span><span id="cntRn">0</span>&nbsp;clients</div>
-    <div class="abs" id="badge" style="left:150px;top:700px;width:380px;height:118px;border-radius:30px;background:#fff;box-shadow:0 24px 60px rgba(28,38,110,.30);display:flex;align-items:center;gap:16px;padding:0 22px"></div>
   </section>
 
   <!-- ====== même travail / qualité / prix + ? ====== -->
@@ -253,6 +252,7 @@ svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
   <div class="layer" id="flash" style="background:#fff;opacity:0;pointer-events:none"></div>
 </div>
 
+<script src="iso.js"></script>
 <script>
 // ------------------------------------------------------------------ utils
 const $ = (s, r = document) => r.querySelector(s);
@@ -308,49 +308,18 @@ const LOGO = w => `<svg viewBox="0 0 130 92" width="${w}" height="${w * 92 / 130
   <g class="lg"><rect x="6" y="32" width="58" height="54" rx="27" fill="url(#gC)" filter="url(#sh)"/></g></svg>`;
 const SPARK = c => `<svg viewBox="0 0 24 24" width="44" height="44"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
 
-// voiture vue de profil (vers la gauche)
-function car(c, id) {
-  const d = '#1E2440';
-  return `<g id="${id}"><ellipse cx="110" cy="96" rx="96" ry="8" fill="#000" opacity=".18"/>
-    <path d="M8 74 Q6 52 30 48 L60 46 Q80 18 112 16 L150 16 Q174 18 188 44 L206 50 Q216 54 214 74 Z" fill="${c}"/>
-    <path d="M70 46 Q86 24 110 22 L128 22 L128 46 Z" fill="#CFE6FF"/><path d="M134 22 L150 22 Q166 24 178 46 L134 46 Z" fill="#CFE6FF"/>
-    <path d="M14 60 L210 60" stroke="#fff" stroke-opacity=".25" stroke-width="4"/>
-    <rect x="8" y="68" width="206" height="10" rx="5" fill="${d}" opacity=".85"/>
-    <ellipse cx="14" cy="58" rx="7" ry="5" fill="#FFF3B0"/><rect x="204" y="56" width="8" height="8" rx="2" fill="#FF7070"/>
-    <g class="wheel" style="transform-box:fill-box;transform-origin:center"><circle cx="56" cy="80" r="19" fill="${d}"/><circle cx="56" cy="80" r="8" fill="#C9D0E2"/><rect x="54" y="64" width="4" height="10" fill="#C9D0E2"/></g>
-    <g class="wheel" style="transform-box:fill-box;transform-origin:center"><circle cx="166" cy="80" r="19" fill="${d}"/><circle cx="166" cy="80" r="8" fill="#C9D0E2"/><rect x="164" y="64" width="4" height="10" fill="#C9D0E2"/></g></g>`;
-}
-
-function garage(x, name, accent, id) {
-  return `<g id="${id}" transform="translate(${x} 0)">
-    <rect x="0" y="300" width="480" height="460" fill="#F7F8FC"/><rect x="0" y="300" width="480" height="460" fill="url(#gSky)" opacity=".25"/>
-    <rect x="-10" y="284" width="500" height="34" rx="6" fill="#DDE3F3"/>
-    <rect x="34" y="350" width="412" height="96" rx="20" fill="url(#${accent})"/>
-    <g transform="translate(64 375)" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><g transform="scale(1.9)">${ICONS.tool}</g></g>
-    <text x="268" y="411" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="34" fill="#fff" letter-spacing=".5">${name}</text>
-    <rect x="40" y="480" width="290" height="280" rx="6" fill="#C9D1E6"/>
-    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => `<rect x="40" y="${490 + i * 30}" width="290" height="4" fill="#B3BDD6"/>`).join('')}
-    <rect class="door" x="40" y="480" width="290" height="280" rx="6" fill="#2A3150" opacity="0"/>
-    <rect x="352" y="480" width="96" height="120" rx="10" fill="#CFE3FF" stroke="#DDE3F3" stroke-width="6"/>
-    <rect x="352" y="620" width="96" height="140" rx="8" fill="#9AA6C8"/><circle cx="436" cy="694" r="5" fill="#F7F8FC"/>
-    <rect x="0" y="756" width="480" height="10" fill="#DDE3F3"/></g>`;
-}
-
+const CAR_COLS = ['#4F7FE8', '#F0506E', '#22C38E', '#FFB938', '#7E5CFF'];
 function buildStreet() {
-  let s = `<rect width="1080" height="1060" fill="url(#gSky)"/>`;
-  s += `<g id="clouds" fill="#fff" opacity=".9"><g id="cl1"><ellipse cx="0" cy="0" rx="70" ry="26"/><ellipse cx="40" cy="-14" rx="44" ry="30"/><ellipse cx="-36" cy="-8" rx="36" ry="22"/></g>
-        <g id="cl2"><ellipse cx="0" cy="0" rx="60" ry="22"/><ellipse cx="30" cy="-12" rx="38" ry="26"/></g></g>`;
-  s += `<g fill="#E3E6F7">${[[0, 160, 150], [140, 120, 120], [250, 190, 170], [410, 140, 110], [520, 210, 190], [700, 130, 140], [830, 180, 160], [980, 150, 120]].map(([x, y, w]) =>
-        `<rect x="${x}" y="${y}" width="${w}" height="${800 - y}" rx="8"/>`).join('')}</g>`;
-  s += garage(40, 'GARAGE LÉON', 'gBrand', 'gL') + garage(560, 'GARAGE MARCEL', 'gWarm', 'gM');
-  s += `<rect x="0" y="766" width="1080" height="54" fill="#E3E7F2"/><rect x="0" y="816" width="1080" height="8" fill="#C9D0E2"/>`;
-  s += `<rect x="0" y="824" width="1080" height="236" fill="url(#gRoad)"/>`;
-  s += `<g id="lane">${Array.from({ length: 12 }, (_, i) => `<rect x="${i * 120}" y="938" width="64" height="10" rx="5" fill="#fff" opacity=".7"/>`).join('')}</g>`;
-  const cols = ['#4F7FE8', '#F0506E', '#22C38E', '#FFB938', '#7E5CFF'];
-  s += cols.map((c, i) => `<g class="carW" id="car${i}">${car(c, 'cb' + i)}</g>`).join('');
-  s += `<g id="tumble"><circle cx="0" cy="0" r="34" fill="none" stroke="#B08A5A" stroke-width="4" stroke-dasharray="14 8"/><circle cx="0" cy="0" r="22" fill="none" stroke="#C9A46E" stroke-width="3" stroke-dasharray="10 7"/><path d="M-26 -10 L22 14 M-14 24 L18 -24 M-30 6 L28 -6" stroke="#B08A5A" stroke-width="3"/></g>`;
-  s += `<g id="zz" font-family="Poppins" font-weight="800" fill="#8A93B5"><text x="0" y="0" font-size="40">z</text><text x="26" y="-26" font-size="52">Z</text></g>`;
-  $('#street').innerHTML = s;
+  $('#street').innerHTML = ISO.street();
+  $('#cars').innerHTML = CAR_COLS.map((c, i) => `<g class="carW" id="car${i}"><g class="cx">${ISO.car(c, 'x')}</g><g class="cy" style="display:none">${ISO.car(c, 'y')}</g></g>`).join('');
+  // badge Seomastertech posé dans le plan de la façade du garage Léon
+  $('#gL .badgeSlot').innerHTML = `<g id="badgeIso"><rect x="5" y="-9.2" width="17.5" height="6.2" rx=".9" fill="#fff" stroke="#E3E7F3" stroke-width=".15"/>
+    <g transform="translate(5.7 -8.4) scale(.036)">${LOGO(130).replace(/<svg[^>]*>|<\/svg>/g, '')}</g>
+    <text x="10.9" y="-7.2" font-family="Poppins" font-weight="500" font-size=".95" fill="#66709A">Propulsé par</text>
+    <text x="10.9" y="-4.9" font-family="Poppins" font-weight="700" font-size="1.65" fill="#1D4EDF">Seomastertech</text></g>`;
+  // compteurs de clients au-dessus des toits
+  const place = (id, wx, wy) => { const [x, y] = ISO.p(wx, wy, 27); const e = $(id); e.style.left = (x - e.offsetWidth / 2) + 'px'; e.style.top = (150 + y - 120) + 'px'; };
+  place('#cntL', 23, 24); place('#cntR', 65, 24);
 }
 
 // ------------------------------------------------------------------ sons (exportés pour audio.py)
@@ -416,9 +385,9 @@ function init() {
   'SEO'.split('').forEach(ch => $('#seoBoxes').insertAdjacentHTML('beforeend', `<div class="seoBox" style="position:relative;width:270px;height:330px;border-radius:50px;background:#fff;box-shadow:var(--shadow);border:5px dashed #C9D1E6">
     <div class="seoL" style="position:absolute;inset:-5px;border-radius:50px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:800;font-size:220px;line-height:1">${ch}</div></div>`));
   // broken car
-  $('#brokeCar').innerHTML = `<svg width="480" height="300" viewBox="-20 -150 260 260" style="overflow:visible">${car('#F0506E', 'bcar')}
-    <g id="smoke">${[0, 1, 2, 3].map(i => `<circle class="sm" cx="40" cy="30" r="22" fill="#B9C0D6"/>`).join('')}</g>
-    <g id="warn" transform="translate(150 -120)"><path d="M30 2 L58 54 L2 54 Z" fill="#FFB938" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="27" y="18" width="6" height="20" rx="3" fill="#fff"/><circle cx="30" cy="45" r="3.5" fill="#fff"/></g></svg>`;
+  $('#brokeCar').innerHTML = `<svg width="480" height="300" viewBox="387 192 130 81" style="overflow:visible">${ISO.car('#F0506E', 'x')}
+    <g id="smoke">${[0, 1, 2, 3].map(() => `<circle class="sm" cx="432" cy="207" r="3" fill="#B9C0D6"/>`).join('')}</g>
+    <g id="warn" transform="translate(470 180) scale(.3)"><path d="M30 2 L58 54 L2 54 Z" fill="#FFB938" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="27" y="18" width="6" height="20" rx="3" fill="#fff"/><circle cx="30" cy="45" r="3.5" fill="#fff"/></g></svg>`;
   // clavier du téléphone
   ['azertyuiop', 'qsdfghjklm', 'wxcvbn'].forEach((row, r) => {
     $('#kbd').insertAdjacentHTML('beforeend', `<div style="display:flex;justify-content:center;gap:7px;margin-bottom:12px">${row.split('').map(k =>
@@ -434,7 +403,6 @@ function init() {
     <circle cx="50" cy="40" r="30" fill="#FFC94A"/><circle cx="50" cy="40" r="23" fill="#FFB020"/><text x="50" y="52" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="30" fill="#fff">1</text></svg>
     <div class="abs" style="left:-40px;top:250px;width:380px;text-align:center"><span class="pill" style="height:60px;padding:0 24px;background:#0E1A4F;color:#fff;font-size:26px">Meilleure réponse</span></div>`;
   // badge Seomastertech sur la façade
-  $('#badge').innerHTML = `${LOGO(110)}<div><div style="font-weight:500;font-size:22px;color:var(--muted)">Propulsé par</div><div style="font-weight:700;font-size:38px;color:#1D4EDF;letter-spacing:-1px">Seomastertech</div></div>`;
   $('#servLogo').innerHTML = `${LOGO(150)}<div style="font-weight:700;font-size:70px;color:#1D4EDF;letter-spacing:-2px">Seomastertech</div>`;
   $('#endTile').innerHTML = `<div class="abs" style="left:30px;top:52px">${LOGO(180)}</div>`;
   for (let i = 0; i < 8; i++) $('#sStreet').insertAdjacentHTML('beforeend', `<div class="abs spk" style="left:0;top:0">${SPARK(['#FFB938', '#6EE7FF', '#A05BDC', '#4F7FE8'][i % 4])}</div>`);
@@ -504,32 +472,39 @@ function bg(t) {
 
 function street(t) {
   const reveal = t >= T.revIn;
-  // caméra : zoom d'ouverture (mouvement dès la 1re image), puis zoom sur Léon à la révélation
-  let s = lerp(1.35, 1, P(t, 0, 1.6, E.out5)), x = 0, y = 0;
-  if (reveal) { const z = P(t, T.revIn, .9, E.inOut); s = lerp(1, 1.55, z); x = lerp(0, 230, z); y = lerp(0, 90, z); }
+  // caméra : zoom d'ouverture (mouvement dès la 1re image), puis zoom sur la façade de Léon à la révélation
+  let s = lerp(1.15, 1, P(t, 0, 1.6, E.out5)), x = 0, y = 0;
+  if (reveal) { const z = P(t, T.revIn, .9, E.inOut); s = lerp(1, 1.6, z); x = lerp(0, 282, z); y = lerp(0, 111, z); }
   tf($('#street'), { s, x, y });
   tf($('#streetCam'), { o: reveal ? P(t, T.revIn, .25) * (1 - P(t, T.revOut - .2, .2, E.in)) : 1 - P(t, T.streetOut - .2, .25, E.in) });
-  $('#cl1').setAttribute('transform', `translate(${(160 + t * 18) % 1250 - 80} 120)`);
-  $('#cl2').setAttribute('transform', `translate(${(760 + t * 12) % 1250 - 80} 210)`);
-  // voitures qui arrivent chez Léon (file d'attente), toujours chez Léon à la révélation
-  const t0 = A('hook2') + .05, spots = [40, 270, 1500, 1500, 1500];
+  // voitures (coordonnées monde) : elles arrivent par la droite et font la queue devant chez Léon
+  const t0 = A('hook2') + .05, spots = [17, 28.5, 40, 51.5, 63], o0 = ISO.p(0, 0, 0);
+  const cars = [];
   for (let i = 0; i < 5; i++) {
-    const g = $('#car' + i);
-    const st = t0 + i * .35, p = P(t, st, 1.0, E.out);
-    let cx = lerp(1180 + i * 60, i < 2 ? spots[i] : 80 + (i - 2) * 230, p), cy = 850;
-    if (i >= 2) cx = lerp(1180 + i * 60, [490, 720, 950][i - 2] - 50, p) - (P(t, st + 1.2, 1.4, E.inOut) * 420);
-    let sc = 1, op = t > st ? 1 : 0;
-    if (i === 0) { const enter = P(t, t0 + 1.2, .6, E.inOut); cy = lerp(850, 640, enter); sc = lerp(1, .72, enter); op *= 1 - P(t, t0 + 1.6, .3); }
-    if (reveal) { cx = lerp(60, 290, (i % 3) / 2) + 20 * Math.sin(t + i); cy = 850; op = i < 3 ? 1 : 0; sc = 1; }
-    g.setAttribute('transform', `translate(${cx} ${cy}) scale(${sc})`); g.style.opacity = op;
-    $$('.wheel', g).forEach(w => { w.style.transform = `rotate(${-(t - st) * 520 * (1 - p * .9)}deg)`; });
+    const st = t0 + i * .35, pr = P(t, st, 1.0, E.out);
+    let wx = lerp(94, spots[i], pr), wy = 46, op = clamp((t - st) / .15), orient = 'x';
+    if (i === 0) {   // la première voiture tourne et entre dans l'atelier
+      const enter = P(t, t0 + 1.15, .6, E.inOut);
+      if (enter > 0) { orient = 'y'; wy = lerp(46, 31, enter); }
+      op *= 1 - P(t, t0 + 1.55, .25);
+    }
+    if (reveal) { wx = [20, 31.5, 43, 54.5, 70][i]; wy = i === 4 ? 56 : 46; op = 1; orient = 'x'; if (i === 4) wx = 86 - ((t - T.revIn) * 14) % 80; }
+    cars.push({ i, wx, wy, op, orient });
   }
-  $('#gL .door').setAttribute('opacity', .35 * Math.min(P(t, t0 + 1.1, .2), 1 - P(t, t0 + 1.9, .3)));
+  cars.sort((a, b) => (a.wx + a.wy) - (b.wx + b.wy));
+  for (const c of cars) {
+    const g = $('#car' + c.i), [px, py] = ISO.p(c.wx, c.wy, .25);
+    g.setAttribute('transform', `translate(${px - o0[0]} ${py - o0[1]})`); g.style.opacity = c.op;
+    $('.cx', g).style.display = c.orient === 'x' ? '' : 'none'; $('.cy', g).style.display = c.orient === 'y' ? '' : 'none';
+    $('#cars').appendChild(g);
+  }
+  $('#gL .door').setAttribute('opacity', .4 * Math.min(P(t, t0 + 1.05, .2), 1 - P(t, t0 + 1.9, .3)));
   // virevoltant devant chez Marcel
-  const tw = P(t, A('hook2') + .6, 2.2, E.lin);
-  $('#tumble').setAttribute('transform', `translate(${lerp(1140, 520, tw)} ${790 - Math.abs(Math.sin(tw * 9)) * 40}) rotate(${-tw * 900})`);
+  const tw = P(t, A('hook2') + .6, 2.2, E.lin), [tx, ty] = ISO.p(lerp(92, 46, tw), 57, 0);
+  $('#tumble').setAttribute('transform', `translate(${tx} ${ty - 16 - Math.abs(Math.sin(tw * 9)) * 26}) rotate(${-tw * 900})`);
   $('#tumble').style.opacity = tw > 0 && tw < 1 && !reveal ? 1 : 0;
-  $('#zz').setAttribute('transform', `translate(880 ${270 - (t * 30) % 40})`); $('#zz').style.opacity = t > A('hook2') + .8 && !reveal ? .9 : 0;
+  const [zx, zy] = ISO.p(80, 14, 24);
+  $('#zz').setAttribute('transform', `translate(${zx} ${zy - (t * 30) % 40})`); $('#zz').style.opacity = t > A('hook2') + .8 && !reveal ? .9 : 0;
   // compteurs de clients
   const pc = P(t, A('hook2') + .2, 1.6, E.out);
   $('#cntLn').textContent = Math.round(30 * pc); $('#cntRn').textContent = Math.round(10 * pc);
@@ -537,10 +512,10 @@ function street(t) {
   tf($('#cntL'), { s: pin, o: pin > 0 && !reveal ? 1 : 0 }); tf($('#cntR'), { s: pop(t, A('hook2') + .1, .5), o: pin > 0 && !reveal ? 1 : 0 });
   // badge Seomastertech qui se colle sur la façade
   const tb = W('reveal', 'Seomastertech') - .05, pb = P(t, tb, .45, E.back2);
-  tf($('#badge'), { s: lerp(2.6, 1, pb), r: lerp(-20, -4, pb), o: t >= tb ? 1 : 0 });
+  $('#badgeIso').setAttribute('transform', `translate(13.75 -6.1) scale(${t >= tb ? lerp(2.4, 1, pb) : 0}) translate(-13.75 6.1)`);
   $$('.spk', $('#sStreet')).forEach((e, i) => {
     const a = i / 8 * Math.PI * 2, q = P(t, tb + .1, .8, E.out5), f = 1 - P(t, tb + .5, .5, E.lin);
-    tf(e, { x: 340 - 22 + Math.cos(a) * 260 * q, y: 760 - 22 + Math.sin(a) * 140 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 && t >= tb ? f : 0 });
+    tf(e, { x: 495 - 22 + Math.cos(a) * 260 * q, y: 592 - 22 + Math.sin(a) * 140 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 && t >= tb ? f : 0 });
   });
 }
 
@@ -577,7 +552,7 @@ function phone(t) {
   tf($('#brokeCar'), { x: (1 - pc) * -500, y: 0, o: 1 - P(t, tp, .3) });
   $$('.sm', $('#brokeCar')).forEach((c, i) => {
     const k = ((((t - W('panne', 'panne') + i * .3) % 1.2) + 1.2) % 1.2) / 1.2, on = t > W('panne', 'panne');
-    c.setAttribute('cx', 30 + k * 30); c.setAttribute('cy', 30 - k * 140); c.setAttribute('r', 16 + k * 30); c.style.opacity = on ? (1 - k) * .8 : 0;
+    c.setAttribute('cx', 432 + k * 6); c.setAttribute('cy', 207 - k * 30); c.setAttribute('r', 3 + k * 6); c.style.opacity = on ? (1 - k) * .8 : 0;
   });
   tf($('#warn'), { s: pop(t, W('panne', 'panne'), .5) });
   $('#warn').style.transformBox = 'fill-box'; $('#warn').style.transformOrigin = '50% 50%';
