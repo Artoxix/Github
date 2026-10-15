@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Seomastertech – le SEO expliqué (2 garages)</title>
+<link rel="stylesheet" href="../video/fonts/poppins.css">
+<style>
+:root{
+  --navy:#0E1A4F; --muted:#66709A; --blue:#4F7FE8; --violet:#A05BDC; --cyan:#6EE7FF;
+  --grad:linear-gradient(120deg,#4F7FE8 0%,#6F6FE8 45%,#A05BDC 100%);
+  --warm:linear-gradient(120deg,#FF9A3D,#F0506E);
+  --shadow:0 24px 60px rgba(28,38,110,.13),0 4px 14px rgba(28,38,110,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F4F6FD}
+body{font-family:Poppins,sans-serif;color:var(--navy);-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F4F6FD}
+.abs{position:absolute}
+.layer{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;visibility:hidden;transform-origin:540px 700px}
+.blob{position:absolute;left:0;top:0;border-radius:50%}
+.card{background:#fff;border-radius:40px;box-shadow:var(--shadow)}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ico{display:inline-grid;place-items:center;line-height:0}
+svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.tile{display:grid;place-items:center;color:#fff;background:var(--grad);flex:none}
+.big{font-weight:800;letter-spacing:-2px;line-height:1.05;text-align:center;left:0;right:0}
+.pill{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font-weight:600;white-space:nowrap}
+/* captions */
+#cap{position:absolute;left:40px;right:40px;top:1255px;height:200px;display:flex;align-items:center;justify-content:center;text-align:center}
+#capIn{font-weight:800;font-size:74px;line-height:1.12;letter-spacing:-1.5px;color:var(--navy);transform-origin:50% 50%}
+#capIn .w{display:inline-block;padding:0 10px;margin:0 -2px;border-radius:18px}
+#capIn .w.on{background:var(--grad);color:#fff;box-shadow:0 10px 24px rgba(79,100,232,.35)}
+#capIn .w.done{color:var(--navy)}
+#capIn .w.todo{color:#9AA3C4}
+/* phone */
+.phone{position:absolute;width:560px;height:1060px;border-radius:76px;background:#0E1A4F;padding:18px;box-shadow:0 40px 90px rgba(14,26,79,.35)}
+.screen{position:relative;width:100%;height:100%;border-radius:60px;background:#fff;overflow:hidden}
+.res{position:absolute;left:24px;width:476px;border-radius:26px;background:#fff;border:2px solid #EEF1F8;padding:20px 22px}
+.res .n{font-weight:700;font-size:30px}
+.res .m{font-weight:500;font-size:21px;color:#7A84A8;margin-top:4px}
+.stars{color:#FFB938;font-size:24px;letter-spacing:1px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:20px;background:#EEF2FF;color:#4F5FE0;font-weight:600;font-size:20px;margin-right:10px;margin-top:12px}
+.crit{position:absolute;left:90px;width:900px;height:290px;border-radius:40px;background:#fff;box-shadow:var(--shadow)}
+.crit .num{position:absolute;left:34px;top:34px;width:84px;height:84px;border-radius:26px;display:grid;place-items:center;font-weight:800;font-size:46px;color:#fff;background:var(--grad)}
+.crit .t{position:absolute;left:146px;top:38px;font-weight:800;font-size:46px;letter-spacing:-1px}
+.crit .s{position:absolute;left:146px;top:98px;font-weight:500;font-size:26px;color:var(--muted)}
+.kw{display:inline-block;padding:10px 22px;border-radius:999px;background:#EEF2FF;color:#4F5FE0;font-weight:600;font-size:28px;margin-right:12px}
+.row3{position:absolute;left:90px;width:900px;height:200px;border-radius:40px;background:#fff;box-shadow:var(--shadow)}
+.row3 .lbl{position:absolute;left:170px;top:0;height:200px;display:flex;align-items:center;font-weight:800;font-size:52px;letter-spacing:-1px}
+.row3 .tile{position:absolute;left:36px;top:46px;width:108px;height:108px;border-radius:32px}
+.chipS{position:absolute;left:140px;width:800px;height:150px;border-radius:40px;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;gap:28px;padding:0 36px;font-weight:700;font-size:48px;letter-spacing:-1px}
+.vote{position:absolute;top:330px;width:440px;height:560px;border-radius:44px;background:#fff;box-shadow:var(--shadow);text-align:center}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gV" x1="0" y1="0.2" x2="1" y2="0.6"><stop offset="0" stop-color="#3A44F0"/><stop offset="1" stop-color="#7E5CFF"/></linearGradient>
+    <linearGradient id="gB" x1="0.3" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#38A6FF"/><stop offset="1" stop-color="#1E5CF2"/></linearGradient>
+    <linearGradient id="gC" x1="0" y1="0.2" x2="1" y2="0.8"><stop offset="0" stop-color="#8AF1FF"/><stop offset="1" stop-color="#47B2FF"/></linearGradient>
+    <linearGradient id="gBrand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F7FE8"/><stop offset="1" stop-color="#A05BDC"/></linearGradient>
+    <linearGradient id="gWarm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB15C"/><stop offset="1" stop-color="#E8703A"/></linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DCE8FF"/><stop offset="1" stop-color="#F5F0FF"/></linearGradient>
+    <linearGradient id="gRoad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#454C6E"/><stop offset="1" stop-color="#30365A"/></linearGradient>
+    <linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6F6FE8" stop-opacity=".35"/><stop offset="1" stop-color="#6F6FE8" stop-opacity="0"/></linearGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2.2" dy="0" stdDeviation="2" flood-color="#0B1F7A" flood-opacity=".28"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="8"/></filter>
+  </defs>
+</svg>
+
+<div id="stage">
+  <div id="bg" class="layer">
+    <div class="blob" id="b1" style="width:1100px;height:1100px;background:radial-gradient(circle,rgba(110,231,255,.40) 0%,rgba(110,231,255,0) 65%)"></div>
+    <div class="blob" id="b2" style="width:1200px;height:1200px;background:radial-gradient(circle,rgba(79,127,232,.24) 0%,rgba(79,127,232,0) 65%)"></div>
+    <div class="blob" id="b3" style="width:1100px;height:1100px;background:radial-gradient(circle,rgba(160,91,220,.22) 0%,rgba(160,91,220,0) 65%)"></div>
+    <div class="layer" id="dots" style="background-image:radial-gradient(rgba(14,26,79,.09) 2px,transparent 2.6px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 100%)"></div>
+  </div>
+
+  <!-- ====== la rue (accroche + révélation) ====== -->
+  <section class="scene" id="sStreet">
+    <div class="abs" id="streetCam" style="left:0;top:150px;width:1080px;height:1060px;border-radius:0;overflow:hidden;transform-origin:540px 530px">
+      <svg id="street" width="1080" height="1060" viewBox="0 0 1080 1060" style="transform-origin:540px 530px"></svg>
+    </div>
+    <div class="abs pill" id="cntL" style="left:120px;top:250px;height:96px;padding:0 30px 0 18px;background:#fff;box-shadow:var(--shadow);font-size:36px">
+      <span class="tile" style="width:64px;height:64px;border-radius:50%"><i class="ico" data-i="users" data-s="34" data-c="#fff" data-w="2.4"></i></span><span id="cntLn">0</span>&nbsp;clients</div>
+    <div class="abs pill" id="cntR" style="left:640px;top:250px;height:96px;padding:0 30px 0 18px;background:#fff;box-shadow:var(--shadow);font-size:36px;color:#8A93B5">
+      <span class="tile" style="width:64px;height:64px;border-radius:50%;background:#C3C9DC"><i class="ico" data-i="users" data-s="34" data-c="#fff" data-w="2.4"></i></span><span id="cntRn">0</span>&nbsp;clients</div>
+    <div class="abs" id="badge" style="left:150px;top:700px;width:380px;height:118px;border-radius:30px;background:#fff;box-shadow:0 24px 60px rgba(28,38,110,.30);display:flex;align-items:center;gap:16px;padding:0 22px"></div>
+  </section>
+
+  <!-- ====== même travail / qualité / prix + ? ====== -->
+  <section class="scene" id="sCompare">
+    <div class="abs" style="left:90px;top:230px;width:900px;height:900px">
+      <div class="card abs" style="left:0;top:0;width:430px;height:180px;display:grid;place-items:center"><div style="font-weight:800;font-size:44px;color:#4F5FE0">Garage Léon</div></div>
+      <div class="card abs" style="left:470px;top:0;width:430px;height:180px;display:grid;place-items:center"><div style="font-weight:800;font-size:44px;color:#E8703A">Garage Marcel</div></div>
+      <div id="cmpRows"></div>
+      <div class="abs" id="qmark" style="left:0;right:0;top:620px;text-align:center;font-weight:800;font-size:300px;line-height:1"><span class="grad">?</span></div>
+    </div>
+  </section>
+
+  <!-- ====== S E O ====== -->
+  <section class="scene" id="sSeo">
+    <div class="abs" style="left:0;right:0;top:420px;display:flex;justify-content:center;gap:36px" id="seoBoxes"></div>
+    <div class="abs big" id="seoSub" style="top:820px;font-size:46px;font-weight:600;color:var(--muted);letter-spacing:0">Search Engine Optimization</div>
+  </section>
+
+  <!-- ====== panne + téléphone + résultats ====== -->
+  <section class="scene" id="sPhone">
+    <div class="abs" id="brokeCar" style="left:300px;top:560px;width:480px;height:300px"></div>
+    <div class="phone" id="phone" style="left:260px;top:150px">
+      <div class="screen">
+        <div class="abs" style="left:0;top:0;width:524px;height:60px;display:flex;justify-content:space-between;padding:18px 44px 0;font-weight:600;font-size:22px"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="abs" style="left:0;top:0;width:524px;height:176px;background:#fff;z-index:2"></div>
+        <div class="abs" id="sb" style="z-index:3;left:24px;top:76px;width:476px;height:84px;border-radius:42px;background:#F3F5FC;border:2px solid #E3E7F3;display:flex;align-items:center;gap:14px;padding:0 24px">
+          <i class="ico" data-i="search" data-s="32" data-c="#4F7FE8" data-w="2.6"></i><span id="q" style="font-weight:500;font-size:28px;white-space:nowrap"></span><span id="caret" style="display:inline-block;width:3px;height:36px;background:#4F7FE8;margin-left:-10px"></span>
+        </div>
+        <div class="abs" id="results" style="left:0;top:180px;width:524px;height:2400px">
+          <div class="abs" id="map" style="left:24px;top:0;width:476px;height:250px;border-radius:26px;overflow:hidden">
+            <svg width="476" height="250" viewBox="0 0 476 250"><rect width="476" height="250" fill="#EAF0FB"/>
+              <rect x="20" y="20" width="120" height="70" rx="10" fill="#DDE5F7"/><rect x="300" y="150" width="140" height="80" rx="10" fill="#DDE5F7"/><circle cx="380" cy="60" r="44" fill="#D7F2E2"/>
+              <path d="M0 120 H476 M170 0 V250 M300 0 V250" stroke="#fff" stroke-width="18"/><path d="M0 220 L476 70" stroke="#fff" stroke-width="10"/>
+              <g id="pinMain" transform="translate(205 66)"><path d="M24 64s20-16 20-34A20 20 0 0 0 4 30c0 18 20 34 20 34z" fill="url(#gBrand)"/><circle cx="24" cy="30" r="8" fill="#fff"/></g>
+              <circle cx="90" cy="170" r="10" fill="#B5BDD3"/><circle cx="420" cy="120" r="10" fill="#B5BDD3"/><circle cx="350" cy="200" r="10" fill="#B5BDD3"/></svg>
+          </div>
+          <div class="res" id="rLeon" style="top:270px;border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div class="n">Garage Léon</div><div class="abs" style="right:20px;top:18px;background:var(--grad);color:#fff;font-weight:800;font-size:22px;padding:4px 14px;border-radius:14px">N°1</div></div>
+            <div class="m"><b style="color:var(--navy)">4,9</b> <span class="stars">★★★★★</span> (212 avis)</div>
+            <div class="m">Garage auto · <span style="color:#14A06F;font-weight:600">Ouvert</span> · 300 m</div>
+            <span class="btn"><i class="ico" data-i="phone" data-s="20" data-c="#4F5FE0" data-w="2.6"></i>Appeler</span><span class="btn"><i class="ico" data-i="nav" data-s="20" data-c="#4F5FE0" data-w="2.6"></i>Itinéraire</span>
+          </div>
+          <div class="res" style="top:520px"><div class="n">Auto Service Plus</div><div class="m"><b style="color:var(--navy)">4,6</b> <span class="stars">★★★★★</span> (98 avis)</div><div class="m">Garage auto · Ouvert · 1,2 km</div></div>
+          <div class="res" style="top:700px"><div class="n">Speed Pneus</div><div class="m"><b style="color:var(--navy)">4,5</b> <span class="stars">★★★★☆</span> (64 avis)</div><div class="m">Centre auto · Ouvert · 2 km</div></div>
+          <div class="res" style="top:880px"><div class="n">Carrosserie du Lac</div><div class="m"><b style="color:var(--navy)">4,4</b> <span class="stars">★★★★☆</span> (51 avis)</div><div class="m">Carrosserie · 2,6 km</div></div>
+          <div class="abs" style="left:24px;top:1060px;width:476px;text-align:center;font-weight:600;font-size:24px;color:#9AA3C4">Page 2</div>
+          <div class="res" style="top:1110px"><div class="n">Garage des Pins</div><div class="m">Garage auto · 3,1 km</div></div>
+          <div class="res" style="top:1250px"><div class="n">Pneu Express</div><div class="m">Centre auto · 3,8 km</div></div>
+          <div class="abs" style="left:24px;top:1400px;width:476px;text-align:center;font-weight:600;font-size:24px;color:#9AA3C4">Page 3</div>
+          <div class="res" id="rMarcel" style="top:1450px;opacity:.9"><div class="n" style="color:#8A93B5">Garage Marcel</div><div class="m">Aucun avis · site introuvable</div></div>
+        </div>
+        <div class="abs" id="kbd" style="left:0;top:640px;width:524px;height:384px;background:#E9ECF5;z-index:4;padding:18px 10px"></div>
+        <div class="abs" id="stamp" style="left:70px;top:520px;width:384px;height:120px;border:8px solid #F0506E;border-radius:20px;color:#F0506E;font-weight:800;font-size:58px;display:grid;place-items:center;letter-spacing:2px;transform:rotate(-12deg)">INVISIBLE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== définition ====== -->
+  <section class="scene" id="sDef">
+    <div class="abs big" id="defA" style="top:230px;font-size:64px;color:var(--muted);font-weight:700">SEO =</div>
+    <div class="abs big" id="defB" style="top:310px;font-size:104px">Référencement<br><span class="grad">naturel</span></div>
+    <div class="card abs" id="site" style="left:150px;top:610px;width:780px;height:560px;overflow:hidden;border-radius:34px">
+      <div class="abs" style="left:0;top:0;width:780px;height:64px;background:#F1F3FA"></div>
+      <div class="abs" style="left:28px;top:23px;width:18px;height:18px;border-radius:50%;background:#FF7A7A"></div><div class="abs" style="left:56px;top:23px;width:18px;height:18px;border-radius:50%;background:#FFCB57"></div><div class="abs" style="left:84px;top:23px;width:18px;height:18px;border-radius:50%;background:#4FD48B"></div>
+      <div class="abs" style="left:130px;top:12px;width:420px;height:40px;border-radius:20px;background:#fff;padding-left:18px;line-height:40px;font-weight:500;font-size:21px;color:#66709A">garage-leon.fr</div>
+      <div class="abs" style="left:30px;top:94px;width:720px;height:200px;border-radius:24px;background:var(--grad)"></div>
+      <div class="abs" style="left:64px;top:140px;color:#fff;font-weight:800;font-size:44px">Garage Léon</div>
+      <div class="abs" style="left:64px;top:200px;width:300px;height:16px;border-radius:8px;background:rgba(255,255,255,.65)"></div>
+      <div class="abs" style="left:64px;top:230px;width:220px;height:16px;border-radius:8px;background:rgba(255,255,255,.65)"></div>
+      <div class="abs scanL" style="left:30px;top:330px;width:500px;height:20px;border-radius:10px;background:#D5DCF0"></div>
+      <div class="abs scanL" style="left:30px;top:376px;width:620px;height:20px;border-radius:10px;background:#E1E6F5"></div>
+      <div class="abs scanL" style="left:30px;top:422px;width:560px;height:20px;border-radius:10px;background:#E1E6F5"></div>
+      <div class="abs scanL" style="left:30px;top:468px;width:420px;height:20px;border-radius:10px;background:#E1E6F5"></div>
+      <div class="abs" id="scanBar" style="left:0;top:300px;width:780px;height:8px;background:linear-gradient(90deg,transparent,#6EE7FF,transparent);box-shadow:0 0 24px #6EE7FF"></div>
+    </div>
+    <div class="abs" id="lens" style="left:0;top:0;width:150px;height:150px"><svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#0E1A4F" stroke-width="2.4" stroke-linecap="round"><circle cx="10" cy="10" r="7" fill="rgba(110,231,255,.25)"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke-width="3.4"/></svg></div>
+    <div class="abs" id="medal" style="left:690px;top:520px;width:300px;height:300px"></div>
+  </section>
+
+  <!-- ====== 3 critères ====== -->
+  <section class="scene" id="sThree">
+    <div class="abs big" id="thTitle" style="top:200px;font-size:60px">Google regarde <span class="grad">3 choses</span></div>
+    <div class="crit" id="cr1" style="top:330px"><div class="num">1</div><div class="t">Le contenu</div><div class="s">Ce que dit ton site</div>
+      <div class="abs" style="left:146px;top:170px;width:740px" id="kws"><span class="kw">garage</span><span class="kw">vidange</span><span class="kw">pneus</span><span class="kw">ta ville</span></div></div>
+    <div class="crit" id="cr2" style="top:650px"><div class="num">2</div><div class="t">La technique</div><div class="s">Rapide et parfait sur mobile</div>
+      <div class="abs" style="left:146px;top:160px;display:flex;align-items:center;gap:26px">
+        <div style="width:420px;height:26px;border-radius:13px;background:#E8ECF7;overflow:hidden"><div id="speedBar" style="width:100%;height:100%;background:var(--grad);transform-origin:0 50%"></div></div>
+        <div style="font-weight:800;font-size:42px" id="speedNum">0</div><i class="ico" data-i="phoneS" data-s="56" data-c="#6F6FE8" data-w="2.2"></i></div></div>
+    <div class="crit" id="cr3" style="top:970px"><div class="num">3</div><div class="t">La confiance</div><div class="s">Avis clients et fiche Google</div>
+      <div class="abs" style="left:146px;top:158px;display:flex;align-items:center;gap:22px">
+        <div style="font-weight:800;font-size:52px">4,9</div><div class="stars" id="bigStars" style="font-size:46px;letter-spacing:4px">★★★★★</div>
+        <div class="pill" style="height:64px;padding:0 22px 0 14px;background:#EEF2FF;color:#4F5FE0;font-size:26px"><i class="ico" data-i="pin" data-s="30" data-c="#4F5FE0" data-w="2.4"></i>Fiche Google</div></div></div>
+  </section>
+
+  <!-- ====== résultats ====== -->
+  <section class="scene" id="sResult">
+    <div class="abs big" style="top:220px;font-size:76px" id="rsTitle">Résultat&nbsp;<span class="grad">↗</span></div>
+    <div class="row3" id="rr1" style="top:420px"><div class="tile"><i class="ico" data-i="eye" data-s="56" data-c="#fff" data-w="2.2"></i></div><div class="lbl">+ de visibilité</div><div class="abs arrow" style="right:40px;top:50px"></div></div>
+    <div class="row3" id="rr2" style="top:660px"><div class="tile"><i class="ico" data-i="phone" data-s="52" data-c="#fff" data-w="2.2"></i></div><div class="lbl">+ d'appels</div><div class="abs arrow" style="right:40px;top:50px"></div></div>
+    <div class="row3" id="rr3" style="top:900px"><div class="tile"><i class="ico" data-i="calendar" data-s="52" data-c="#fff" data-w="2.2"></i></div><div class="lbl">+ de rendez-vous</div><div class="abs arrow" style="right:40px;top:50px"></div></div>
+  </section>
+
+  <!-- ====== pub vs SEO ====== -->
+  <section class="scene" id="sFree">
+    <div class="card abs" id="adCard" style="left:90px;top:300px;width:430px;height:720px;text-align:center">
+      <div style="margin-top:44px;font-weight:800;font-size:46px">La pub</div>
+      <div style="font-weight:500;font-size:26px;color:var(--muted)">Payante à chaque clic</div>
+      <div class="abs" style="left:65px;top:240px;width:300px;height:120px;border-radius:24px;background:#FFF3E8;border:3px dashed #F2A65A;display:grid;place-items:center;font-weight:700;font-size:30px;color:#E8703A">Annonce</div>
+      <div id="coins"></div>
+      <div class="abs" id="adCost" style="left:0;right:0;top:560px;font-weight:800;font-size:64px;color:#F0506E">-0 €</div>
+    </div>
+    <div class="card abs" id="seoCard" style="left:560px;top:300px;width:430px;height:720px;text-align:center;border:4px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box">
+      <div style="margin-top:44px;font-weight:800;font-size:46px" class="grad">Le SEO</div>
+      <div style="font-weight:500;font-size:26px;color:var(--muted)">Pas de coût par clic</div>
+      <div class="abs" style="left:115px;top:230px;width:200px;height:200px;border-radius:50%;background:var(--grad);display:grid;place-items:center"><i class="ico" data-i="check" data-s="110" data-c="#fff" data-w="3.2"></i></div>
+      <div class="abs" style="left:0;right:0;top:500px;font-weight:800;font-size:76px" class="grad"><span class="grad">0 €</span></div>
+      <div class="abs" style="left:0;right:0;top:600px;font-weight:600;font-size:28px;color:var(--muted)">par clic</div>
+    </div>
+    <svg class="abs" id="curF" style="left:0;top:0;width:64px;height:64px;filter:drop-shadow(0 8px 10px rgba(14,26,79,.28))" viewBox="0 0 32 32"><path d="M4 2 L4 26 L10 20.5 L14 29.5 L18.2 27.7 L14.3 18.9 L22 18.9 Z" fill="#fff" stroke="#0E1A4F" stroke-width="2" stroke-linejoin="round"/></svg>
+  </section>
+
+  <!-- ====== services ====== -->
+  <section class="scene" id="sServ">
+    <div class="abs" id="servLogo" style="left:0;right:0;top:230px;display:flex;align-items:center;justify-content:center;gap:22px"></div>
+    <div class="chipS" id="sv1" style="top:470px"><span class="tile" style="width:96px;height:96px;border-radius:30px"><i class="ico" data-i="monitor" data-s="50" data-c="#fff" data-w="2.2"></i></span>Site internet</div>
+    <div class="chipS" id="sv2" style="top:660px"><span class="tile" style="width:96px;height:96px;border-radius:30px"><i class="ico" data-i="search" data-s="50" data-c="#fff" data-w="2.4"></i></span>Référencement SEO</div>
+    <div class="chipS" id="sv3" style="top:850px"><span class="tile" style="width:96px;height:96px;border-radius:30px"><i class="ico" data-i="pin" data-s="50" data-c="#fff" data-w="2.2"></i></span>SEO local</div>
+    <div class="abs big" id="servAll" style="top:1060px;font-size:58px">Ils s'occupent <span class="grad">de tout.</span></div>
+  </section>
+
+  <!-- ====== appel à l'action ====== -->
+  <section class="scene" id="sCta">
+    <div class="abs big" id="ctaQ" style="top:190px;font-size:66px">Tu préfères être…</div>
+    <div class="vote" id="vL" style="left:80px;border:5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box">
+      <div class="abs" style="left:150px;top:40px;width:140px;height:140px;border-radius:50%;background:var(--grad);display:grid;place-items:center"><i class="ico" data-i="award" data-s="80" data-c="#fff" data-w="2.2"></i></div>
+      <div class="abs" style="left:0;right:0;top:210px;font-weight:800;font-size:50px">Garage Léon</div>
+      <div class="abs" style="left:0;right:0;top:280px;font-weight:600;font-size:28px;color:var(--muted)">1er sur Google</div>
+      <div class="abs" style="left:0;right:0;top:380px;font-weight:800;font-size:96px" ><span class="grad">A</span></div>
+    </div>
+    <div class="vote" id="vR" style="left:560px">
+      <div class="abs" style="left:150px;top:40px;width:140px;height:140px;border-radius:50%;background:#D5DAE8;display:grid;place-items:center;font-weight:800;font-size:56px;color:#fff">zZ</div>
+      <div class="abs" style="left:0;right:0;top:210px;font-weight:800;font-size:50px;color:#8A93B5">Garage Marcel</div>
+      <div class="abs" style="left:0;right:0;top:280px;font-weight:600;font-size:28px;color:#9AA3C4">Page 3</div>
+      <div class="abs" style="left:0;right:0;top:380px;font-weight:800;font-size:96px;color:#C3C9DC">B</div>
+    </div>
+    <div class="abs" id="vsBadge" style="left:480px;top:540px;width:120px;height:120px;border-radius:50%;background:#0E1A4F;color:#fff;display:grid;place-items:center;font-weight:800;font-size:42px;box-shadow:var(--shadow)">VS</div>
+    <div class="abs" id="comment" style="left:0;right:0;top:930px;display:flex;justify-content:center">
+      <div class="pill" style="height:96px;padding:0 34px 0 20px;background:#0E1A4F;color:#fff;font-size:36px"><span class="tile" style="width:64px;height:64px;border-radius:50%"><i class="ico" data-i="message" data-s="34" data-c="#fff" data-w="2.4"></i></span>Dis-le en commentaire</div>
+    </div>
+    <div class="abs" id="endCard" style="left:0;top:0;width:1080px;height:1920px">
+      <div class="layer" style="background:var(--grad)"></div>
+      <div class="layer" style="background-image:radial-gradient(rgba(255,255,255,.16) 2px,transparent 2.6px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 100%)"></div>
+      <div class="abs" id="endTile" style="left:420px;top:330px;width:240px;height:240px;border-radius:66px;background:#fff;box-shadow:0 30px 80px rgba(30,10,90,.28)"></div>
+      <div class="abs big" id="endWord" style="top:610px;font-size:84px;color:#fff;font-weight:600;letter-spacing:-2px">Seomastertech</div>
+      <div class="abs big" id="endTag" style="top:730px;font-size:40px;color:rgba(255,255,255,.88);font-weight:500;letter-spacing:0">Création de sites web &amp; SEO</div>
+      <div class="abs" id="endUrl" style="left:0;right:0;top:880px;display:flex;justify-content:center">
+        <div class="pill" style="height:110px;padding:0 44px;background:#fff;color:var(--navy);font-size:54px;font-weight:700;box-shadow:0 24px 50px rgba(14,26,79,.3)"><i class="ico" data-i="globe" data-s="48" data-c="#6F6FE8" data-w="2.2"></i>seomastertech.fr</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- sous-titres dynamiques -->
+  <div id="cap"><div id="capIn"></div></div>
+  <div class="layer" id="flash" style="background:#fff;opacity:0;pointer-events:none"></div>
+</div>
+
+<script>
+// ------------------------------------------------------------------ utils
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const E = {
+  lin: x => x, out: x => 1 - Math.pow(1 - x, 3), out5: x => 1 - Math.pow(1 - x, 5), in: x => x * x * x,
+  inOut: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  back: x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  back2: x => { const c1 = 2.6, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  elastic: x => x <= 0 ? 0 : x >= 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI) / 3) + 1,
+};
+const P = (t, s, d, e = E.out) => e(clamp((t - s) / d));
+function tf(el, { x = 0, y = 0, s = 1, sx, sy, r = 0, o } = {}) {
+  el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${sx ?? s},${sy ?? s})`;
+  if (o !== undefined) el.style.opacity = clamp(o);
+}
+const vis = (el, on) => { el.style.visibility = on ? 'visible' : 'hidden'; };
+const pop = (t, s, d = .5) => P(t, s, d, E.back2);
+
+// ------------------------------------------------------------------ timeline (voix off)
+const TL = window.TIMELINE;
+const SEG = Object.fromEntries(TL.segments.map(s => [s.id, s]));
+const A = id => SEG[id].a, B = id => SEG[id].b;
+// instant où commence le premier mot affiché qui contient `frag` dans la phrase `id`
+const W = (id, frag, nth = 0) => { const ws = SEG[id].words.filter(w => w.w.toLowerCase().includes(frag.toLowerCase())); return (ws[nth] || ws[0] || SEG[id].words[0]).a; };
+const DURATION = TL.duration;
+
+// ------------------------------------------------------------------ icons
+const ICONS = {
+  search: '<circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  phoneS: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 15 11 17 15 13"/>',
+  message: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+  eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  alert: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  award: '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+  nav: '<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+};
+const icon = (n, s, c = 'currentColor', w = 2.2) =>
+  `<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" style="color:${c}" stroke-width="${w}">${ICONS[n]}</svg>`;
+const LOGO = w => `<svg viewBox="0 0 130 92" width="${w}" height="${w * 92 / 130}" style="overflow:visible">
+  <g class="lg"><rect x="57" y="19" width="69" height="67" rx="33" fill="url(#gV)"/></g>
+  <g class="lg"><rect x="30" y="7" width="65" height="79" rx="32" fill="url(#gB)" filter="url(#sh)"/></g>
+  <g class="lg"><rect x="6" y="32" width="58" height="54" rx="27" fill="url(#gC)" filter="url(#sh)"/></g></svg>`;
+const SPARK = c => `<svg viewBox="0 0 24 24" width="44" height="44"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
+
+// voiture vue de profil (vers la gauche)
+function car(c, id) {
+  const d = '#1E2440';
+  return `<g id="${id}"><ellipse cx="110" cy="96" rx="96" ry="8" fill="#000" opacity=".18"/>
+    <path d="M8 74 Q6 52 30 48 L60 46 Q80 18 112 16 L150 16 Q174 18 188 44 L206 50 Q216 54 214 74 Z" fill="${c}"/>
+    <path d="M70 46 Q86 24 110 22 L128 22 L128 46 Z" fill="#CFE6FF"/><path d="M134 22 L150 22 Q166 24 178 46 L134 46 Z" fill="#CFE6FF"/>
+    <path d="M14 60 L210 60" stroke="#fff" stroke-opacity=".25" stroke-width="4"/>
+    <rect x="8" y="68" width="206" height="10" rx="5" fill="${d}" opacity=".85"/>
+    <ellipse cx="14" cy="58" rx="7" ry="5" fill="#FFF3B0"/><rect x="204" y="56" width="8" height="8" rx="2" fill="#FF7070"/>
+    <g class="wheel" style="transform-box:fill-box;transform-origin:center"><circle cx="56" cy="80" r="19" fill="${d}"/><circle cx="56" cy="80" r="8" fill="#C9D0E2"/><rect x="54" y="64" width="4" height="10" fill="#C9D0E2"/></g>
+    <g class="wheel" style="transform-box:fill-box;transform-origin:center"><circle cx="166" cy="80" r="19" fill="${d}"/><circle cx="166" cy="80" r="8" fill="#C9D0E2"/><rect x="164" y="64" width="4" height="10" fill="#C9D0E2"/></g></g>`;
+}
+
+function garage(x, name, accent, id) {
+  return `<g id="${id}" transform="translate(${x} 0)">
+    <rect x="0" y="300" width="480" height="460" fill="#F7F8FC"/><rect x="0" y="300" width="480" height="460" fill="url(#gSky)" opacity=".25"/>
+    <rect x="-10" y="284" width="500" height="34" rx="6" fill="#DDE3F3"/>
+    <rect x="34" y="350" width="412" height="96" rx="20" fill="url(#${accent})"/>
+    <g transform="translate(64 375)" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><g transform="scale(1.9)">${ICONS.tool}</g></g>
+    <text x="268" y="411" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="34" fill="#fff" letter-spacing=".5">${name}</text>
+    <rect x="40" y="480" width="290" height="280" rx="6" fill="#C9D1E6"/>
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => `<rect x="40" y="${490 + i * 30}" width="290" height="4" fill="#B3BDD6"/>`).join('')}
+    <rect class="door" x="40" y="480" width="290" height="280" rx="6" fill="#2A3150" opacity="0"/>
+    <rect x="352" y="480" width="96" height="120" rx="10" fill="#CFE3FF" stroke="#DDE3F3" stroke-width="6"/>
+    <rect x="352" y="620" width="96" height="140" rx="8" fill="#9AA6C8"/><circle cx="436" cy="694" r="5" fill="#F7F8FC"/>
+    <rect x="0" y="756" width="480" height="10" fill="#DDE3F3"/></g>`;
+}
+
+function buildStreet() {
+  let s = `<rect width="1080" height="1060" fill="url(#gSky)"/>`;
+  s += `<g id="clouds" fill="#fff" opacity=".9"><g id="cl1"><ellipse cx="0" cy="0" rx="70" ry="26"/><ellipse cx="40" cy="-14" rx="44" ry="30"/><ellipse cx="-36" cy="-8" rx="36" ry="22"/></g>
+        <g id="cl2"><ellipse cx="0" cy="0" rx="60" ry="22"/><ellipse cx="30" cy="-12" rx="38" ry="26"/></g></g>`;
+  s += `<g fill="#E3E6F7">${[[0, 160, 150], [140, 120, 120], [250, 190, 170], [410, 140, 110], [520, 210, 190], [700, 130, 140], [830, 180, 160], [980, 150, 120]].map(([x, y, w]) =>
+        `<rect x="${x}" y="${y}" width="${w}" height="${800 - y}" rx="8"/>`).join('')}</g>`;
+  s += garage(40, 'GARAGE LÉON', 'gBrand', 'gL') + garage(560, 'GARAGE MARCEL', 'gWarm', 'gM');
+  s += `<rect x="0" y="766" width="1080" height="54" fill="#E3E7F2"/><rect x="0" y="816" width="1080" height="8" fill="#C9D0E2"/>`;
+  s += `<rect x="0" y="824" width="1080" height="236" fill="url(#gRoad)"/>`;
+  s += `<g id="lane">${Array.from({ length: 12 }, (_, i) => `<rect x="${i * 120}" y="938" width="64" height="10" rx="5" fill="#fff" opacity=".7"/>`).join('')}</g>`;
+  const cols = ['#4F7FE8', '#F0506E', '#22C38E', '#FFB938', '#7E5CFF'];
+  s += cols.map((c, i) => `<g class="carW" id="car${i}">${car(c, 'cb' + i)}</g>`).join('');
+  s += `<g id="tumble"><circle cx="0" cy="0" r="34" fill="none" stroke="#B08A5A" stroke-width="4" stroke-dasharray="14 8"/><circle cx="0" cy="0" r="22" fill="none" stroke="#C9A46E" stroke-width="3" stroke-dasharray="10 7"/><path d="M-26 -10 L22 14 M-14 24 L18 -24 M-30 6 L28 -6" stroke="#B08A5A" stroke-width="3"/></g>`;
+  s += `<g id="zz" font-family="Poppins" font-weight="800" fill="#8A93B5"><text x="0" y="0" font-size="40">z</text><text x="26" y="-26" font-size="52">Z</text></g>`;
+  $('#street').innerHTML = s;
+}
+
+// ------------------------------------------------------------------ sons (exportés pour audio.py)
+const CUES = [];
+const cue = (t, type, o = {}) => CUES.push({ t: +t.toFixed(3), type, ...o });
+
+// ------------------------------------------------------------------ sous-titres
+let CHUNKS = [];
+function buildCaptions() {
+  for (const s of TL.segments) {
+    let cur = [];
+    s.words.forEach((w, i) => {
+      cur.push(w);
+      const end = /[.?!…:,;»]$/.test(w.w) || cur.length === 3 || i === s.words.length - 1;
+      if (end) { CHUNKS.push({ words: cur, a: cur[0].a }); cur = []; }
+    });
+  }
+  CHUNKS.forEach((c, i) => { c.b = i < CHUNKS.length - 1 ? Math.min(CHUNKS[i + 1].a, c.words[c.words.length - 1].b + .5) : DURATION; });
+}
+let lastChunk = -1;
+function captions(t) {
+  const i = CHUNKS.findIndex(c => t >= c.a && t < c.b);
+  const el = $('#capIn');
+  if (i < 0) { el.style.opacity = 0; return; }
+  const c = CHUNKS[i];
+  if (i !== lastChunk) {
+    el.innerHTML = c.words.map(w => `<span class="w">${w.w.replace(/[«»]/g, '')}</span>`).join(' ');
+    lastChunk = i;
+  }
+  $$('.w', el).forEach((s, k) => { const w = c.words[k]; s.className = 'w ' + (t >= w.a && t < w.b ? 'on' : t >= w.b ? 'done' : 'todo'); });
+  const p = P(t, c.a, .18, E.back2);
+  el.style.opacity = 1;
+  el.style.transform = `scale(${lerp(.82, 1, p)}) translateY(${(1 - p) * 20}px)`;
+}
+
+// ------------------------------------------------------------------ scènes
+const T = {};
+function init() {
+  $$('[data-i]').forEach(e => { e.innerHTML = icon(e.dataset.i, +e.dataset.s, e.dataset.c, +(e.dataset.w || 2.2)); });
+  buildStreet();
+  buildCaptions();
+  // timings
+  T.streetOut = A('same') - .1;
+  T.cmpIn = A('same') - .15; T.cmpOut = A('seo') - .05;
+  T.seoIn = A('seo') - .05; T.seoOut = A('panne') - .1;
+  T.phoneIn = A('panne') - .1; T.phoneOut = A('def') - .1;
+  T.defIn = A('def') - .1; T.defOut = A('three') - .1;
+  T.thIn = A('three') - .1; T.thOut = A('result') - .1;
+  T.rsIn = A('result') - .1; T.rsOut = A('free') - .1;
+  T.frIn = A('free') - .1; T.frOut = A('reveal') - .1;
+  T.revIn = A('reveal') - .1; T.revOut = A('services') - .1;
+  T.svIn = A('services') - .1; T.svOut = A('cta') - .1;
+  T.ctaIn = A('cta') - .1; T.end = A('cta2') + 1.0;
+
+  // compare rows
+  const rows = ['Même travail', 'Même qualité', 'Mêmes prix'];
+  rows.forEach((r, i) => $('#cmpRows').insertAdjacentHTML('beforeend', `<div class="abs cmpRow" style="left:0;top:${220 + i * 130}px;width:900px;height:110px">
+    <div class="card abs" style="left:0;top:0;width:900px;height:110px;border-radius:30px"></div>
+    <div class="abs" style="left:0;right:0;top:0;height:110px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:38px">${r}</div>
+    <div class="abs ckL" style="left:40px;top:20px;width:70px;height:70px;border-radius:50%;background:#22C38E;display:grid;place-items:center">${icon('check', 40, '#fff', 3.4)}</div>
+    <div class="abs ckR" style="right:40px;top:20px;width:70px;height:70px;border-radius:50%;background:#22C38E;display:grid;place-items:center">${icon('check', 40, '#fff', 3.4)}</div></div>`));
+  // SEO boxes
+  'SEO'.split('').forEach(ch => $('#seoBoxes').insertAdjacentHTML('beforeend', `<div class="seoBox" style="position:relative;width:270px;height:330px;border-radius:50px;background:#fff;box-shadow:var(--shadow);border:5px dashed #C9D1E6">
+    <div class="seoL" style="position:absolute;inset:-5px;border-radius:50px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:800;font-size:220px;line-height:1">${ch}</div></div>`));
+  // broken car
+  $('#brokeCar').innerHTML = `<svg width="480" height="300" viewBox="-20 -150 260 260" style="overflow:visible">${car('#F0506E', 'bcar')}
+    <g id="smoke">${[0, 1, 2, 3].map(i => `<circle class="sm" cx="40" cy="30" r="22" fill="#B9C0D6"/>`).join('')}</g>
+    <g id="warn" transform="translate(150 -120)"><path d="M30 2 L58 54 L2 54 Z" fill="#FFB938" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="27" y="18" width="6" height="20" rx="3" fill="#fff"/><circle cx="30" cy="45" r="3.5" fill="#fff"/></g></svg>`;
+  // clavier du téléphone
+  ['azertyuiop', 'qsdfghjklm', 'wxcvbn'].forEach((row, r) => {
+    $('#kbd').insertAdjacentHTML('beforeend', `<div style="display:flex;justify-content:center;gap:7px;margin-bottom:12px">${row.split('').map(k =>
+      `<div class="key" data-k="${k}" style="width:42px;height:64px;border-radius:10px;background:#fff;box-shadow:0 2px 0 #C3C9DC;display:grid;place-items:center;font-weight:500;font-size:26px">${k}</div>`).join('')}</div>`);
+  });
+  $('#kbd').insertAdjacentHTML('beforeend', `<div style="display:flex;justify-content:center;gap:7px"><div style="width:300px;height:64px;border-radius:10px;background:#fff;box-shadow:0 2px 0 #C3C9DC"></div><div style="width:150px;height:64px;border-radius:10px;background:#4F7FE8;color:#fff;display:grid;place-items:center;font-weight:600;font-size:22px">Rechercher</div></div>`);
+  // coins
+  for (let i = 0; i < 4; i++) $('#coins').insertAdjacentHTML('beforeend', `<div class="abs coin" style="left:${150 + (i % 2) * 70}px;top:380px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE08A,#E8A21E);display:grid;place-items:center;font-weight:800;font-size:34px;color:#9A6400">€</div>`);
+  // up arrows (résultats)
+  $$('.arrow').forEach(a => { a.innerHTML = `<svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#22C38E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`; });
+  // medal
+  $('#medal').innerHTML = `<svg width="300" height="300" viewBox="0 0 100 100"><path d="M34 52 L24 92 L40 84 L48 98 L54 60 Z" fill="#F0506E"/><path d="M66 52 L76 92 L60 84 L52 98 L46 60 Z" fill="#E8703A"/>
+    <circle cx="50" cy="40" r="30" fill="#FFC94A"/><circle cx="50" cy="40" r="23" fill="#FFB020"/><text x="50" y="52" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="30" fill="#fff">1</text></svg>
+    <div class="abs" style="left:-40px;top:250px;width:380px;text-align:center"><span class="pill" style="height:60px;padding:0 24px;background:#0E1A4F;color:#fff;font-size:26px">Meilleure réponse</span></div>`;
+  // badge Seomastertech sur la façade
+  $('#badge').innerHTML = `${LOGO(110)}<div><div style="font-weight:500;font-size:22px;color:var(--muted)">Propulsé par</div><div style="font-weight:700;font-size:38px;color:#1D4EDF;letter-spacing:-1px">Seomastertech</div></div>`;
+  $('#servLogo').innerHTML = `${LOGO(150)}<div style="font-weight:700;font-size:70px;color:#1D4EDF;letter-spacing:-2px">Seomastertech</div>`;
+  $('#endTile').innerHTML = `<div class="abs" style="left:30px;top:52px">${LOGO(180)}</div>`;
+  for (let i = 0; i < 8; i++) $('#sStreet').insertAdjacentHTML('beforeend', `<div class="abs spk" style="left:0;top:0">${SPARK(['#FFB938', '#6EE7FF', '#A05BDC', '#4F7FE8'][i % 4])}</div>`);
+
+  // ---------------- cues sonores
+  cue(0.0, 'whoosh', { d: .5, g: .5 });
+  [0, 1, 2, 3].forEach(i => cue(A('hook2') + .1 + i * .35, 'car', { g: .45 }));
+  cue(W('hook2', '3') , 'cash', { g: .6 });
+  cue(A('hook2') + .6, 'tumble', { g: .5 });
+  cue(T.cmpIn, 'whoosh', { d: .45, g: .55 });
+  ['travail', 'qualité', 'prix'].forEach((w, i) => { cue(W('same', w), 'pop', { n: ['C5', 'E5', 'G5'][i], g: .5 }); cue(W('same', w) + .12, 'check', { n: ['C6', 'E6', 'G6'][i], g: .45 }); });
+  cue(W('why', 'différence'), 'boing', { g: .5 });
+  cue(T.seoIn, 'whoosh', { d: .45, g: .5 });
+  [0, 1, 2].forEach(i => cue(W('seo', 'SEO') + i * .14, 'slam', { g: .75 }));
+  cue(T.phoneIn, 'whoosh', { d: .45, g: .5 });
+  cue(W('panne', 'panne'), 'sputter', { g: .5 });
+  cue(W('panne', 'téléphone'), 'swish', { g: .5 });
+  const qa = W('panne', 'garage'), qb = SEG.panne.b, q = 'garage près de moi';
+  for (let i = 0; i < q.length; i++) cue(qa + i * (qb - qa) / q.length, 'key', { g: .7 });
+  cue(W('list', 'Léon'), 'pop', { n: 'G5', g: .5 }); cue(W('list', 'Premier'), 'ding', { n: 'C6', g: .55 });
+  cue(W('marcel', 'Page'), 'scroll', { g: .55 });
+  cue(W('marcel', 'invisible'), 'sad', { g: .6 });
+  cue(W('marcel', 'invisible') + .05, 'stamp', { g: .7 });
+  cue(T.defIn, 'whoosh', { d: .45, g: .5 });
+  cue(W('def', 'convaincre'), 'scan', { d: 1.2, g: .3 });
+  cue(W('def', 'meilleure'), 'levelup', { g: .6 });
+  cue(T.thIn, 'whoosh', { d: .45, g: .5 });
+  [0, 1, 2].forEach(i => cue(T.thIn + .25 + i * .12, 'pop', { n: ['C5', 'E5', 'G5'][i], g: .45 }));
+  ['garage', 'vidange', 'pneus', 'ta ville'].forEach((k, i) => cue(A('c1') + 1.2 + i * .28, 'pop', { n: ['C6', 'D6', 'E6', 'G6'][i], g: .35 }));
+  cue(A('c2') + .9, 'charge', { d: 1.0, g: .3 });
+  [0, 1, 2, 3, 4].forEach(i => cue(A('c3') + 1.1 + i * .09, 'check', { n: ['C6', 'D6', 'E6', 'G6', 'A6'][i], g: .3 }));
+  cue(T.rsIn, 'whoosh', { d: .45, g: .5 });
+  ['visibilité', "d'appels", 'rendez-vous'].forEach((w, i) => cue(W('result', w), 'pop', { n: ['C5', 'E5', 'G5'][i], g: .6 }));
+  cue(W('result', "d'appels") + .1, 'ring', { g: .35 });
+  cue(T.frIn, 'whoosh', { d: .45, g: .5 });
+  [0, 1, 2, 3].forEach(i => { cue(A('free') + .35 + i * .4, 'click'); cue(A('free') + .38 + i * .4, 'coin', { g: .45 }); });
+  cue(W('free', 'clic'), 'success', { g: .55 });
+  cue(T.revIn, 'whoosh', { d: .5, g: .6, big: 1 });
+  cue(W('reveal', 'Seomastertech') - .05, 'impact', { g: .8 });
+  cue(W('reveal', 'Seomastertech'), 'sparkle', { g: .6 });
+  cue(T.svIn, 'whoosh', { d: .45, g: .5 });
+  ['Site', 'référencement', 'local'].forEach((w, i) => cue(W('services', w), 'pop', { n: ['C5', 'E5', 'G5'][i], g: .6 }));
+  cue(W('services', 'tout'), 'ding', { n: 'C6', g: .5 });
+  cue(T.ctaIn, 'whoosh', { d: .45, g: .55 });
+  cue(W('cta', 'Léon'), 'pop', { n: 'E5', g: .6 }); cue(W('cta', 'Marcel'), 'pop', { n: 'C5', g: .6 });
+  cue(W('cta2', 'commentaire'), 'pop', { n: 'G5', g: .6 });
+  cue(W('cta2', 'rendez-vous') - .15, 'whoosh', { d: .5, g: .6, big: 1 });
+  cue(W('cta2', 'rendez-vous') + .25, 'impact', { g: .6 });
+  cue(W('cta2', 'seomastertech'), 'sparkle', { g: .5 });
+
+  window.CUES = CUES; window.DURATION = DURATION; window.MARKS = { seo: W('seo', 'SEO'), reveal: W('reveal', 'Seomastertech'), end: W('cta2', 'rendez-vous') + .25 };
+  window.READY = true;
+}
+
+// transitions : entrée en zoom-arrière + fondu, sortie en zoom-avant + fondu
+function enterExit(el, t, tin, tout) {
+  const a = P(t, tin, .32, E.out5), b = P(t, tout - .22, .22, E.in);
+  tf(el, { s: lerp(1.12, 1, a) * lerp(1, 1.12, b), o: Math.min(a, 1 - b) });
+}
+
+function bg(t) {
+  tf($('#b1'), { x: -550 + 160 + 140 * Math.sin(t * .45), y: -550 + 260 + 120 * Math.cos(t * .35) });
+  tf($('#b2'), { x: -600 + 960 + 120 * Math.cos(t * .4), y: -600 + 1050 + 160 * Math.sin(t * .3) });
+  tf($('#b3'), { x: -550 + 260 + 150 * Math.sin(t * .3 + 2), y: -550 + 1720 + 120 * Math.cos(t * .5) });
+  $('#dots').style.backgroundPosition = `${t * 6}px ${t * 10}px`;
+}
+
+function street(t) {
+  const reveal = t >= T.revIn;
+  // caméra : zoom d'ouverture (mouvement dès la 1re image), puis zoom sur Léon à la révélation
+  let s = lerp(1.35, 1, P(t, 0, 1.6, E.out5)), x = 0, y = 0;
+  if (reveal) { const z = P(t, T.revIn, .9, E.inOut); s = lerp(1, 1.55, z); x = lerp(0, 230, z); y = lerp(0, 90, z); }
+  tf($('#street'), { s, x, y });
+  tf($('#streetCam'), { o: reveal ? P(t, T.revIn, .25) * (1 - P(t, T.revOut - .2, .2, E.in)) : 1 - P(t, T.streetOut - .2, .25, E.in) });
+  $('#cl1').setAttribute('transform', `translate(${(160 + t * 18) % 1250 - 80} 120)`);
+  $('#cl2').setAttribute('transform', `translate(${(760 + t * 12) % 1250 - 80} 210)`);
+  // voitures qui arrivent chez Léon (file d'attente), toujours chez Léon à la révélation
+  const t0 = A('hook2') + .05, spots = [40, 270, 1500, 1500, 1500];
+  for (let i = 0; i < 5; i++) {
+    const g = $('#car' + i);
+    const st = t0 + i * .35, p = P(t, st, 1.0, E.out);
+    let cx = lerp(1180 + i * 60, i < 2 ? spots[i] : 80 + (i - 2) * 230, p), cy = 850;
+    if (i >= 2) cx = lerp(1180 + i * 60, [490, 720, 950][i - 2] - 50, p) - (P(t, st + 1.2, 1.4, E.inOut) * 420);
+    let sc = 1, op = t > st ? 1 : 0;
+    if (i === 0) { const enter = P(t, t0 + 1.2, .6, E.inOut); cy = lerp(850, 640, enter); sc = lerp(1, .72, enter); op *= 1 - P(t, t0 + 1.6, .3); }
+    if (reveal) { cx = lerp(60, 290, (i % 3) / 2) + 20 * Math.sin(t + i); cy = 850; op = i < 3 ? 1 : 0; sc = 1; }
+    g.setAttribute('transform', `translate(${cx} ${cy}) scale(${sc})`); g.style.opacity = op;
+    $$('.wheel', g).forEach(w => { w.style.transform = `rotate(${-(t - st) * 520 * (1 - p * .9)}deg)`; });
+  }
+  $('#gL .door').setAttribute('opacity', .35 * Math.min(P(t, t0 + 1.1, .2), 1 - P(t, t0 + 1.9, .3)));
+  // virevoltant devant chez Marcel
+  const tw = P(t, A('hook2') + .6, 2.2, E.lin);
+  $('#tumble').setAttribute('transform', `translate(${lerp(1140, 520, tw)} ${790 - Math.abs(Math.sin(tw * 9)) * 40}) rotate(${-tw * 900})`);
+  $('#tumble').style.opacity = tw > 0 && tw < 1 && !reveal ? 1 : 0;
+  $('#zz').setAttribute('transform', `translate(880 ${270 - (t * 30) % 40})`); $('#zz').style.opacity = t > A('hook2') + .8 && !reveal ? .9 : 0;
+  // compteurs de clients
+  const pc = P(t, A('hook2') + .2, 1.6, E.out);
+  $('#cntLn').textContent = Math.round(30 * pc); $('#cntRn').textContent = Math.round(10 * pc);
+  const pin = pop(t, A('hook2'), .5);
+  tf($('#cntL'), { s: pin, o: pin > 0 && !reveal ? 1 : 0 }); tf($('#cntR'), { s: pop(t, A('hook2') + .1, .5), o: pin > 0 && !reveal ? 1 : 0 });
+  // badge Seomastertech qui se colle sur la façade
+  const tb = W('reveal', 'Seomastertech') - .05, pb = P(t, tb, .45, E.back2);
+  tf($('#badge'), { s: lerp(2.6, 1, pb), r: lerp(-20, -4, pb), o: t >= tb ? 1 : 0 });
+  $$('.spk', $('#sStreet')).forEach((e, i) => {
+    const a = i / 8 * Math.PI * 2, q = P(t, tb + .1, .8, E.out5), f = 1 - P(t, tb + .5, .5, E.lin);
+    tf(e, { x: 340 - 22 + Math.cos(a) * 260 * q, y: 760 - 22 + Math.sin(a) * 140 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 && t >= tb ? f : 0 });
+  });
+}
+
+function compare(t) {
+  enterExit($('#sCompare'), t, T.cmpIn, T.cmpOut);
+  ['travail', 'qualité', 'prix'].forEach((w, i) => {
+    const s = W('same', w), r = $$('.cmpRow')[i];
+    const p = P(t, s - .1, .45, E.out5);
+    tf(r, { x: (1 - p) * (i % 2 ? 300 : -300), o: p });
+    tf($('.ckL', r), { s: pop(t, s + .12, .45) }); tf($('.ckR', r), { s: pop(t, s + .2, .45) });
+  });
+  const q = W('why', 'différence') - .3, pq = P(t, q, .6, E.elastic);
+  tf($('#qmark'), { s: pq, r: Math.sin((t - q) * 8) * 8 * (1 - P(t, q, 1.2)), o: t >= q ? 1 : 0 });
+}
+
+function seo(t) {
+  enterExit($('#sSeo'), t, T.seoIn, T.seoOut);
+  const m = W('seo', 'SEO');
+  $$('.seoBox').forEach((b, i) => {
+    tf(b, { y: (1 - P(t, T.seoIn + i * .08, .5, E.out5)) * 200, o: P(t, T.seoIn + i * .08, .3) });
+    const p = P(t, m + i * .14, .35, E.back2);
+    tf($('.seoL', b), { s: lerp(2.2, 1, p), r: (1 - p) * (i - 1) * 12, o: t >= m + i * .14 ? 1 : 0 });
+  });
+  const shake = t > m && t < m + .5 ? Math.sin((t - m) * 90) * 10 * (1 - (t - m) / .5) : 0;
+  $('#seoBoxes').style.transform = `translateX(${shake}px)`;
+  tf($('#seoSub'), { y: (1 - P(t, m + .45, .5, E.out5)) * 40, o: P(t, m + .45, .4) });
+}
+
+function phone(t) {
+  enterExit($('#sPhone'), t, T.phoneIn, T.phoneOut);
+  // voiture en panne puis téléphone qui monte
+  const tp = W('panne', 'téléphone') - .2;
+  const pc = P(t, T.phoneIn, .5, E.out5);
+  tf($('#brokeCar'), { x: (1 - pc) * -500, y: 0, o: 1 - P(t, tp, .3) });
+  $$('.sm', $('#brokeCar')).forEach((c, i) => {
+    const k = ((((t - W('panne', 'panne') + i * .3) % 1.2) + 1.2) % 1.2) / 1.2, on = t > W('panne', 'panne');
+    c.setAttribute('cx', 30 + k * 30); c.setAttribute('cy', 30 - k * 140); c.setAttribute('r', 16 + k * 30); c.style.opacity = on ? (1 - k) * .8 : 0;
+  });
+  tf($('#warn'), { s: pop(t, W('panne', 'panne'), .5) });
+  $('#warn').style.transformBox = 'fill-box'; $('#warn').style.transformOrigin = '50% 50%';
+  const ph = P(t, tp, .6, E.out5);
+  tf($('#phone'), { y: (1 - ph) * 1300, r: (1 - ph) * 8, o: t >= tp ? 1 : 0 });
+  // frappe de la recherche
+  const q = 'garage près de moi', qa = W('panne', 'garage'), qb = SEG.panne.b;
+  const n = t < qa ? 0 : clamp(Math.floor((t - qa) / ((qb - qa) / q.length)) + 1, 0, q.length);
+  $('#q').textContent = q.slice(0, n);
+  const kb = P(t, qa - .5, .35, E.out5) * (1 - P(t, A('list') - .15, .3, E.in));
+  tf($('#kbd'), { y: (1 - kb) * 400 });
+  const cur = n > 0 && t < qb + .05 ? q[n - 1] : '';
+  $$('.key', $('#kbd')).forEach(k => { k.style.background = k.dataset.k === cur ? '#C9D6FF' : '#fff'; });
+  $('#caret').style.opacity = t < A('list') && Math.floor(t * 3.4) % 2 === 0 ? 1 : 0;
+  // résultats
+  const ra = A('list') - .05;
+  const pr = P(t, ra, .5, E.out5);
+  $('#results').style.opacity = pr; $('#results').style.transform = `translateY(${(1 - pr) * 80 - P(t, W('marcel', 'Page') - .3, .9, E.inOut) * 1290}px)`;
+  const leon = P(t, W('list', 'Premier') - .1, .5, E.back2);
+  tf($('#rLeon'), { s: lerp(1, 1.06, Math.sin(clamp((t - W('list', 'Premier')) / .6) * Math.PI)) });
+  $('#rLeon').style.boxShadow = `0 ${12 * leon}px ${40 * leon}px rgba(79,100,232,${.35 * leon})`;
+  $('#pinMain').setAttribute('transform', `translate(205 ${66 - (1 - P(t, ra + .2, .6, E.back2)) * 60})`);
+  const inv = W('marcel', 'invisible');
+  $('#rMarcel').style.opacity = lerp(.9, .18, P(t, inv - .1, .4));
+  const st = P(t, inv, .35, E.back2);
+  tf($('#stamp'), { s: lerp(2.4, 1, st), r: -12, o: t >= inv ? 1 : 0 });
+}
+
+function def(t) {
+  enterExit($('#sDef'), t, T.defIn, T.defOut);
+  tf($('#defA'), { y: (1 - P(t, T.defIn + .05, .45, E.out5)) * 40, o: P(t, T.defIn + .05, .3) });
+  const pb = P(t, W('def', 'référencement') - .05, .5, E.back);
+  tf($('#defB'), { s: lerp(.6, 1, pb), o: clamp(pb * 2) });
+  const ps = P(t, W('def', 'convaincre') - .4, .6, E.out5);
+  tf($('#site'), { y: (1 - ps) * 300, o: ps });
+  const k = clamp((t - W('def', 'convaincre')) / 1.6);
+  $('#scanBar').style.top = (300 + k * 220) + 'px'; $('#scanBar').style.opacity = k > 0 && k < 1 ? 1 : 0;
+  $$('.scanL', $('#site')).forEach((l, i) => { l.style.background = k * 4 > i ? '#B9E8D0' : (i ? '#E1E6F5' : '#D5DCF0'); });
+  const lx = 200 + Math.sin(k * Math.PI * 2) * 260 + k * 200, ly = 820 + k * 160;
+  tf($('#lens'), { x: lx, y: ly, o: k > 0 ? 1 - P(t, W('def', 'meilleure'), .3) : 0 });
+  const pm = P(t, W('def', 'meilleure') - .05, .55, E.back2);
+  tf($('#medal'), { s: pm, r: (1 - pm) * 30, o: pm > 0 ? 1 : 0 });
+}
+
+function three(t) {
+  enterExit($('#sThree'), t, T.thIn, T.thOut);
+  tf($('#thTitle'), { y: (1 - P(t, T.thIn, .45, E.out5)) * 40, o: P(t, T.thIn, .3) });
+  const act = t >= A('c3') ? 3 : t >= A('c2') ? 2 : t >= A('c1') ? 1 : 0;
+  [1, 2, 3].forEach(i => {
+    const c = $('#cr' + i), p = P(t, T.thIn + .25 + (i - 1) * .12, .5, E.out5);
+    const on = act === i, dim = act > 0 && !on;
+    tf(c, { x: (1 - p) * 400, s: on ? 1.04 : 1, o: p * (dim ? .45 : 1) });
+    c.style.border = on ? '4px solid #7B6FE6' : '4px solid transparent';
+  });
+  $$('.kw', $('#cr1')).forEach((k, i) => tf(k, { s: pop(t, A('c1') + 1.2 + i * .28, .45) }));
+  const sp = P(t, A('c2') + .9, 1.0, E.out);
+  $('#speedBar').style.transform = `scaleX(${sp * .98})`; $('#speedNum').textContent = Math.round(sp * 98) + '/100';
+  const stars = Math.floor(clamp((t - A('c3') - 1.1) / .09, 0, 5));
+  $('#bigStars').textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+}
+
+function result(t) {
+  enterExit($('#sResult'), t, T.rsIn, T.rsOut);
+  tf($('#rsTitle'), { y: (1 - P(t, T.rsIn, .45, E.out5)) * 40, o: P(t, T.rsIn, .3) });
+  ['visibilité', "d'appels", 'rendez-vous'].forEach((w, i) => {
+    const s = W('result', w) - .15, p = P(t, s, .5, E.out5);
+    const r = $('#rr' + (i + 1));
+    tf(r, { x: (1 - p) * -500, o: p });
+    tf($('.arrow', r), { s: pop(t, s + .2, .5), y: -Math.max(0, Math.sin((t - s) * 4)) * 6 });
+    if (i === 1) tf($('.tile', r), { r: t > s + .2 && t < s + 1.2 ? Math.sin((t - s) * 60) * 12 : 0 });
+  });
+}
+
+function free(t) {
+  enterExit($('#sFree'), t, T.frIn, T.frOut);
+  tf($('#adCard'), { x: (1 - P(t, T.frIn, .5, E.out5)) * -400 });
+  const ps = P(t, W('free', 'clic') - .2, .55, E.back2);
+  tf($('#seoCard'), { s: lerp(.6, 1, ps), o: ps });
+  const clicks = [0, 1, 2, 3].map(i => A('free') + .35 + i * .4);
+  const nClicks = clicks.filter(c => t >= c).length;
+  $('#adCost').textContent = `-${(nClicks * 1.5).toFixed(2).replace('.', ',')} €`;
+  $$('.coin', $('#adCard')).forEach((c, i) => {
+    const k = clamp((t - clicks[i]) / .7);
+    tf(c, { x: (i % 2 ? 1 : -1) * k * 60, y: k * 120 - Math.sin(k * Math.PI) * 120, s: t >= clicks[i] ? 1 : 0, o: 1 - k });
+  });
+  const press = clicks.reduce((m, c) => Math.max(m, t >= c && t < c + .15 ? Math.sin((t - c) / .15 * Math.PI) : 0), 0);
+  const cx = 300 + Math.sin(t * 3) * 10, cy = 600;
+  tf($('#curF'), { x: cx, y: cy, s: 1 - .18 * press, o: P(t, T.frIn + .2, .2) * (1 - P(t, W('free', 'clic') - .3, .2)) });
+}
+
+function serv(t) {
+  enterExit($('#sServ'), t, T.svIn, T.svOut);
+  tf($('#servLogo'), { y: (1 - P(t, T.svIn, .45, E.out5)) * -60, o: P(t, T.svIn, .3) });
+  ['Site', 'référencement', 'local'].forEach((w, i) => {
+    const p = P(t, W('services', w) - .12, .5, E.back);
+    tf($('#sv' + (i + 1)), { x: (1 - p) * (i % 2 ? 500 : -500), o: clamp(p * 2) });
+  });
+  const pa = P(t, W('services', 'tout') - .3, .5, E.back2);
+  tf($('#servAll'), { s: lerp(.6, 1, pa), o: clamp(pa * 2) });
+}
+
+function cta(t) {
+  const sc = $('#sCta');
+  tf(sc, { s: lerp(1.12, 1, P(t, T.ctaIn, .32, E.out5)), o: P(t, T.ctaIn, .3) });
+  tf($('#ctaQ'), { y: (1 - P(t, T.ctaIn, .45, E.out5)) * 40, o: P(t, T.ctaIn, .3) });
+  const pl = P(t, W('cta', 'Léon') - .2, .5, E.back2), pr = P(t, W('cta', 'Marcel') - .2, .5, E.back2);
+  tf($('#vL'), { s: lerp(.5, 1, pl) * (1 + .03 * Math.sin(t * 5) * (t > W('cta', 'Marcel') ? 1 : 0)), r: (1 - pl) * -10, o: clamp(pl * 2) });
+  tf($('#vR'), { s: lerp(.5, 1, pr), r: (1 - pr) * 10, o: clamp(pr * 2) });
+  tf($('#vsBadge'), { s: pop(t, W('cta', 'Marcel') + .2, .5) });
+  const pc = P(t, W('cta2', 'commentaire') - .2, .5, E.back2);
+  tf($('#comment'), { s: lerp(.6, 1, pc), y: (1 - pc) * 60, o: clamp(pc * 2) });
+  // carte de fin
+  const te = W('cta2', 'rendez-vous') - .15, r = P(t, te, .5, E.in) * 1500;
+  const ec = $('#endCard');
+  ec.style.visibility = t >= te ? 'visible' : 'hidden';
+  ec.style.clipPath = `circle(${r}px at 540px 980px)`;
+  const pt = P(t, te + .4, .6, E.back2);
+  tf($('#endTile'), { s: pt, r: (1 - pt) * -14, y: Math.sin(t * 2) * 5 });
+  tf($('#endWord'), { y: (1 - P(t, te + .55, .5, E.out5)) * 50, o: P(t, te + .55, .3) });
+  tf($('#endTag'), { y: (1 - P(t, te + .7, .5, E.out5)) * 50, o: P(t, te + .7, .3) });
+  const pu = P(t, W('cta2', 'seomastertech') - .1, .55, E.back2);
+  tf($('#endUrl'), { s: lerp(.6, 1, pu) * (1 + (t > W('cta2', 'seomastertech') + .6 ? .025 * Math.sin((t - W('cta2', 'seomastertech')) * 6) : 0)), o: clamp(pu * 2) });
+}
+
+const SCENES = () => [['sStreet', 0, T.streetOut + .05, street], ['sStreet', T.revIn, T.revOut + .05, street],
+  ['sCompare', T.cmpIn, T.cmpOut + .05, compare], ['sSeo', T.seoIn, T.seoOut + .05, seo], ['sPhone', T.phoneIn, T.phoneOut + .05, phone],
+  ['sDef', T.defIn, T.defOut + .05, def], ['sThree', T.thIn, T.thOut + .05, three], ['sResult', T.rsIn, T.rsOut + .05, result],
+  ['sFree', T.frIn, T.frOut + .05, free], ['sServ', T.svIn, T.svOut + .05, serv], ['sCta', T.ctaIn, 999, cta]];
+
+window.render = t => {
+  bg(t);
+  const on = {};
+  for (const [id, a, b, fn] of SCENES()) { if (t >= a && t < b) { on[id] = true; fn(t); } }
+  for (const s of $$('.scene')) vis(s, !!on[s.id]);
+  captions(t);
+  // la carte de fin masque les sous-titres une fois l'adresse affichée
+  if (t > W('cta2', 'rendez-vous') + .2) $('#capIn').style.opacity = 0;
+};
+
+document.fonts.ready.then(() => Promise.all(['500', '600', '700', '800'].map(w => document.fonts.load(`${w} 40px Poppins`)))).then(() => { init(); window.render(0); });
+</script>
+</body>
+</html>
