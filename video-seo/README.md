@@ -1,6 +1,6 @@
 # Seomastertech – le SEO expliqué (vidéo narrée, 1 min)
 
-Vidéo verticale 9:16 (1080×1920, 30 i/s, 64 s) pour Instagram Reels et TikTok. Un narrateur raconte l'histoire de deux garages de la même rue : même travail, même qualité, mêmes prix. Pourtant, le garage Léon a 3 fois plus de clients que le garage Marcel, parce qu'il a fait appel à Seomastertech pour son référencement.
+Vidéo verticale 9:16 (1080×1920, 30 i/s, 1 min) pour Instagram Reels et TikTok. Une narratrice raconte l'histoire de deux garages de la même rue : même travail, même qualité, mêmes prix. Pourtant, le garage Léon a 3 fois plus de clients que le garage Marcel, parce qu'il a fait appel à Seomastertech pour son référencement.
 
 ## Livrables (`output/`)
 
@@ -33,7 +33,7 @@ Les garages Léon et Marcel sont fictifs ; les chiffres (3 fois plus de clients,
 ## Comment c'est fabriqué
 
 1. `iso.js` : le quartier en 3D isométrique (diorama low-poly) : garages, immeubles, maison, boulangerie, café, mobilier urbain, voitures et piétons animés.
-1. `voice.py` : voix off de synthèse française (Piper « Tom », via sherpa-onnx), phrase par phrase, avec le minutage de chaque mot (`build/timeline.json`). La colonne `say` contient l'orthographe phonétique lue par la voix (« Gougle », « S.E.O. », « Séo Master Tek ») ; la colonne `show` contient le sous-titre affiché.
+1. `voice.py` : voix off neuronale française (Kokoro, voix « ff_siwis », modèle libre), phrase par phrase, avec le minutage de chaque mot (`build/timeline.json`). La voix est pilotée en phonétique : les mots étrangers et de marque ont une transcription écrite à la main (`IPA` : SEO « esse-eu-o », Google « gougueul », Seomastertech « séo-masteur-tèk »), et `FIXES` corrige les liaisons trop formelles et « pub ». La colonne `say` est lue par la voix (avec les marqueurs `{SEO}`, `{GOOGLE}`…) ; la colonne `show` est le sous-titre affiché.
 2. `index.html` + `render.js` : l'animation se cale automatiquement sur le minutage de la voix, puis Chromium la rend image par image.
 3. `audio.py` : musique 120 BPM et bruitages synthétisés (libres de droits), musique atténuée sous la voix, mixage à −14 LUFS.
 

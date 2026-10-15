@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reconstruit toute la vidéo : voix off -> animation -> bande-son -> MP4 finaux.
-# Prérequis : node + playwright (Chromium), python3 + numpy + soundfile + sherpa-onnx, ffmpeg.
+# Prérequis : node + playwright (Chromium), python3 + numpy + soundfile + kokoro-onnx, ffmpeg.
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p build output
