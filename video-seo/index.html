@@ -308,22 +308,37 @@ const LOGO = w => `<svg viewBox="0 0 130 92" width="${w}" height="${w * 92 / 130
   <g class="lg"><rect x="6" y="32" width="58" height="54" rx="27" fill="url(#gC)" filter="url(#sh)"/></g></svg>`;
 const SPARK = c => `<svg viewBox="0 0 24 24" width="44" height="44"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
 
-let BADGE_CX = 13.75;
-const CAR_COLS = ['#4F7FE8', '#F0506E', '#22C38E', '#FFB938', '#7E5CFF'];
+let BADGE_CX = 10;
+const CAR_COLS = ['#4F7FE8', '#F0506E', '#22C38E', '#FFB938', '#7E5CFF', '#E8EEF5'];
+// piétons : marcheurs en boucle sur le trottoir, clients devant chez Léon et au café, un client qui entre chez Léon
+const PEOPLE = [
+  { x0: -2, y: 39.4, dir: 1, v: 2.0, shirt: '#F0506E', pants: '#2E3550', skin: '#F6CDB0', hair: '#3A2618' },
+  { x0: 108, y: 40.8, dir: -1, v: 1.7, shirt: '#22C38E', pants: '#3B5A8C', skin: '#A8714A', hair: '#1E130B' },
+  { x0: 62, y: 38.7, dir: 1, v: 1.5, shirt: '#FFB938', pants: '#5A4636', skin: '#E0A982', hair: '#6E4B33' },
+  { x0: 86, y: 39.9, dir: -1, v: 2.2, shirt: '#7E5CFF', pants: '#2E3550', skin: '#F6CDB0', hair: '#D9AC7C' },
+  { x0: 20, y: 40.9, dir: -1, v: 1.6, shirt: '#E8EEF5', pants: '#3B5A8C', skin: '#7A4E32', hair: '#1E130B' },
+  { stand: [32.6, 38.2], dir: 1, shirt: '#4F7FE8', pants: '#2E3550', skin: '#7A4E32', hair: '#1E130B' },
+  { stand: [35.2, 39.3], dir: -1, shirt: '#E8703A', pants: '#3B5A8C', skin: '#F6CDB0', hair: '#A8774C' },
+  { stand: [98.6, 39.4], dir: -1, shirt: '#C9D1E6', pants: '#5A4636', skin: '#E0A982', hair: '#3A2618' },
+  { enter: true, dir: 1, shirt: '#2F8F6B', pants: '#2E3550', skin: '#F6CDB0', hair: '#3A2618' },
+];
 function buildStreet() {
   $('#street').innerHTML = ISO.street();
-  $('#cars').innerHTML = CAR_COLS.map((c, i) => `<g class="carW" id="car${i}"><g class="cx">${ISO.car(c, 'x')}</g><g class="cy" style="display:none">${ISO.car(c, 'y')}</g></g>`).join('');
+  let dyn = ISO.PROPS.map(pr => `<g class="dz" data-k="${pr.k}">${pr.svg}</g>`).join('');
+  dyn += CAR_COLS.map((c, i) => `<g class="dz carW" id="car${i}"><g class="cx">${ISO.car(c, 'x')}</g><g class="cy" style="display:none">${ISO.car(c, 'y')}</g></g>`).join('');
+  dyn += PEOPLE.map((_, i) => `<g class="dz ped" id="pd${i}"></g>`).join('');
+  $('#dyn').innerHTML = dyn;
   // badge Seomastertech posé dans le plan de la façade du garage Léon
-  $('#gL .badgeSlot').innerHTML = `<g id="badgeIso"><rect x="5" y="-9.2" width="17.5" height="6.2" rx=".9" fill="#fff" stroke="#E3E7F3" stroke-width=".15"/>
-    <g transform="translate(5.7 -8.4) scale(.036)">${LOGO(130).replace(/<svg[^>]*>|<\/svg>/g, '')}</g>
-    <text x="10.9" y="-7.2" font-family="Poppins" font-weight="500" font-size=".95" fill="#66709A">Propulsé par</text>
-    <text x="10.9" y="-4.9" font-family="Poppins" font-weight="700" font-size="1.65" fill="#1D4EDF">Seomastertech</text></g>`;
+  $('#gL .badgeSlot').innerHTML = `<g id="badgeIso"><rect x="2.2" y="-9.2" width="16" height="5.8" rx=".8" fill="#fff" stroke="#E3E7F3" stroke-width=".15"/>
+    <g transform="translate(2.8 -8.5) scale(.033)">${LOGO(130).replace(/<svg[^>]*>|<\/svg>/g, '')}</g>
+    <text x="7.6" y="-7.3" font-family="Poppins" font-weight="500" font-size=".85" fill="#66709A">Propulsé par</text>
+    <text x="7.6" y="-5.1" font-family="Poppins" font-weight="700" font-size="1.45" fill="#1D4EDF">Seomastertech</text></g>`;
   const bb = [...$$('#badgeIso text')].reduce((m, e) => Math.max(m, e.getBBox().x + e.getBBox().width), 0);
-  $('#badgeIso rect').setAttribute('width', (bb - 5 + .9).toFixed(2));
-  BADGE_CX = (5 + bb + .9) / 2;
+  $('#badgeIso rect').setAttribute('width', (bb - 2.2 + .8).toFixed(2));
+  BADGE_CX = (2.2 + bb + .8) / 2;
   // compteurs de clients au-dessus des toits
   const place = (id, wx, wy) => { const [x, y] = ISO.p(wx, wy, 27); const e = $(id); e.style.left = (x - e.offsetWidth / 2) + 'px'; e.style.top = (150 + y - 120) + 'px'; };
-  place('#cntL', 23, 24); place('#cntR', 65, 24);
+  place('#cntL', ISO.LEON_X + 15, 24); place('#cntR', ISO.MARCEL_X + 15, 24);
 }
 
 // ------------------------------------------------------------------ sons (exportés pour audio.py)
@@ -389,9 +404,10 @@ function init() {
   'SEO'.split('').forEach(ch => $('#seoBoxes').insertAdjacentHTML('beforeend', `<div class="seoBox" style="position:relative;width:270px;height:330px;border-radius:50px;background:#fff;box-shadow:var(--shadow);border:5px dashed #C9D1E6">
     <div class="seoL" style="position:absolute;inset:-5px;border-radius:50px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:800;font-size:220px;line-height:1">${ch}</div></div>`));
   // broken car
-  $('#brokeCar').innerHTML = `<svg width="480" height="300" viewBox="387 192 130 81" style="overflow:visible">${ISO.car('#F0506E', 'x')}
-    <g id="smoke">${[0, 1, 2, 3].map(() => `<circle class="sm" cx="432" cy="207" r="3" fill="#B9C0D6"/>`).join('')}</g>
-    <g id="warn" transform="translate(470 180) scale(.3)"><path d="M30 2 L58 54 L2 54 Z" fill="#FFB938" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="27" y="18" width="6" height="20" rx="3" fill="#fff"/><circle cx="30" cy="45" r="3.5" fill="#fff"/></g></svg>`;
+  { const [ox, oy] = ISO.p(0, 0, 0), f = ISO.K / 7.8, [smx, smy] = ISO.p(-3, 0, 2.7); window.SMOKE0 = [smx, smy, f];
+    $('#brokeCar').innerHTML = `<svg width="480" height="300" viewBox="${ox - 65 * f} ${oy - 48 * f} ${130 * f} ${81 * f}" style="overflow:visible">${ISO.car('#F0506E', 'x')}
+    <g id="smoke">${[0, 1, 2, 3].map(() => `<circle class="sm" cx="${smx}" cy="${smy}" r="3" fill="#B9C0D6"/>`).join('')}</g>
+    <g id="warn" transform="translate(${ox + 18 * f} ${oy - 60 * f}) scale(${.3 * f})"><path d="M30 2 L58 54 L2 54 Z" fill="#FFB938" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="27" y="18" width="6" height="20" rx="3" fill="#fff"/><circle cx="30" cy="45" r="3.5" fill="#fff"/></g></svg>`; }
   // clavier du téléphone
   ['azertyuiop', 'qsdfghjklm', 'wxcvbn'].forEach((row, r) => {
     $('#kbd').insertAdjacentHTML('beforeend', `<div style="display:flex;justify-content:center;gap:7px;margin-bottom:12px">${row.split('').map(k =>
@@ -478,48 +494,67 @@ function street(t) {
   const reveal = t >= T.revIn;
   // caméra : zoom d'ouverture (mouvement dès la 1re image), puis zoom sur la façade de Léon à la révélation
   let s = lerp(1.15, 1, P(t, 0, 1.6, E.out5)), x = 0, y = 0;
-  if (reveal) { const z = P(t, T.revIn, .9, E.inOut); s = lerp(1, 1.6, z); x = lerp(0, 282, z); y = lerp(0, 111, z); }
+  const ZS = 1.65, [fx, fy] = ISO.p(ISO.LEON_X + 11, 36, 8), ZX = 540 - 540 - (fx - 540) * ZS, ZY = 470 - 530 - (fy - 530) * ZS;
+  if (reveal) { const z = P(t, T.revIn, .9, E.inOut); s = lerp(1, ZS, z); x = lerp(0, ZX, z); y = lerp(0, ZY, z); }
   tf($('#street'), { s, x, y });
   tf($('#streetCam'), { o: reveal ? P(t, T.revIn, .25) * (1 - P(t, T.revOut - .2, .2, E.in)) : 1 - P(t, T.streetOut - .2, .25, E.in) });
-  // voitures (coordonnées monde) : elles arrivent par la droite et font la queue devant chez Léon
-  const t0 = A('hook2') + .05, spots = [17, 28.5, 40, 51.5, 63], o0 = ISO.p(0, 0, 0);
-  const cars = [];
-  for (let i = 0; i < 5; i++) {
-    const st = t0 + i * .35, pr = P(t, st, 1.0, E.out);
-    let wx = lerp(94, spots[i], pr), wy = 46, op = clamp((t - st) / .15), orient = 'x';
-    if (i === 0) {   // la première voiture tourne et entre dans l'atelier
-      const enter = P(t, t0 + 1.15, .6, E.inOut);
-      if (enter > 0) { orient = 'y'; wy = lerp(46, 31, enter); }
-      op *= 1 - P(t, t0 + 1.55, .25);
+  // voitures : elles arrivent par la droite et font la queue devant chez Léon ; une voiture circule en face
+  const t0 = A('hook2') + .05, door = ISO.LEON_X + 9.75, spots = [door, door + 11.5, door + 23, door + 34.5, door + 46], o0 = ISO.p(0, 0, 0);
+  for (let i = 0; i < 6; i++) {
+    let wx, wy = 46, op = 1, orient = 'x';
+    if (i === 5) { wx = 114 - ((t * 11 + 30) % 128); wy = 56.5; op = clamp((wx + 6) / 5) * clamp((112 - wx) / 5); }
+    else if (reveal) { wx = spots[i] + (i === 0 ? 0 : 0); }
+    else {
+      const st = t0 + i * .35, pr = P(t, st, 1.0, E.out);
+      wx = lerp(110, spots[i], pr); op = clamp((t - st) / .15) * clamp((112 - wx) / 6);
+      if (i === 0) {   // la première voiture tourne et entre dans l'atelier
+        const enter = P(t, t0 + 1.15, .6, E.inOut);
+        if (enter > 0) { orient = 'y'; wy = lerp(46, 31, enter); }
+        op *= 1 - P(t, t0 + 1.55, .25);
+      }
     }
-    if (reveal) { wx = [20, 31.5, 43, 54.5, 70][i]; wy = i === 4 ? 56 : 46; op = 1; orient = 'x'; if (i === 4) wx = 86 - ((t - T.revIn) * 14) % 80; }
-    cars.push({ i, wx, wy, op, orient });
+    const g = $('#car' + i), [px, py] = ISO.p(wx, wy, .25);
+    g.setAttribute('transform', `translate(${(px - o0[0]).toFixed(1)} ${(py - o0[1]).toFixed(1)})`); g.style.opacity = op;
+    g.dataset.k = wx + wy;
+    $('.cx', g).style.display = orient === 'x' ? '' : 'none'; $('.cy', g).style.display = orient === 'y' ? '' : 'none';
   }
-  cars.sort((a, b) => (a.wx + a.wy) - (b.wx + b.wy));
-  for (const c of cars) {
-    const g = $('#car' + c.i), [px, py] = ISO.p(c.wx, c.wy, .25);
-    g.setAttribute('transform', `translate(${px - o0[0]} ${py - o0[1]})`); g.style.opacity = c.op;
-    $('.cx', g).style.display = c.orient === 'x' ? '' : 'none'; $('.cy', g).style.display = c.orient === 'y' ? '' : 'none';
-    $('#cars').appendChild(g);
-  }
-  $('#gL .door').setAttribute('opacity', .4 * Math.min(P(t, t0 + 1.05, .2), 1 - P(t, t0 + 1.9, .3)));
+  // piétons
+  PEOPLE.forEach((pp, i) => {
+    const g = $('#pd' + i);
+    let px, py, walk = true, op = 1;
+    if (pp.stand) { [px, py] = pp.stand; walk = false; }
+    else if (pp.enter) {
+      const s0 = A('hook2') - .8, d = ISO.LEON_X + 21.2;
+      px = lerp(-2, d, clamp((t - s0) / 3.2)); py = 39.6;
+      const e = P(t, s0 + 3.2, .7, E.inOut); py = lerp(39.6, 36.4, e); op = clamp((t - s0) / .3) * (1 - P(t, s0 + 3.6, .3));
+      walk = t < s0 + 3.9; if (reveal) op = 0;
+    } else {
+      px = -3 + ((((pp.x0 + 3 + pp.dir * pp.v * t) % 112) + 112) % 112); py = pp.y;
+      op = clamp((px + 3) / 3) * clamp((109 - px) / 3);
+    }
+    g.innerHTML = op > 0 ? ISO.person(px, py, t * 7 + i, { ...pp, walk }) : '';
+    g.style.opacity = op; g.dataset.k = px + py;
+  });
+  const dz = $$('.dz', $('#dyn')).sort((a, b) => a.dataset.k - b.dataset.k);
+  dz.forEach(e => $('#dyn').appendChild(e));
   // virevoltant devant chez Marcel
-  const tw = P(t, A('hook2') + .6, 2.2, E.lin), [tx, ty] = ISO.p(lerp(92, 46, tw), 57, 0);
-  $('#tumble').setAttribute('transform', `translate(${tx} ${ty - 16 - Math.abs(Math.sin(tw * 9)) * 26}) rotate(${-tw * 900})`);
+  const tw = P(t, A('hook2') + .6, 2.4, E.lin), [tx, ty] = ISO.p(lerp(112, 60, tw), 57, 0);
+  $('#tumble').setAttribute('transform', `translate(${tx} ${ty - 15 - Math.abs(Math.sin(tw * 9)) * 24}) rotate(${-tw * 900})`);
   $('#tumble').style.opacity = tw > 0 && tw < 1 && !reveal ? 1 : 0;
-  const [zx, zy] = ISO.p(80, 14, 24);
+  const [zx, zy] = ISO.p(ISO.MARCEL_X + 29, 24, 23);
   $('#zz').setAttribute('transform', `translate(${zx} ${zy - (t * 30) % 40})`); $('#zz').style.opacity = t > A('hook2') + .8 && !reveal ? .9 : 0;
   // compteurs de clients
   const pc = P(t, A('hook2') + .2, 1.6, E.out);
   $('#cntLn').textContent = Math.round(30 * pc); $('#cntRn').textContent = Math.round(10 * pc);
   const pin = pop(t, A('hook2'), .5);
-  tf($('#cntL'), { s: pin, o: pin > 0 && !reveal ? 1 : 0 }); tf($('#cntR'), { s: pop(t, A('hook2') + .1, .5), o: pin > 0 && !reveal ? 1 : 0 });
-  // badge Seomastertech qui se colle sur la façade
+  tf($('#cntL'), { s: .8 * pin, o: pin > 0 && !reveal ? 1 : 0 }); tf($('#cntR'), { s: .8 * pop(t, A('hook2') + .1, .5), o: pin > 0 && !reveal ? 1 : 0 });
+  // badge Seomastertech qui se colle sur la façade, étincelles autour
   const tb = W('reveal', 'Seomastertech') - .05, pb = P(t, tb, .45, E.back2);
-  $('#badgeIso').setAttribute('transform', `translate(${BADGE_CX} -6.1) scale(${t >= tb ? lerp(2.4, 1, pb) : 0}) translate(${-BADGE_CX} 6.1)`);
+  $('#badgeIso').setAttribute('transform', `translate(${BADGE_CX} -6.3) scale(${t >= tb ? lerp(2.4, 1, pb) : 0}) translate(${-BADGE_CX} 6.3)`);
+  const [bx, by] = ISO.p(ISO.LEON_X + BADGE_CX, 36, 6.3), sx0 = 540 + (bx - 540) * ZS + ZX, sy0 = 530 + (by - 530) * ZS + ZY + 150;
   $$('.spk', $('#sStreet')).forEach((e, i) => {
     const a = i / 8 * Math.PI * 2, q = P(t, tb + .1, .8, E.out5), f = 1 - P(t, tb + .5, .5, E.lin);
-    tf(e, { x: 495 - 22 + Math.cos(a) * 260 * q, y: 592 - 22 + Math.sin(a) * 140 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 && t >= tb ? f : 0 });
+    tf(e, { x: sx0 - 22 + Math.cos(a) * 260 * q, y: sy0 - 22 + Math.sin(a) * 140 * q, s: q * f * (i % 2 ? .7 : 1.2), r: q * 120, o: q > 0 && t >= tb ? f : 0 });
   });
 }
 
@@ -556,7 +591,7 @@ function phone(t) {
   tf($('#brokeCar'), { x: (1 - pc) * -500, y: 0, o: 1 - P(t, tp, .3) });
   $$('.sm', $('#brokeCar')).forEach((c, i) => {
     const k = ((((t - W('panne', 'panne') + i * .3) % 1.2) + 1.2) % 1.2) / 1.2, on = t > W('panne', 'panne');
-    c.setAttribute('cx', 432 + k * 6); c.setAttribute('cy', 207 - k * 30); c.setAttribute('r', 3 + k * 6); c.style.opacity = on ? (1 - k) * .8 : 0;
+    const [smx, smy, f] = window.SMOKE0; c.setAttribute('cx', smx + k * 6 * f); c.setAttribute('cy', smy - k * 30 * f); c.setAttribute('r', (3 + k * 6) * f); c.style.opacity = on ? (1 - k) * .8 : 0;
   });
   tf($('#warn'), { s: pop(t, W('panne', 'panne'), .5) });
   $('#warn').style.transformBox = 'fill-box'; $('#warn').style.transformOrigin = '50% 50%';
