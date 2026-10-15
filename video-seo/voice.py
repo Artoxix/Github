@@ -45,7 +45,7 @@ SCRIPT = [
     ('result', "Résultat : plus de visibilité, plus d'appels, plus de rendez-vous.", "Résultat : plus de visibilité, plus d'appels, plus de rendez-vous.", 0.25),
     ('free', "Et contrairement à la pub, tu ne paies pas chaque clic.", "Et contrairement à la pub, tu ne paies pas chaque clic.", 0.4),
     ('reveal', "Le garage Léon, lui, a fait appel à Séo Master Tek.", "Le garage Léon, lui, a fait appel à Seomastertech.", 0.2),
-    ('services', "Site, référencement, S.E.O. local : ils s'occupent de tout.", "Site, référencement, SEO local : ils s'occupent de tout.", 0.35),
+    ('services', "Site, référencement, S.E.O. local : on s'occupe de tout.", "Site, référencement, SEO local : on s'occupe de tout.", 0.35),
     ('cta', "Et toi, tu préfères être le garage Léon, ou le garage Marcel ?", "Et toi, tu préfères être le garage Léon… ou le garage Marcel ?", 0.3),
     ('cta2', "Dis-le en commentaire. Et rendez-vous sur Séo Master Tek point F R.", "Dis-le en commentaire. Et rendez-vous sur seomastertech.fr", 0.0),
 ]

@@ -26,7 +26,7 @@ Vidéo verticale 9:16 (1080×1920, 30 i/s, 64 s) pour Instagram Reels et TikTok.
 > Ta voiture tombe en panne. Tu sors ton téléphone et tu tapes : « garage près de moi ». Sur Google, le garage Léon ? Premier résultat. Le garage Marcel ? Page 3. Autant dire… invisible.
 > Le SEO, ou référencement naturel, c'est l'art de convaincre Google que ton site est la meilleure réponse. Pour ça, Google regarde 3 choses. 1 : ce que dit ton site. Tes services, ta ville, les bons mots-clés. 2 : la technique. Un site rapide et parfait sur mobile. 3 : la confiance. Tes avis clients et ta fiche Google.
 > Résultat : plus de visibilité, plus d'appels, plus de rendez-vous. Et contrairement à la pub, tu ne paies pas chaque clic.
-> Le garage Léon, lui, a fait appel à Seomastertech. Site, référencement, SEO local : ils s'occupent de tout. Et toi, tu préfères être le garage Léon… ou le garage Marcel ? Dis-le en commentaire. Et rendez-vous sur seomastertech.fr
+> Le garage Léon, lui, a fait appel à Seomastertech. Site, référencement, SEO local : on s'occupe de tout. Et toi, tu préfères être le garage Léon… ou le garage Marcel ? Dis-le en commentaire. Et rendez-vous sur seomastertech.fr
 
 Les garages Léon et Marcel sont fictifs ; les chiffres (3 fois plus de clients, 4,9 étoiles, 98/100) illustrent l'histoire et ne sont pas des promesses de résultat.
 
