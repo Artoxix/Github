@@ -7,6 +7,7 @@ Vidéo verticale 9:16 (1080×1920, 30 i/s, 1 min) pour Instagram Reels et TikTok
 | Fichier | Contenu |
 |---|---|
 | `Seomastertech_SEO_explique.mp4` | La vidéo finale : voix off, musique, bruitages, sous-titres (−14 LUFS) |
+| `Seomastertech_SEO.mp4` | La même vidéo en version légère (8 Mo, qualité identique à l'œil), à envoyer par WhatsApp, Messenger, e-mail ou Discord |
 | `Seomastertech_SEO_explique_sans_musique.mp4` | Voix off et bruitages sans musique, pour poser un son tendance de la plateforme |
 | `storyboard.png` | Planche des moments clés |
 
