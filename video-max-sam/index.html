@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Max &amp; Sam — la 1ère place Google garantie ? Fuis.</title>
+    <!-- GSAP en local (le CDN n'est pas joignable pendant le rendu) -->
+    <script src="assets/vendor/gsap.min.js"></script>
+    <!-- rig des personnages style 1 et minutage des voix (voice/prepare.py) -->
+    <script src="assets/rig.js"></script>
+    <script src="assets/timing.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #eef1fb; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36.2" data-width="1080" data-height="1920">
+      <!-- le décor, Max et Sam, les accessoires et les cartes du script -->
+      <div id="stage" data-composition-id="stage" data-composition-src="compositions/stage.html"
+        data-start="0" data-duration="33.1" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 1"></div>
+      <!-- carte de fin de la marque -->
+      <div id="endcard" data-composition-id="endcard" data-composition-src="compositions/endcard.html"
+        data-start="33" data-duration="3.2" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <!-- sous-titres (Max en violet, Sam en orangé) -->
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html"
+        data-start="0" data-duration="33" data-track-index="3" data-track-kind="captions"
+        data-width="1080" data-height="1920" style="z-index: 3"></div>
+
+      <!-- voix : une réplique par clip (ElevenLabs, Max = « Thomas San », Sam = « Agathe ») -->
+      <audio id="v-s1" class="clip" src="assets/voice/s1.wav" data-start="0.26" data-duration="2.892" data-track-index="10" data-volume="1"></audio>
+      <audio id="v-m1" class="clip" src="assets/voice/m1.wav" data-start="3.232" data-duration="2.203" data-track-index="11" data-volume="1"></audio>
+      <audio id="v-m2" class="clip" src="assets/voice/m2.wav" data-start="5.595" data-duration="4.497" data-track-index="11" data-volume="1"></audio>
+      <audio id="v-s2" class="clip" src="assets/voice/s2.wav" data-start="10.272" data-duration="2.065" data-track-index="10" data-volume="1"></audio>
+      <audio id="v-m3" class="clip" src="assets/voice/m3.wav" data-start="12.457" data-duration="7.225" data-track-index="11" data-volume="1"></audio>
+      <audio id="v-s3" class="clip" src="assets/voice/s3.wav" data-start="19.862" data-duration="1.69" data-track-index="10" data-volume="1"></audio>
+      <audio id="v-m4" class="clip" src="assets/voice/m4.wav" data-start="21.672" data-duration="7.352" data-track-index="11" data-volume="1"></audio>
+      <audio id="v-m5" class="clip" src="assets/voice/m5.wav" data-start="29.244" data-duration="3.403" data-track-index="11" data-volume="1"></audio>
+      <!-- musique et bruitages (audio.py, déjà baissés sous les voix) -->
+      <audio id="music" class="clip" src="assets/audio/music.wav" data-start="0" data-duration="36.2" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx" class="clip" src="assets/audio/sfx.wav" data-start="0" data-duration="36.2" data-track-index="13" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: Poppins, sans-serif; -webkit-font-smoothing: antialiased; }
+    .cp-g { position: absolute; left: 0; top: 1316px; width: 1080px; text-align: center; opacity: 0; visibility: hidden; }
+    .cp-tag {
+      display: inline-block; font-weight: 800; font-size: 30px; color: #ffffff; padding: 4px 20px 6px;
+      border-radius: 999px; letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .cp-box {
+      display: inline-block; max-width: 980px; background: #ffffff; border-radius: 30px; padding: 12px 22px 18px;
+      box-shadow: 0 8px 0 rgba(14, 26, 79, 0.08), 0 18px 36px rgba(14, 26, 79, 0.14);
+    }
+    .cp-w {
+      display: inline-block; font-weight: 800; font-size: 64px; letter-spacing: -1.5px; line-height: 1.12;
+      padding: 0 10px; margin: 0 -1px; border-radius: 16px; color: #7a84a8;
+    }
+    .cp-w.done { color: #0e1a4f; }
+    .cp-w.on { color: #ffffff; }
+    .max .cp-w.on, .max .cp-tag { background: linear-gradient(120deg, #4f7fe8 0%, #6f6fe8 45%, #a05bdc 100%); }
+    .sam .cp-w.on, .sam .cp-tag { background: linear-gradient(120deg, #e8590c, #db3a5e); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cp-list"></div>
+  </div>
+  <script>
+    (function () {
+      const T = window.TIMING;
+      const NAMES = { max: 'Max', sam: 'Sam' };
+      const MAX_WORDS = 4, MAX_CHARS = 22;
+      // groupes de 2 à 4 mots : coupure après une ponctuation, une pause de 150 ms ou la limite
+      const groups = [];
+      T.lines.forEach((ln, li) => {
+        let cur = [];
+        ln.words.forEach((w, i) => {
+          cur.push(w);
+          const next = ln.words[i + 1];
+          const chars = cur.map((x) => x.text).join(' ').length;
+          const brk = !next || /[.,!?…:]$/.test(w.text) || next.start - w.end >= 0.15 ||
+            cur.length >= MAX_WORDS || chars + 1 + next.text.length > MAX_CHARS;
+          if (brk) { groups.push({ who: ln.speaker, words: cur, line: li }); cur = []; }
+        });
+      });
+      const list = document.getElementById('cp-list');
+      const tl = gsap.timeline({ paused: true });
+      groups.forEach((g, gi) => {
+        const next = groups[gi + 1];
+        const first = g.words[0], last = g.words[g.words.length - 1];
+        const start = Math.max(first.start - 0.08, 0.1);
+        let end = last.end + 0.3;
+        if (next) end = Math.min(end, next.words[0].start - 0.08);
+        end = Math.max(end, last.end);
+        const el = document.createElement('div');
+        el.className = `cp-g ${g.who}`;
+        el.id = `cp-g${gi}`;
+        el.innerHTML = `<div class="cp-tag">${NAMES[g.who]}</div><br><div class="cp-box">` +
+          g.words.map((w, wi) => `<span class="cp-w" id="cp-g${gi}w${wi}">${w.text}</span>`).join(' ') + '</div>';
+        list.appendChild(el);
+        tl.set(el, { visibility: 'visible' }, start);
+        tl.fromTo(el, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.12, ease: 'back.out(2.2)' }, start);
+        const spans = el.querySelectorAll('.cp-w');
+        g.words.forEach((w, wi) => {
+          const span = spans[wi];
+          const nextW = g.words[wi + 1];
+          tl.set(span, { attr: { class: 'cp-w on' } }, w.start);
+          tl.set(span, { attr: { class: 'cp-w done' } }, nextW ? nextW.start : Math.min(end, w.end + 0.15));
+        });
+        tl.to(el, { opacity: 0, duration: 0.1, ease: 'power2.in' }, end - 0.1);
+        tl.set(el, { opacity: 0, visibility: 'hidden' }, end);
+      });
+      tl.set({}, {}, T.endCard);
+      window.__timelines['captions'] = tl;
+    })();
+  </script>
+</template>

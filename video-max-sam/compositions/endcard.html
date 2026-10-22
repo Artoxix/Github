@@ -1,0 +1,81 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: Poppins, sans-serif; -webkit-font-smoothing: antialiased; }
+    #ec-sheet {
+      position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+      background: linear-gradient(150deg, #4f7fe8 0%, #6f6fe8 50%, #a05bdc 100%);
+    }
+    #ec-tile {
+      position: absolute; left: 420px; top: 600px; width: 240px; height: 240px; border-radius: 64px; background: #ffffff;
+      display: grid; place-items: center; box-shadow: 0 12px 0 rgba(14, 26, 79, 0.12), 0 30px 60px rgba(14, 26, 79, 0.25);
+    }
+    #ec-name { position: absolute; left: 0; top: 900px; width: 1080px; text-align: center; color: #ffffff; font-weight: 700; font-size: 88px; letter-spacing: -2px; }
+    #ec-tagline { position: absolute; left: 0; top: 1020px; width: 1080px; text-align: center; color: rgba(255, 255, 255, 0.9); font-weight: 500; font-size: 38px; }
+    #ec-url {
+      position: absolute; left: 270px; top: 1120px; width: 540px; height: 104px; border-radius: 999px; background: #ffffff;
+      display: flex; align-items: center; justify-content: center; gap: 16px; color: #0e1a4f; font-weight: 700; font-size: 46px;
+      box-shadow: 0 10px 0 rgba(14, 26, 79, 0.12), 0 24px 50px rgba(14, 26, 79, 0.22);
+    }
+  </style>
+  <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
+    <div id="ec-sheet"></div>
+    <div id="ec-tile" class="pp">
+      <svg viewBox="0 0 130 92" width="176" height="125" overflow="visible" aria-label="Logo Seomastertech" role="img">
+        <defs>
+          <linearGradient id="ec-gV" x1="0" y1="0.2" x2="1" y2="0.6"><stop offset="0" stop-color="#3A44F0"/><stop offset="1" stop-color="#7E5CFF"/></linearGradient>
+          <linearGradient id="ec-gB" x1="0.3" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#38A6FF"/><stop offset="1" stop-color="#1E5CF2"/></linearGradient>
+          <linearGradient id="ec-gC" x1="0" y1="0.2" x2="1" y2="0.8"><stop offset="0" stop-color="#8AF1FF"/><stop offset="1" stop-color="#47B2FF"/></linearGradient>
+          <filter id="ec-sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2.2" dy="0" stdDeviation="2" flood-color="#0B1F7A" flood-opacity=".28"/></filter>
+        </defs>
+        <rect x="57" y="19" width="69" height="67" rx="33" fill="url(#ec-gV)"/>
+        <rect x="30" y="7" width="65" height="79" rx="32" fill="url(#ec-gB)" filter="url(#ec-sh)"/>
+        <rect x="6" y="32" width="58" height="54" rx="27" fill="url(#ec-gC)" filter="url(#ec-sh)"/>
+      </svg>
+    </div>
+    <div id="ec-name" class="pp">Seomastertech</div>
+    <div id="ec-tagline" class="pp">Création de sites web &amp; SEO</div>
+    <div id="ec-url" class="pp">
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#4f5fe0" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+      seomastertech.fr
+    </div>
+  </div>
+  <script>
+    (function () {
+      const FPS = 12;
+      const inner = gsap.timeline({ paused: true });
+      // la feuille aux couleurs de la marque est posée sur le décor, puis chaque pièce
+      inner.fromTo('#ec-sheet', { y: 1920, rotation: 3 }, { y: 0, rotation: 0, duration: 0.33, ease: 'power3.out' }, 0);
+      const land = (sel, t, rot = 0) => inner.fromTo(sel,
+        { y: -50, rotation: rot - 8, opacity: 0, scale: 1.08 },
+        { y: 0, rotation: rot, opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2)' }, t);
+      land('#ec-tile', 0.33, -3);
+      land('#ec-name', 0.5);
+      land('#ec-tagline', 0.58);
+      land('#ec-url', 0.75, -1.5);
+      const pieces = Array.from(document.querySelectorAll('#root .pp'));
+      function prng(seed) {
+        return function () {
+          seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      function render(time) {
+        const f = Math.floor(time * FPS + 1e-4);
+        inner.seek(f / FPS, false);
+        const r = prng(f * 17 + 9);
+        pieces.forEach((el) => {
+          el.style.translate = `${((r() * 2 - 1) * 1.2).toFixed(2)}px ${((r() * 2 - 1) * 1.2).toFixed(2)}px`;
+          el.style.rotate = `${((r() * 2 - 1) * 0.25).toFixed(3)}deg`;
+        });
+      }
+      const D = 3.2;
+      const clock = { t: 0 };
+      const tl = gsap.timeline({ paused: true });
+      tl.to(clock, { t: D, duration: D, ease: 'none', onUpdate: () => render(tl.time()) }, 0);
+      render(0);
+      window.__timelines['endcard'] = tl;
+    })();
+  </script>
+</template>

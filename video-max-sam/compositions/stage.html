@@ -1,0 +1,482 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #eef1fb;
+      font-family: Poppins, sans-serif;
+      color: #0e1a4f;
+      -webkit-font-smoothing: antialiased;
+    }
+    #root .abs { position: absolute; }
+    #st-set, #st-cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #st-cam { transform-origin: 0 0; }
+    #st-wall {
+      position: absolute; left: -400px; top: -300px; width: 1880px; height: 1520px;
+      background:
+        radial-gradient(520px 520px at 620px 560px, rgba(79, 127, 232, 0.22), transparent 70%),
+        radial-gradient(560px 560px at 1300px 900px, rgba(160, 91, 220, 0.18), transparent 70%),
+        radial-gradient(420px 420px at 1200px 380px, rgba(110, 231, 255, 0.2), transparent 70%),
+        radial-gradient(480px 480px at 500px 1150px, rgba(111, 111, 232, 0.14), transparent 70%),
+        #eef1fb;
+    }
+    #st-floor {
+      position: absolute; left: -400px; top: 1200px; width: 1880px; height: 1100px;
+      background: linear-gradient(180deg, #f7f8fe 0px, #f7f8fe 7px, #e3e8f8 8px, #dde3f6 420px);
+    }
+    #st-floor-shade {
+      position: absolute; left: -400px; top: 1176px; width: 1880px; height: 24px;
+      background: linear-gradient(180deg, rgba(14, 26, 79, 0) 0%, rgba(14, 26, 79, 0.06) 100%);
+    }
+    .st-fibre { position: absolute; left: -400px; top: -300px; width: 1880px; height: 2600px; opacity: 0.55; }
+    .st-ch { position: absolute; width: 346px; height: 717px; }
+    .st-ch svg { width: 100%; height: 100%; overflow: visible; }
+    .st-ov { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .st-card {
+      position: absolute; background: #ffffff; border-radius: 34px;
+      box-shadow: 0 10px 0 rgba(14, 26, 79, 0.08), 0 22px 40px rgba(14, 26, 79, 0.13);
+    }
+    .st-big { font-weight: 800; letter-spacing: -1.5px; line-height: 1.12; color: #0e1a4f; }
+    .st-lbl { font-weight: 600; font-size: 32px; color: #66709a; }
+    .st-hl {
+      color: #ffffff; border-radius: 16px; padding: 0 14px;
+      background: linear-gradient(120deg, #4f7fe8 0%, #6f6fe8 45%, #a05bdc 100%);
+      -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    }
+    .st-hl.red { background: #e5484d; }
+    .st-tile {
+      position: absolute; left: 30px; top: 26px; width: 80px; height: 80px; border-radius: 24px;
+      display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 44px;
+      background: linear-gradient(135deg, #4f7fe8, #a05bdc);
+    }
+    .st-mt { position: absolute; left: 132px; top: 20px; font-weight: 800; font-size: 40px; letter-spacing: -1px; }
+    .st-ms { position: absolute; left: 132px; top: 74px; font-weight: 600; font-size: 30px; color: #66709a; display: flex; align-items: center; gap: 14px; }
+    .st-bar { width: 300px; height: 16px; border-radius: 8px; background: #e1e6f5; overflow: hidden; }
+    .st-bar i { display: block; height: 100%; width: 100%; border-radius: 8px; background: linear-gradient(90deg, #4f7fe8, #a05bdc); transform-origin: 0 50%; }
+    .st-search { display: flex; align-items: center; gap: 10px; padding: 4px 18px; border-radius: 999px; background: #eef2ff; color: #4f5fe0; font-weight: 600; }
+    .st-stars { display: inline-flex; gap: 2px; }
+    #st-flicker { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #fff7e8; opacity: 0.02; pointer-events: none; }
+    #st-vignette {
+      position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none;
+      background: radial-gradient(1100px 1500px at 540px 900px, rgba(14, 26, 79, 0) 60%, rgba(14, 26, 79, 0.1) 100%);
+    }
+  </style>
+
+  <div id="root" data-composition-id="stage" data-width="1080" data-height="1920" data-layout-allow-overlap>
+    <div id="st-set">
+      <div id="st-cam">
+        <div id="st-wall"></div>
+        <svg class="st-fibre" aria-hidden="true">
+          <filter id="st-fib"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 0.05  0 0 0 0 0.1  0 0 0 0 0.3  0 0 0 0.09 0"/></filter>
+          <rect width="100%" height="100%" filter="url(#st-fib)"/>
+        </svg>
+        <div id="st-floor-shade"></div>
+        <div id="st-floor"></div>
+
+        <!-- coffre « ALGORITHME » suspendu à un fil -->
+        <div id="st-safe" class="clip" data-start="5.5" data-duration="4.6667" style="position:absolute;left:445px;top:412px;width:190px;height:230px">
+          <div id="st-safe-in" class="pp" style="position:absolute;inset:0;transform-origin:95px -412px">
+            <svg viewBox="0 0 190 230" width="190" height="230" overflow="visible" aria-hidden="true">
+              <line x1="95" y1="-700" x2="95" y2="22" stroke="#8a93b5" stroke-width="3"/>
+              <rect x="6" y="20" width="178" height="186" rx="22" fill="#2d3b6b"/>
+              <rect x="18" y="32" width="154" height="162" rx="14" fill="#3a4a80"/>
+              <circle cx="95" cy="98" r="40" fill="#e1e6f5"/>
+              <circle cx="95" cy="98" r="29" fill="#c3c9dc"/>
+              <path d="M95 62 L95 72 M95 124 L95 134 M59 98 L69 98 M121 98 L131 98" stroke="#2d3b6b" stroke-width="4" stroke-linecap="round"/>
+              <g id="st-dial"><path d="M95 98 L95 74" stroke="#0e1a4f" stroke-width="7" stroke-linecap="round"/><circle cx="95" cy="98" r="9" fill="#0e1a4f"/></g>
+              <rect x="28" y="152" width="134" height="30" rx="8" fill="#ffc845"/>
+              <text data-layout-ignore x="95" y="174" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="19" fill="#0e1a4f" letter-spacing="1">ALGORITHME</text>
+              <rect x="22" y="206" width="30" height="12" rx="4" fill="#1f2a50"/><rect x="138" y="206" width="30" height="12" rx="4" fill="#1f2a50"/>
+              <g id="st-lock">
+                <path d="M136 122 L136 104 C136 88 166 88 166 104 L166 122" stroke="#c98f1e" stroke-width="9" fill="none"/>
+                <rect x="126" y="118" width="50" height="44" rx="10" fill="#ffb938"/>
+                <circle cx="151" cy="136" r="6" fill="#7a4e0a"/><rect x="148" y="138" width="6" height="12" rx="2" fill="#7a4e0a"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- drapeau rouge planté dans le sol -->
+        <div id="st-flag" class="clip" data-start="25.8333" data-duration="3.3334" style="position:absolute;left:470px;top:780px;width:200px;height:440px">
+          <div id="st-flag-in" class="pp" style="position:absolute;inset:0;transform-origin:70px 420px">
+            <svg viewBox="0 0 200 440" width="200" height="440" overflow="visible" aria-hidden="true">
+              <ellipse cx="70" cy="424" rx="58" ry="12" fill="#0e1a4f" opacity="0.14"/>
+              <rect x="62" y="10" width="16" height="416" rx="8" fill="#c98f1e"/>
+              <circle cx="70" cy="12" r="13" fill="#ffc845"/>
+              <path d="M78 26 C120 14 150 40 196 26 L196 128 C150 142 120 116 78 128 Z" fill="#e5484d"/>
+              <path d="M78 104 C120 92 150 118 196 104 L196 128 C150 142 120 116 78 128 Z" fill="#c8323a"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- points d'interrogation (Sam) -->
+        <div id="st-q1" class="clip" data-start="10.1667" data-duration="2.25" style="position:absolute;left:0;top:0;width:1080px;height:1920px">
+          <div id="st-q1a" class="abs pp st-big" style="left:372px;top:440px;font-size:130px;color:#0e1a4f">?</div>
+          <div id="st-q1b" class="abs pp st-big" style="left:92px;top:452px;font-size:96px;color:#f0506e">?</div>
+        </div>
+        <div id="st-q2" class="clip" data-start="19.75" data-duration="1.8333" style="position:absolute;left:0;top:0;width:1080px;height:1920px">
+          <div id="st-q2a" class="abs pp st-big" style="left:380px;top:448px;font-size:120px;color:#6f6fe8">?</div>
+        </div>
+
+        <!-- étoiles de joie autour de Sam (accroche) -->
+        <div id="st-spark" class="clip" data-start="0" data-duration="3.1667" style="position:absolute;left:0;top:0;width:1080px;height:1920px">
+          <svg class="abs pp" id="st-sp1" style="left:40px;top:440px" width="92" height="92" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#ffc845"/></svg>
+          <svg class="abs pp" id="st-sp2" style="left:420px;top:500px" width="70" height="70" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#ffc845"/></svg>
+          <svg class="abs pp" id="st-sp3" style="left:96px;top:690px" width="56" height="56" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#6f6fe8"/></svg>
+        </div>
+
+        <div id="st-sam" class="st-ch" style="left:97px;top:510px"></div>
+        <div id="st-max" class="st-ch" style="left:637px;top:510px"></div>
+
+        <!-- la boule de papier jetée -->
+        <div id="st-ball" class="clip" data-start="25.4167" data-duration="0.4166" style="position:absolute;left:0;top:0;width:1080px;height:1920px">
+          <svg id="st-ball-in" viewBox="-30 -30 60 60" width="96" height="96" style="position:absolute;left:0;top:0" aria-hidden="true">
+            <path d="M-26 -6 L-18 -22 L-2 -27 L14 -22 L25 -10 L27 6 L18 22 L0 27 L-17 21 L-27 8 Z" fill="#ffffff"/>
+            <path d="M-18 -10 L-2 -4 L10 -16 M-6 6 L12 4 L18 16 M-20 12 L-6 6" stroke="#c3c9dc" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= cartes de texte (écran) ======================= -->
+    <div id="st-hook" class="clip st-ov" data-start="0" data-duration="3.1667">
+      <div id="st-hook-in" class="st-card pp" style="left:80px;top:196px;width:920px;padding:30px 44px 36px">
+        <div class="st-lbl">L'agence m'a promis :</div>
+        <div class="st-big" style="font-size:68px;margin-top:8px">« On vous garantit<br>la <span class="st-hl">1ère place</span> Google »</div>
+      </div>
+    </div>
+
+    <div id="st-fuis" class="clip st-ov" data-start="3.75" data-duration="1.75">
+      <div id="st-fuis-in" class="abs pp" style="left:150px;top:250px;padding:18px 54px 24px;border-radius:30px;background:#f0506e;box-shadow:0 10px 0 rgba(14,26,79,.1),0 22px 40px rgba(14,26,79,.16)">
+        <div class="st-big" style="font-size:150px;color:#ffffff;letter-spacing:-4px;line-height:1">Fuis.</div>
+      </div>
+    </div>
+
+    <div id="st-algo" class="clip st-ov" data-start="5.5" data-duration="4.6667">
+      <div id="st-algo-in" class="st-card pp" style="left:80px;top:196px;width:920px;padding:30px 44px 34px">
+        <div class="st-big" style="font-size:62px">Personne n'a <span class="st-hl">l'algo</span> de Google</div>
+      </div>
+    </div>
+
+    <div id="st-meth" class="clip st-ov" data-start="12.4167" data-duration="7.3333">
+      <div id="st-meth-t" class="abs pp" style="left:70px;top:190px;width:940px">
+        <div class="st-big" style="font-size:62px">Une <span class="st-hl">méthode</span>,<br>pas une promesse</div>
+      </div>
+      <div id="st-c1" class="st-card pp" style="left:70px;top:378px;width:880px;height:128px">
+        <div class="st-tile">1</div>
+        <div class="st-mt">Un site technique propre</div>
+        <div class="st-ms"><span class="st-bar"><i id="st-c1-bar"></i></span><span>98/100 · rapide sur mobile</span></div>
+      </div>
+      <div id="st-c2" class="st-card pp" style="left:70px;top:526px;width:880px;height:128px">
+        <div class="st-tile">2</div>
+        <div class="st-mt">Du contenu qui répond</div>
+        <div class="st-ms"><span class="st-search">⌕ <span id="st-c2-q">boulangerie près de moi</span></span></div>
+      </div>
+      <div id="st-c3" class="st-card pp" style="left:70px;top:674px;width:880px;height:128px">
+        <div class="st-tile">3</div>
+        <div class="st-mt">De la confiance</div>
+        <div class="st-ms"><span style="color:#0e1a4f;font-weight:800">4,9</span><span class="st-stars"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB938"/></svg></span><span>avis · fiche Google</span></div>
+      </div>
+    </div>
+
+    <div id="st-res" class="clip st-ov" data-start="21.5833" data-duration="2.5">
+      <div id="st-r1" class="st-card pp" style="left:110px;top:200px;width:860px;height:150px">
+        <svg class="abs" style="left:34px;top:30px" width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
+          <rect width="92" height="92" rx="26" fill="#eef2ff"/>
+          <path id="st-r1-line" d="M16 70 L36 54 L50 62 L76 26" stroke="#4f5fe0" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60 24 L77 24 L77 41" stroke="#4f5fe0" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="st-big abs" style="left:150px;top:36px;font-size:60px">+ de trafic <span class="st-hl">qualifié</span></div>
+      </div>
+      <div id="st-r2" class="st-card pp" style="left:110px;top:372px;width:860px;height:150px">
+        <svg id="st-r2-ph" class="abs" style="left:34px;top:30px" width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
+          <rect width="92" height="92" rx="26" fill="#e8f8f0"/>
+          <path d="M30 22 C26 22 22 26 22 30 C22 52 40 70 62 70 C66 70 70 66 70 62 L70 54 L58 48 L52 56 C44 52 40 48 36 40 L44 34 L38 22 Z" fill="#22c38e"/>
+          <path d="M58 22 C64 24 68 28 70 34 M58 12 C68 14 78 24 80 34" stroke="#22c38e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="st-big abs" style="left:150px;top:36px;font-size:60px">+ d'<span class="st-hl">appels</span></div>
+      </div>
+    </div>
+
+    <div id="st-red" class="clip st-ov" data-start="26.25" data-duration="2.9167">
+      <div id="st-red-in" class="st-card pp" style="left:80px;top:196px;width:920px;padding:30px 44px 34px">
+        <div class="st-big" style="font-size:62px">Promesse trop belle<br>= agence <span class="st-hl red">à éviter</span></div>
+      </div>
+    </div>
+
+    <div id="st-cta" class="clip st-ov" data-start="29.1667" data-duration="3.8333">
+      <div id="st-cta-in" class="st-card pp" style="left:80px;top:196px;width:920px;padding:30px 44px 34px">
+        <div class="st-lbl">Seomastertech t'offre</div>
+        <div class="st-big" style="font-size:72px;margin-top:4px"><span class="st-hl">Audit gratuit</span><br>de ton site</div>
+      </div>
+      <div id="st-cta-stamp" class="abs pp" style="left:520px;top:450px;padding:10px 26px;border:6px solid #e5484d;border-radius:18px;color:#e5484d;font-weight:800;font-size:38px;letter-spacing:-0.5px;background:rgba(255,255,255,.92)">sans promesse bidon</div>
+      <div id="st-cta-bio" class="abs pp" style="left:110px;top:470px;padding:16px 34px;border-radius:999px;background:#0e1a4f;color:#fff;font-weight:700;font-size:40px;display:flex;align-items:center;gap:14px">Lien en bio <span style="font-size:40px">↓</span></div>
+    </div>
+
+    <div id="st-flicker"></div>
+    <div id="st-vignette"></div>
+  </div>
+
+  <script>
+    (function () {
+      const T = window.TIMING;
+      const FPS = T.fps;
+      const D = T.endCard + 0.1;
+      const $ = (s) => document.querySelector(s);
+      const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const LINE = Object.fromEntries(T.lines.map((l) => [l.id, l]));
+      const W = (id, word, n = 0) => {   // instant du n-ième mot « word » (sans accents ni ponctuation) d'une réplique
+        const hit = LINE[id].words.filter((w) => norm(w.text) === word)[n];
+        if (!hit) throw new Error(`mot introuvable : ${id} ${word} ${n}`);
+        return hit.start;
+      };
+      const q = (t) => Math.round(t * FPS) / FPS;     // sur la grille 12 i/s
+
+      // ------------------------------------------------------------ personnages
+      const CONTRACT = `<g data-layout-ignore>
+        <rect x="20" y="352" width="84" height="108" rx="4" fill="#ffffff"/>
+        <rect x="20" y="352" width="84" height="108" rx="4" fill="none" stroke="#dde3f6" stroke-width="2"/>
+        <text x="62" y="372" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="12" fill="#0e1a4f">CONTRAT</text>
+        <path d="M32 382 H92 M32 390 H84 M32 398 H90" stroke="#c3c9dc" stroke-width="3"/>
+        <g transform="rotate(-12 62 426)"><circle cx="62" cy="426" r="21" fill="none" stroke="#e5484d" stroke-width="3.5"/>
+        <text x="62" y="424" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="12" fill="#e5484d">1er</text>
+        <text x="62" y="436" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="8" fill="#e5484d">GARANTI</text></g></g>`;
+      const BALL = `<g transform="translate(62 440)"><path d="M-24 -6 L-16 -20 L-2 -25 L13 -20 L23 -9 L25 6 L16 20 L0 25 L-15 19 L-25 7 Z" fill="#ffffff"/>
+        <path d="M-16 -9 L-2 -4 L9 -15 M-5 6 L11 4 L16 15 M-18 11 L-5 6" stroke="#c3c9dc" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
+      $('#st-sam').innerHTML = Rig.svg('sam', { holdR: `<g data-p="contract">${CONTRACT}</g><g data-p="ball" opacity="0">${BALL}</g>` });
+      $('#st-max').innerHTML = Rig.svg('max');
+      const H = { sam: Rig.attach($('#st-sam')), max: Rig.attach($('#st-max')) };
+      const K = 346 / 320;
+      const POS = { sam: [97, 510], max: [637, 510] };
+
+      const REST = { L: [6, 0], R: [6, 0] };
+      const SAM = {
+        arm: [
+          [0, { L: [26, 96], R: [150, 22] }, 0.01],
+          [q(W('s1', 'promis')), { L: [32, 122], R: [158, 14] }, 0.12],
+          [q(W('s1', 'la')), { L: [26, 96], R: [150, 22] }, 0.2],
+          [q(W('s1', 'place')), { L: [34, 126], R: [160, 12] }, 0.12],
+          [q(W('s1', 'google') + 0.2), { L: [26, 96], R: [150, 22] }, 0.2],
+          [q(W('m1', 'fuis') - 0.15), { L: [8, 0], R: [62, 52] }, 0.25],
+          [q(LINE.s2.start - 0.05), { L: [46, 62], R: [40, 60] }, 0.3],
+          [q(LINE.s2.end + 0.1), { L: [8, 0], R: [14, 0] }, 0.3],
+          [q(LINE.s3.start - 0.05), { L: [30, 104], R: [14, 0] }, 0.3],
+          [q(LINE.s3.end + 0.05), { L: [8, 0], R: [48, 64] }, 0.3],
+          [q(W('m4', 'dappels') - 0.05), { L: [140, 20], R: [48, 64] }, 0.2],
+          [q(W('m4', 'dappels') + 0.55), { L: [8, 0], R: [48, 64] }, 0.25],
+          [q(W('m4', 'magique')), { L: [30, -72], R: [44, 78] }, 0.17],
+          [q(W('m4', 'numero') + 0.04), { L: [8, 0], R: [18, -18] }, 0.17],
+          [q(W('m4', '1') - 0.12), { L: [8, 0], R: [168, 30] }, 0.09],
+          [q(W('m4', '1') + 0.2), { L: [8, 0], R: [12, 0] }, 0.3],
+          [q(W('m4', 'une', 1) + 0.2), { L: [22, 34], R: [22, 34] }, 0.2],
+          [q(W('m4', 'cest')), REST, 0.3],
+        ],
+        mood: [[0, 'joy'], [q(W('m1', 'fuis') - 0.1), 'surprised'], [q(W('m2', 'lalgorithme')), 'sad'],
+          [q(LINE.s2.start), 'perplexed'], [q(LINE.s2.end + 0.2), 'listen'], [q(LINE.s3.start), 'curious'],
+          [q(LINE.s3.end + 0.1), 'listen'], [q(W('m4', 'qualifie')), 'happy'], [q(W('m4', 'dappels')), 'joy'],
+          [q(W('m4', 'pas')), 'surprised'], [q(W('m4', 'magique')), 'serious'], [q(W('m4', 'numero')), 'confident'],
+          [q(W('m4', 'une', 1) + 0.2), 'surprised'], [q(W('m4', 'cest')), 'serious'], [q(LINE.m4.end), 'happy']],
+        hop: [[q(W('s1', 'promis')), -16, 0.1], [q(W('s1', 'promis') + 0.17), 0, 0.2],
+          [q(W('s1', 'google')), -18, 0.1], [q(W('s1', 'google') + 0.17), 0, 0.2],
+          [q(W('m4', 'dappels')), -14, 0.1], [q(W('m4', 'dappels') + 0.17), 0, 0.2]],
+        head: [[0, -3], [q(W('m1', 'fuis') - 0.1), -6, 0.15], [q(W('m2', 'lalgorithme')), 5], [q(LINE.s2.start), -9],
+          [q(LINE.s2.end + 0.2), 0], [q(LINE.s3.start), 8], [q(LINE.s3.end + 0.1), 0], [q(W('m4', 'pas')), -5, 0.15],
+          [q(W('m4', 'cest')), 0], [q(W('m4', 'agence')), 4, 0.12], [q(W('m4', 'agence') + 0.2), -2, 0.12], [q(W('m4', 'eviter')), 0, 0.2]],
+        lean: [[0, -2], [q(W('m1', 'fuis') - 0.1), -5, 0.15], [q(W('m1', 'je')), 0, 0.4], [q(W('m4', 'une', 1) + 0.2), -4, 0.15], [q(W('m4', 'cest')), 0, 0.3]],
+        look: [[0, [4, -2]], [q(LINE.m1.start), [5, 0]], [q(W('m2', 'personne') + 0.3), [4, -5]], [q(W('m2', 'google')), [5, 0]],
+          [q(LINE.s2.start), [0, -3]], [q(LINE.s2.end), [5, 0]], [q(LINE.s3.start), [2, -3]], [q(LINE.s3.end), [5, 0]],
+          [q(W('m4', 'pas')), [4, 4]], [q(W('m4', '1') - 0.1), [5, -5]], [q(W('m4', 'une', 1) + 0.2), [5, 4]], [q(W('m4', 'cest')), [5, 0]]],
+      };
+      const MAX = {
+        arm: [
+          [0, REST, 0.01],
+          [q(W('m1', 'fuis') - 0.17), { L: [8, 0], R: [72, 108] }, 0.2],
+          [q(W('m1', 'texplique')), { L: [8, 0], R: [36, 62] }, 0.3],
+          [q(LINE.m2.start), { L: [18, 40], R: [24, 44] }, 0.3],
+          [q(W('m2', 'lalgorithme') - 0.1), { L: [142, 12], R: [10, 0] }, 0.25],
+          [q(W('m2', 'personne', 1)), { L: [20, 42], R: [22, 44] }, 0.3],
+          [q(LINE.m2.end), REST, 0.3],
+          [q(LINE.m3.start), { L: [30, 60], R: [8, 0] }, 0.3],
+          [q(W('m3', 'un') - 0.05), { L: [136, 18], R: [8, 0] }, 0.25],
+          [q(W('m3', 'propre') + 0.1), { L: [30, 60], R: [8, 0] }, 0.3],
+          [q(W('m3', 'du') - 0.05), { L: [122, 26], R: [8, 0] }, 0.25],
+          [q(W('m3', 'tapent') + 0.15), { L: [30, 60], R: [8, 0] }, 0.3],
+          [q(W('m3', 'et') - 0.05), { L: [146, 8], R: [8, 0] }, 0.25],
+          [q(W('m3', 'tes')), { L: [146, 8], R: [36, 62] }, 0.25],
+          [q(LINE.m3.end), REST, 0.3],
+          [q(LINE.m4.start), { L: [126, 22], R: [8, 0] }, 0.25],
+          [q(W('m4', 'plus', 1) - 0.1), { L: [30, 60], R: [126, 22] }, 0.25],
+          [q(W('m4', 'pas') - 0.05), { L: [76, 14], R: [10, 0] }, 0.2],
+          [q(W('m4', 'numero')), REST, 0.3],
+          [q(W('m4', 'une', 1)), { L: [8, 0], R: [36, 60] }, 0.25],
+          [q(W('m4', 'trop')), { L: [52, 14], R: [36, 60] }, 0.2],
+          [q(W('m4', 'premier')), { L: [30, 56], R: [30, 56] }, 0.3],
+          [q(LINE.m4.end), REST, 0.3],
+          [q(LINE.m5.start), { L: [8, 0], R: [36, 62] }, 0.3],
+          [q(W('m5', 'audit') - 0.05), { L: [132, 18], R: [36, 62] }, 0.25],
+          [q(W('m5', 'sans')), { L: [8, 0], R: [42, 112] }, 0.25],
+          [q(W('m5', 'lien') - 0.05), { L: [8, 0], R: [150, 24] }, 0.2],
+          [q(W('m5', 'lien') + 0.25), { L: [8, 0], R: [150, -6] }, 0.17],
+          [q(W('m5', 'lien') + 0.5), { L: [8, 0], R: [150, 24] }, 0.17],
+          [q(W('m5', 'lien') + 0.75), { L: [8, 0], R: [150, -6] }, 0.17],
+          [q(W('m5', 'lien') + 1.0), { L: [8, 0], R: [150, 24] }, 0.17],
+        ],
+        mood: [[0, 'listen'], [q(W('s1', 'la')), 'perplexed'], [q(LINE.m1.start), 'confident'], [q(W('m1', 'je')), 'happy'],
+          [q(LINE.m2.start), 'serious'], [q(LINE.m2.end + 0.2), 'listen'], [q(LINE.m3.start), 'happy'],
+          [q(W('m3', 'tes')), 'joy'], [q(W('m3', 'ta')), 'happy'], [q(LINE.m4.start), 'confident'], [q(W('m4', 'dappels')), 'happy'],
+          [q(W('m4', 'pas')), 'serious'], [q(W('m4', 'eviter') + 0.3), 'confident'], [q(LINE.m5.start), 'happy'],
+          [q(W('m5', 'bidon') - 0.15), 'wink'], [q(W('m5', 'lien')), 'happy']],
+        head: [[0, -4], [q(W('s1', 'la')), -8, 0.2], [q(LINE.m1.start), 0],
+          [q(W('m2', 'personne', 1)), -6, 0.1], [q(W('m2', 'personne', 1) + 0.17), 6, 0.12], [q(W('m2', 'personne', 1) + 0.34), -6, 0.12],
+          [q(W('m2', 'personne', 1) + 0.51), 5, 0.12], [q(W('m2', 'personne', 1) + 0.68), 0, 0.15],
+          [q(LINE.m2.end + 0.2), -4], [q(LINE.m3.start), 0],
+          [q(W('m4', 'promesse')), -5, 0.1], [q(W('m4', 'promesse') + 0.17), 5, 0.12], [q(W('m4', 'promesse') + 0.34), -5, 0.12], [q(W('m4', 'promesse') + 0.51), 0, 0.15],
+          [q(W('m5', 'bidon') - 0.15), 7, 0.15], [q(W('m5', 'lien')), 0, 0.2]],
+        lean: [[0, 0], [q(W('m1', 'fuis') - 0.17), 3, 0.2], [q(W('m1', 'je')), 0, 0.4]],
+        hop: [[q(W('m4', 'dappels')), -8, 0.1], [q(W('m4', 'dappels') + 0.17), 0, 0.2]],
+        look: [[0, [-5, 0]], [q(LINE.m1.start), [0, 0]], [q(W('m2', 'lalgorithme') - 0.2), [-4, -5]], [q(W('m2', 'personne', 1)), [0, 0]],
+          [q(LINE.s2.start - 0.2), [-5, 0]], [q(LINE.m3.start), [0, 0]],
+          [q(W('m3', 'un')), [-4, -4]], [q(W('m3', 'propre') + 0.2), [0, 0]], [q(W('m3', 'du')), [-4, -4]], [q(W('m3', 'tapent') + 0.2), [0, 0]],
+          [q(W('m3', 'et')), [-4, -4]], [q(W('m3', 'tes')), [0, 0]], [q(LINE.s3.start - 0.2), [-5, 0]],
+          [q(LINE.m4.start), [-3, -4]], [q(W('m4', 'plus', 1)), [0, 0]], [q(W('m4', 'pas')), [-5, 2]],
+          [q(W('m4', 'trop')), [-4, 4]], [q(W('m4', 'premier')), [0, 0]], [q(W('m5', 'audit')), [-4, -4]], [q(W('m5', 'sans')), [0, 0]]],
+      };
+      const RIG = { sam: SAM, max: MAX };
+
+      function blinkAt(who, f) {          // clignements : 2 images toutes les 2,5 à 4,2 s
+        const r = Rig.prng(who === 'max' ? 101 : 202);
+        let t = 0.8 + r() * 1.5;
+        while (t * FPS < f + 3) {
+          const b = Math.round(t * FPS);
+          if (f === b || f === b + 1) return true;
+          t += 2.5 + r() * 1.7;
+        }
+        return false;
+      }
+
+      function poseChar(who, t, f) {
+        const k = RIG[who];
+        const r = Rig.prng(f * 31 + (who === 'max' ? 7 : 3));
+        const j = (a) => (r() * 2 - 1) * a;
+        const talk = +(T.mouth[who][f] || 0);
+        const arm = Rig.track(k.arm, t, REST);
+        Rig.apply(H[who], {
+          arm: { L: [arm.L[0] + j(0.7), arm.L[1] + j(0.7)], R: [arm.R[0] + j(0.7), arm.R[1] + j(0.7)] },
+          head: Rig.track(k.head, t, 0) + j(0.6) + (talk ? j(1.2) : 0),
+          headDy: talk >= 2 ? -1.5 : 0,
+          lean: Rig.track(k.lean, t, 0) + j(0.3),
+          dx: j(0.7),
+          dy: Rig.track(k.hop || [], t, 0) + j(0.4),
+          squash: 1 + 0.008 * Math.sin((t * 2 * Math.PI) / 2.6),
+          mood: Rig.step(k.mood, t, 'neutral'),
+          talk,
+          blink: blinkAt(who, f),
+          look: Rig.track(k.look, t, [0, 0]),
+        });
+      }
+
+      // contrat → boule froissée → main vide
+      const tCrumple = q(W('m4', 'magique') + 0.12);
+      const tThrow = 25.4167;
+      function props(t) {
+        H.sam.contract.setAttribute('opacity', t < tCrumple ? 1 : 0);
+        H.sam.ball.setAttribute('opacity', t >= tCrumple && t < tThrow ? 1 : 0);
+      }
+
+      // ------------------------------------------------------------ minutage des pièces (12 i/s)
+      const inner = gsap.timeline({ paused: true });
+      const SHOTS = {
+        wide: { x: 540 - 540 * 1.12, y: 1290 - 1200 * 1.12, scale: 1.12 },
+        maxCU: { x: 540 - 810 * 1.9, y: 900 - 661 * 1.9, scale: 1.9 },
+        samCU: { x: 540 - 270 * 1.9, y: 900 - 661 * 1.9, scale: 1.9 },
+        maxMeth: { x: 600 - 810 * 1.7, y: 1040 - 661 * 1.7, scale: 1.7 },
+        twoMed: { x: 540 - 540 * 1.32, y: 1000 - 700 * 1.32, scale: 1.32 },
+      };
+      const CUTS = [[0, 'wide'], [3.1667, 'maxCU'], [5.5, 'wide'], [10.1667, 'samCU'], [12.4167, 'maxMeth'],
+        [19.75, 'samCU'], [21.5833, 'twoMed'], [25.8333, 'wide'], [29.1667, 'maxCU']];
+      gsap.set('#st-cam', { ...SHOTS.wide, transformOrigin: '0 0' });   // cadrage de la 1re image
+      CUTS.forEach(([t, s]) => inner.set('#st-cam', { ...SHOTS[s], transformOrigin: '0 0' }, t));
+
+      const land = (sel, t, rot = 0, from = {}) => inner.fromTo(sel,
+        { y: -46, rotation: rot - 7, opacity: 0, scale: 1.04, ...from },
+        { y: 0, rotation: rot, opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2)' }, t);
+      const lift = (sel, t) => inner.to(sel, { y: -30, rotation: '+=5', opacity: 0, duration: 0.17, ease: 'power2.in' }, t);
+
+      // accroche : déjà posée à l'image 0, petit coup de tampon
+      inner.fromTo('#st-hook-in', { rotation: -2, scale: 1 }, { rotation: -1, scale: 1.03, duration: 0.09, ease: 'none' }, 0.17);
+      inner.to('#st-hook-in', { rotation: -2, scale: 1, duration: 0.17, ease: 'none' }, 0.26);
+      ['#st-sp1', '#st-sp2', '#st-sp3'].forEach((s, i) => {
+        inner.fromTo(s, { scale: 0.5, rotation: 0 }, { scale: 1.15, rotation: 45, duration: 0.5, ease: 'steps(3)', repeat: 4, yoyo: true }, i * 0.17);
+      });
+      land('#st-fuis-in', 3.75, 6, { scale: 1.6, y: 0 });
+      // coffre : tombe du ciel, rebondit au bout du fil, se balance ; le cadenas tremble sur « garantir »
+      inner.fromTo('#st-safe-in', { y: -760, rotation: 0 }, { y: 0, duration: 0.25, ease: 'power2.in' }, 5.6667);
+      inner.to('#st-safe-in', { y: -26, duration: 0.1666, ease: 'power2.out' }, 5.9167);
+      inner.to('#st-safe-in', { y: 0, duration: 0.17, ease: 'power2.in' }, 6.0833);
+      inner.fromTo('#st-safe-in', { rotation: 0 }, { rotation: 2.4, duration: 0.75, ease: 'sine.inOut', yoyo: true, repeat: 4, immediateRender: false }, 6.25);
+      inner.fromTo('#st-lock', { rotation: 0, svgOrigin: '151 100' }, { rotation: 14, duration: 0.09, ease: 'none', yoyo: true, repeat: 5 }, q(W('m2', 'garantir')));
+      inner.fromTo('#st-dial', { rotation: 0, svgOrigin: '95 98' }, { rotation: 360, duration: 1.4, ease: 'steps(8)' }, q(W('m2', 'lalgorithme')));
+      land('#st-algo-in', 5.5833, -1.5);
+      land('#st-q1a', 10.5, 8);
+      land('#st-q1b', 11.6667, -10);
+      land('#st-q2a', q(W('s3', 'quoi')), 10);
+      // méthode : titre puis 3 cartes posées une à une
+      land('#st-meth-t', q(W('m3', 'methode') - 0.08), -1);
+      land('#st-c1', q(W('m3', 'un') - 0.05), -1.5);
+      inner.fromTo('#st-c1-bar', { scaleX: 0 }, { scaleX: 0.98, duration: 0.67, ease: 'steps(6)' }, q(W('m3', 'techniquement')));
+      land('#st-c2', q(W('m3', 'du') - 0.05), 1);
+      const qtext = 'boulangerie près de moi';
+      const qel = document.querySelector('#st-c2-q');
+      const typing = { n: 0 };
+      inner.fromTo(typing, { n: 0 }, { n: qtext.length, duration: 1.2, ease: 'none',
+        onUpdate: () => { qel.textContent = qtext.slice(0, Math.round(typing.n)) || ' '; } }, q(W('m3', 'contenu')));
+      land('#st-c3', q(W('m3', 'et') - 0.05), -1);
+      // résultats
+      land('#st-r1', q(W('m4', 'trafic') - 0.1), -1.5);
+      inner.fromTo('#st-r1-line', { strokeDasharray: 110, strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 0.5, ease: 'steps(5)' }, q(W('m4', 'trafic') + 0.17));
+      land('#st-r2', q(W('m4', 'plus', 1) - 0.05), 1.5);
+      inner.fromTo('#st-r2-ph', { rotation: 0 }, { rotation: 10, duration: 0.083, ease: 'none', yoyo: true, repeat: 9, transformOrigin: '50% 50%' }, q(W('m4', 'dappels')));
+      lift('#st-r1', 24.0);
+      lift('#st-r2', 24.0);
+      // la boule part de la main de Sam et sort du cadre
+      const [hx, hy] = Rig.hand('R', 168, 30);
+      const bx = POS.sam[0] + hx * K - 48, by = POS.sam[1] + (hy - 10) * K - 48;
+      inner.fromTo('#st-ball-in', { x: bx, y: by, rotation: 0 }, { x: bx + 330, y: by - 260, rotation: 260, duration: 0.25, ease: 'none' }, tThrow);
+      inner.to('#st-ball-in', { x: bx + 720, y: by - 380, rotation: 520, duration: 0.17, ease: 'power1.in' }, tThrow + 0.25);
+      // drapeau rouge : tombe et se plante, oscille
+      inner.fromTo('#st-flag-in', { y: -900, rotation: -6 }, { y: 0, rotation: -6, duration: 0.17, ease: 'power2.in' }, q(W('m4', 'promesse', 1) - 0.08));
+      inner.to('#st-flag-in', { rotation: 7, duration: 0.17, ease: 'none' }, q(W('m4', 'promesse', 1) + 0.09));
+      inner.to('#st-flag-in', { rotation: -4, duration: 0.17, ease: 'none' }, q(W('m4', 'promesse', 1) + 0.26));
+      inner.to('#st-flag-in', { rotation: 2, duration: 0.17, ease: 'none' }, q(W('m4', 'promesse', 1) + 0.43));
+      inner.to('#st-flag-in', { rotation: 0, duration: 0.17, ease: 'none' }, q(W('m4', 'promesse', 1) + 0.6));
+      land('#st-red-in', 26.3333, -1.5);
+      // appel à l'action
+      land('#st-cta-in', q(W('m5', 'audit') - 0.1), -1.5);
+      land('#st-cta-stamp', q(W('m5', 'sans')), -7, { scale: 1.8, y: 0 });
+      land('#st-cta-bio', q(W('m5', 'bidon')), 0);
+
+      // ------------------------------------------------------------ rendu image par image
+      const pieces = Array.from(document.querySelectorAll('#root .pp'));
+      function render(time) {
+        const f = Math.floor(time * FPS + 1e-4);
+        const t = f / FPS;
+        inner.seek(t, false);
+        poseChar('sam', t, f);
+        poseChar('max', t, f);
+        props(t);
+        const r = Rig.prng(f * 13 + 5);
+        pieces.forEach((el) => {
+          el.style.translate = `${((r() * 2 - 1) * 1.2).toFixed(2)}px ${((r() * 2 - 1) * 1.2).toFixed(2)}px`;
+          el.style.rotate = `${((r() * 2 - 1) * 0.25).toFixed(3)}deg`;
+        });
+        $('#st-flicker').style.opacity = (0.015 + r() * 0.02).toFixed(3);
+      }
+      const clock = { t: 0 };
+      const tl = gsap.timeline({ paused: true });
+      tl.to(clock, { t: D, duration: D, ease: 'none', onUpdate: () => render(tl.time()) }, 0);
+      render(0);
+      window.__timelines['stage'] = tl;
+    })();
+  </script>
+</template>
