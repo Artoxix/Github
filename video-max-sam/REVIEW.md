@@ -12,7 +12,8 @@
 
 - `hyperframes check` : 0 erreur (lint, exécution, mise en page, contrastes, lisibilité) ; un seul avertissement gardé (fichier long, voir plus haut).
 - Planches d'images aux moments clés (0 ; 3,9 ; 7,2 ; 11,2 ; 18,4 ; 20,6 ; 23,6 ; 25,55 ; 27,3 ; 31,9 ; 34,6 s) et une séquence image par image de la chute du coffre (5,6 à 6,3 s) pour vérifier les paliers à 12 i/s.
-- Sonie : voir le résultat de `hyperframes audio` dans la note de livraison. Le son a été **mesuré, pas écouté**.
+- Sonie de la vidéo finale : **−14,1 LUFS**, crête vraie −0,9 dBFS (mesure EBU R128 avec ffmpeg) ; musique 10 dB sous les voix, baissée encore sous la parole. Le son a été **mesuré, pas écouté**.
+- Rendu : 1 086 images, 1080 × 1920, 30 i/s, 36,2 s ; images de la vidéo finale relues sur `output/planche.png`.
 
 ## Ce qui n'a pas été vérifié
 
