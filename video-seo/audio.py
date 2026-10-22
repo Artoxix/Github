@@ -603,17 +603,48 @@ for ch in ('L', 'R'):
 fade = np.clip((DUR - tt) / 0.8, 0, 1) ** 1.5
 master.scale(fade)
 
-# sonie ~ -14 LUFS, limiteur doux sous -1 dBTP
+# sonie -14 LUFS (mesure ITU-R BS.1770), limiteur doux sous -1 dBTP
+K_SHELF = ((1.53512485958697, -2.69169618940638, 1.19839281085285), (1, -1.69065929318241, 0.73248077421585))
+K_HP = ((1.0, -2.0, 1.0), (1, -1.99004745483398, 0.99007225036621))
+
+
+def k_weight(f):
+    z = np.exp(-2j * np.pi * f / SR)
+    h = 1
+    for b, a in (K_SHELF, K_HP):
+        h = h * (b[0] + b[1] * z + b[2] * z * z) / (a[0] + a[1] * z + a[2] * z * z)
+    return np.abs(h)
+
+
+def loudness(x):
+    """Sonie intégrée en LUFS : blocs de 400 ms, porte absolue -70 LUFS puis relative -10 LU."""
+    p = sum(fft_filter(c, k_weight) ** 2 for c in x)
+    blk, hop = int(0.4 * SR), int(0.1 * SR)
+    cs = np.r_[0, np.cumsum(p)]
+    ms = (cs[blk::hop] - cs[:-blk:hop][:len(cs[blk::hop])]) / blk
+    lufs = lambda m: -0.691 + 10 * np.log10(m + 1e-12)
+    ms = ms[lufs(ms) > -70]
+    return lufs(np.mean(ms[lufs(ms) > lufs(np.mean(ms)) - 10]))
+
+
+def limit(x, th=0.62, ceil=0.79):
+    ax = np.abs(x)
+    over = ax > th
+    y = x.copy()
+    y[over] = np.sign(x[over]) * (th + (ceil - th) * np.tanh((ax[over] - th) / (ceil - th)))
+    return y
+
+
+TARGET = -14.0
 x = np.stack([master.L, master.R])[:, : int(DUR * SR)]
-x *= 10 ** (-17.6 / 20) / np.sqrt(np.mean(x ** 2))
-th, ceil = 0.62, 0.79
-ax = np.abs(x)
-over = ax > th
-x[over] = np.sign(x[over]) * (th + (ceil - th) * np.tanh((ax[over] - th) / (ceil - th)))
+g = 10 ** ((TARGET - loudness(x)) / 20)
+for _ in range(2):               # le limiteur retire un peu de sonie : on corrige le gain
+    g *= 10 ** ((TARGET - loudness(limit(x * g))) / 20)
+x = limit(x * g)
 pcm = (np.clip(x.T, -1, 1) * 32767).astype('<i2')
 with wave.open(out_file, 'wb') as w:
     w.setnchannels(2)
     w.setsampwidth(2)
     w.setframerate(SR)
     w.writeframes(pcm.tobytes())
-print(f'wrote {out_file}: {DUR:.1f}s, peak {np.max(np.abs(x)):.3f}')
+print(f'wrote {out_file}: {DUR:.1f}s, {loudness(x):.1f} LUFS, peak {np.max(np.abs(x)):.3f}')
